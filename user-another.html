@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<header>
+  <!--
+
+    <div class="logo"></div>
+    <div class="search">
+    </div>
+    <div class="feed-icon"></div>
+
+    -->
+
+  <div class="general-fixed-header">
+    <div class="first-header-div-container">
+      <div class="first-header-div-child-1">
+        <div class="logo"></div>
+        <div class="logo-dark"></div>
+      </div>
+      <div class="first-header-div-child-2">
+        <a href="support.html"><div class="balance-button">SUPPORT</div></a>
+        <div class="balance-button">Balance: <span>45 USD</span></div>
+        <div class="user-logged-out-header-placeholder">
+          <div class="user-icon-2"></div>
+          <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="second-header-blacked">
+      <div class="second-header-div-container">
+
+        <div class="drop-down-main-category-banner" style="display: none;">
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Categories</div>
+            </div>
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign">A</div>
+              <div class="category-drop-dawn-name">Accounts</div>
+            </div>
+
+            <div class="main-drop-dawn-categories selected-drop-dawn-category">
+              <div class="category-drop-dawn-sign gradient-2">G</div>
+              <div class="category-drop-dawn-name">Game Coins</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign gradient-3">I</div>
+              <div class="category-drop-dawn-name">Items</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign gradient-4">B</div>
+              <div class="category-drop-dawn-name">Boosting</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Games</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Fortnite</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows" style="border: 0;">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Servers</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Europe</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="second-header-div-child-1">
+          <div class="all-categories-main-button padding-in-right-buttons-general-0">
+            All Categories
+            <!--<div class="categories-arrow"></div>-->
+          </div>
+          <div class="search-bar">
+            <input class="search-bar-input" placeholder="Search" autocomplete="off" maxlength="24">
+            <div class="search-icon"></div>
+          </div>
+        </div>
+        <div class="second-header-div-child-2">
+          <button class="theme-main-selector-moon" id="dark-mode-toggle">
+            <div class="moon-dark"></div>
+            <div class="sun-white"></div>
+        </button>
+          <div class="sell-with-us-header-2">Sell</div>
+          <div class="theme-main-selector-sun" style="display: none;"></div>
+          <div class="user-logged-in-main-icons">
+            <div class="comun-main-user-icons-header favorites-icon"> </div>
+            <div class="comun-main-user-icons-header bell-icon">
+              <div class="notification-point">3</div>
+            </div>
+            <div class="comun-main-user-icons-header chat-icon"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+
+<div class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+      <div class="history-order-main-div-pop-up">
+          <div class="main-intro-to-verification" style="border: 0;">
+              Order History
+              <div class="close-modal"></div>
+          </div>
+
+          <div class="history-order-main-list">
+              <div class="allordderaction reviews-changes">
+                  <div class="history-order-nickname">marioo</div>
+                  <div class="history-order-nickname mn-change">paid for order<span>8 DAYS AGO</span></div>
+                  <div class="positive-review"></div>
+                  <div class="negative-review" style="display: none;"></div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<body>
+
+  <div class="container">
+
+    <div class="user-container">
+
+      <div class="settings-div"></div>
+
+      <div class="user-profile-info">
+        <div class="main-seller-img">
+          <!--Cand user ii online-->
+          <div class="main-seller-is-online" style="display: none;">on</div>
+          <!--Cand user ii offline-->
+          <div class="main-seller-is-online main-seller-is-offline">off</div>
+        </div>
+        <div class="user-name-container">
+          <p class="nickname"><span class="verified-user"></span></p>
+          <div class="follow-section">
+            <div class="follow-button">follow</div>
+            <div class="follower-number">45 followers</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-reviews">
+        <p class="success-rate-number">95%
+          <span class="additional-rate-info">Success Rate out of 141 Orders</span>
+        </p>
+
+        <div class="rate-line">
+          <div class="green-line"></div>
+          <div class="white-line"></div>
+          <div class="red-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-switcher">
+      <div class="switch-1 switch-1-selected">SELLING</div>
+      <div class="switch-1">ABOUT</div>
+    </div>
+
+    <div class="about-text">
+      For any purchase of 100 euros you will receive a 50% discount on any product or service offered by zorky's team.
+      This discount only applies to buyers who want to be applied to a new offer.
+    </div>
+
+    <div class="no-something" style="display: none;">there is no something</div>
+
+  </div>
+
+
+  <footer>
+    <div class="footer-placeholder">
+      <div class="icons-to-follow-placeholder">
+        <div class="footer-logo-links"></div>
+        <div class="footer-logo-links instagram"></div>
+        <div class="footer-logo-links youtube"></div>
+        <div class="footer-logo-links twitter"></div>
+        <div class="follow-us">Follow Us</div>
+      </div>
+      <div class="footer-logo"></div>
+      <div class="usefull-footer-links">
+        <div class="usefull-footer-text">Support</div>
+        <div class="usefull-footer-text">How to buy</div>
+        <div class="usefull-footer-text">Reviews</div>
+        <div class="usefull-footer-text">About Us</div>
+        <div class="usefull-footer-text">Guaranty</div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDe6on4PQWSdDjCydOW67CkQliM_TD0WcY",
+      authDomain: "zifiplay-e212f.firebaseapp.com",
+      databaseURL: "https://zifiplay-e212f.firebaseio.com",
+      projectId: "zifiplay-e212f",
+      storageBucket: "zifiplay-e212f.appspot.com",
+      messagingSenderId: "501773405576",
+      appId: "1:501773405576:web:5779e441f126727987fe3d",
+      measurementId: "G-Q7HLDYW2YV"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <script src="./static/global.js"></script>
+  <script src="./static/auth.js"></script>
+  <script src="./static/darktheme.js"></script>
+
+</body>
+
+</html>

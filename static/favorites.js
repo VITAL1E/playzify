@@ -1,0 +1,147 @@
+(function (window, document, undefined) {
+  "use strict";
+
+  let gameCollection = document.querySelector(".container");
+
+  function createPost(post) {
+    let div = document.createElement("div");
+    div.setAttribute("class", "product-home-show");
+
+    let divSellerRoundImage = document.createElement("div");
+    divSellerRoundImage.setAttribute("class", "seller-round-image");
+
+    let divSellerRoundImageIsOnline = document.createElement("div");
+    divSellerRoundImageIsOnline.setAttribute("class", "seller-is-online");
+
+    let divSellerName = document.createElement("div");
+    divSellerName.setAttribute("class", "seller-name");
+
+    let divVerified = document.createElement("div");
+    divVerified.setAttribute("class", "verified");
+
+    let divProductDescription = document.createElement("div");
+    divProductDescription.setAttribute("class", "product-description");
+
+    //////// icon
+    let divProductDescriptionMiniSignAccounts = document.createElement("div");
+    divProductDescriptionMiniSignAccounts.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign"
+    );
+
+    let divProductDescriptionMiniSignItems = document.createElement("div");
+    divProductDescriptionMiniSignItems.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-2"
+    );
+
+    let divProductDescriptionMiniSignGameCoins = document.createElement("div");
+    divProductDescriptionMiniSignGameCoins.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-3"
+    );
+
+    let divProductDescriptionMiniSignBoosting = document.createElement("div");
+    divProductDescriptionMiniSignBoosting.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-4"
+    );
+    /////////
+
+    let divProductName = document.createElement("div");
+    divProductName.setAttribute("class", "listed-game-name");
+
+    let divProductPrice = document.createElement("div");
+    divProductPrice.setAttribute("class", "price-game-listed");
+
+    let divProductPriceArrow = document.createElement("span");
+    divProductPriceArrow.setAttribute("class", "arrow-right-price");
+
+    let divProductPriceSVG = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    divProductPriceSVG.setAttribute(
+      "class",
+      "feather feather-chevron-right chevron-for-payment"
+    );
+    divProductPriceSVG.setAttributeNS(null, "viewBox", "0 0 " + 24 + " " + 24);
+    divProductPriceSVG.setAttributeNS(null, "width", 24);
+    divProductPriceSVG.setAttributeNS(null, "height", 24);
+    divProductPriceSVG.setAttributeNS(null, "fill", "none");
+    divProductPriceSVG.setAttributeNS(null, "stroke-width", 2);
+    divProductPriceSVG.setAttributeNS(null, "stroke", "currentColor");
+    divProductPriceSVG.setAttributeNS(null, "stroke-linecap", "round");
+    divProductPriceSVG.setAttributeNS(null, "stroke-linejoin", "round");
+
+    let divProductPricePolyline = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "polyline"
+    );
+    divProductPricePolyline.setAttributeNS(null, "points", "9 18 15 12 9 6");
+
+    divSellerName.textContent = "seller name from db";
+    divProductDescription.textContent = post.description;
+    divProductName.textContent = post.title;
+    divProductPrice.textContent = post.price + " EUR";
+    divSellerRoundImageIsOnline.textContent = "on";
+
+    divSellerRoundImage.appendChild(divSellerRoundImageIsOnline);
+
+    divSellerName.appendChild(divVerified);
+
+    ////// Get specific Icon
+    divProductDescription.appendChild(divProductDescriptionMiniSignBoosting);
+    //divProductDescription.appendChild(getProductType(onSelectChangeCategoryType));
+
+    divProductPriceSVG.appendChild(divProductPricePolyline);
+    divProductPriceArrow.appendChild(divProductPriceSVG);
+    divProductPrice.appendChild(divProductPriceArrow);
+
+    div.appendChild(divSellerRoundImage);
+    div.appendChild(divSellerName);
+    div.appendChild(divProductDescription);
+    div.appendChild(divProductName);
+    div.appendChild(divProductPrice);
+
+    gameCollection.appendChild(div);
+
+    div.addEventListener("click", function () {
+      window.location.href = `post.html?id=${post.postId}`;
+    });
+  }
+
+  let postsArray = [];
+
+  const getPosts = async () => {
+    firebase.auth().onAuthStateChanged(async function (user) {
+      if (!user) {
+        console.log("Not logged in");
+      } else {
+        await firebase
+          .firestore()
+          .doc(`/users/${user.displayName}`)
+          .get()
+          .then((snapshot) => {
+            console.log(snapshot.data());
+            postsArray = snapshot.data().favorites;
+            console.log(postsArray);
+          });
+
+        postsArray.forEach(async (postID) => {
+          await firebase
+            .firestore()
+            .collection("games")
+            .doc(postID)
+            .get()
+            .then((post) => {
+              console.log(post.data());
+              createPost(post.data());
+            });
+        });
+      }
+    });
+  };
+
+  getPosts();
+})(window, document);

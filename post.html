@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/style.css">
+  <link rel="stylesheet" href="./static/media-queries.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<header>
+  <div class="general-fixed-header">
+    <div class="first-header-div-container">
+      <div class="first-header-div-child-1">
+        <div class="logo"></div>
+        <div class="logo-dark"></div>
+      </div>
+      <div class="first-header-div-child-2">
+        <a href="support.html">
+          <div class="balance-button">S<div class="balance-support-550px">upport</div>
+          </div>
+        </a>
+        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">:
+              <span>45 USD</span></span></div>
+        </div>
+        <div class="user-logged-out-header-placeholder">
+          <div class="user-icon-2"></div>
+          <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="second-header-blacked">
+      <div class="second-header-div-container">
+
+        <div class="drop-down-main-category-banner" style="display: none;">
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Categories</div>
+            </div>
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign">A</div>
+              <div class="category-drop-dawn-name">Accounts</div>
+            </div>
+
+            <div class="main-drop-dawn-categories selected-drop-dawn-category">
+              <div class="category-drop-dawn-sign gradient-2">G</div>
+              <div class="category-drop-dawn-name">Game Coins</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign gradient-3">I</div>
+              <div class="category-drop-dawn-name">Items</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign gradient-4">B</div>
+              <div class="category-drop-dawn-name">Boosting</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Games</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Fortnite</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows" style="border: 0;">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Servers</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Europe</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="second-header-div-child-1">
+          <div class="all-categories-main-button padding-in-right-buttons-general-0">
+            All Categories
+            <!--<div class="categories-arrow"></div>-->
+          </div>
+          <div class="search-bar">
+            <input class="search-bar-input" placeholder="Search" autocomplete="off" maxlength="24">
+            <div class="search-icon"></div>
+          </div>
+        </div>
+        <div class="second-header-div-child-2">
+          <button class="theme-main-selector-moon" id="dark-mode-toggle">
+            <div class="moon-dark"></div>
+            <div class="sun-white"></div>
+          </button>
+          <div class="sell-with-us-header-2">Sell</div>
+          <div class="theme-main-selector-sun" style="display: none;"></div>
+          <div class="user-logged-in-main-icons">
+            <div class="comun-main-user-icons-header favorites-icon"> </div>
+            <div class="comun-main-user-icons-header bell-icon">
+              <div class="notification-point">3</div>
+            </div>
+            <div class="comun-main-user-icons-header chat-icon"> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+
+<body>
+  <div class="container">
+    <div class="main-post-div">
+      <div class="part-1-post-div">
+        <div class="seller-info-pp">
+          <div class="seller-round-image" style="margin: 0;">
+            <div class="seller-is-online">on</div>
+          </div>
+          <div class="post-nickname-seller">marioo<div class="verified"></div>
+          </div>
+          <div class="reviews-post-seller-rate">
+            98%
+            <span class="satisfied">satisfied</span>
+          </div>
+        </div>
+
+
+        <div class="D666">
+          <div id="favorites-main-div-id-2" class="favorites-main-div">
+            <div class="favorites-icon-div">
+              <div id="like-icon-id" class="like-icon"></div>
+              <div id="like-icon-red-id" class="like-icon heart-liked-red-1" style="display: none;"></div>
+              <div id="number-of-likes-id" class="number-of-likes"></div>
+            </div>
+            <div class="add-to-favorites-big-btn">add to favorites</div>
+          </div>
+          <div class="additional-images-post-main-div">
+            <!-- <div class="images-post-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-post-images"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <div class="images-post-arrow arrow-left" style="transform: rotate(180deg);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-post-images"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div> -->
+            <div class="additional-images-post-main-div-2">
+              <div id="images-to-post-id" class="additional-images-post-main-div-3">
+                <!-- <div class="post-images">
+
+                                </div> -->
+                <!-- <div class="post-images"></div>
+                                <div class="post-images"></div>
+                                <div class="post-images"></div>
+                                <div class="post-images"></div>
+                                <div class="post-images"></div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="part-2-post-div">
+        <div id="title-to-post-id" class="title-to-post"></div>
+        <div class="main-icons-post-section">
+          <div class="divided-main-icons-sections" style="border-right:1px solid #d8d8d88c;">
+            <div class="processing-icon"></div>
+            <div class="seller-processing-time">
+              <span id="garanty-to-post-id"></span>
+              <span>seller's guaranteed time of delivery</span>
+            </div>
+          </div>
+          <div class="divided-main-icons-sections">
+            <div class="secure-icon"></div>
+            <div class="seller-processing-time">
+              Protection
+              <span>Money back guarantee</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="quantity-main-div">
+          <div class="quantity-main-number">
+            <span id="quantity-to-post-id"></span>
+            <span class="quantatiyavailable">quantity available</span>
+          </div>
+          <input class="quantity-input" placeholder="type">
+        </div>
+
+        <div class="payment-post">
+          <div class="payyy">Payment</div>
+          <div class="price-game-listed">
+            <div id="price-to-post-id">54 EUR</div>
+            <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg></span>
+          </div>
+        </div>
+
+        <div id="description-to-post-id" class="post-description">
+          <span>Description</span>
+          <p>Report listing</p>
+        </div>
+      </div>
+
+      <div class="D666-2">
+        <div id="favorites-main-div-id-1" class="favorites-main-div">
+          <div class="favorites-icon-div">
+            <div id="like-icon-id" class="like-icon"></div>
+            <div id="like-icon-red-id" class="like-icon heart-liked-red-1" style="display: none;"></div>
+            <div id="number-of-likes-id" class="number-of-likes"></div>
+          </div>
+          <div class="add-to-favorites-big-btn">add to favorites</div>
+        </div>
+        <div class="additional-images-post-main-div">
+          <!-- <div class="images-post-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-post-images"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <div class="images-post-arrow arrow-left" style="transform: rotate(180deg);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-post-images"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div> -->
+          <div class="additional-images-post-main-div-2">
+            <div id="images-to-post-mobile-id" class="additional-images-post-main-div-3">
+              <!-- <div class="post-images">
+
+                                </div> -->
+              <!-- <div class="post-images"></div>
+                                <div class="post-images"></div>
+                                <div class="post-images"></div>
+                                <div class="post-images"></div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-placeholder">
+      <div class="icons-to-follow-placeholder">
+        <div class="footer-logo-links"></div>
+        <div class="footer-logo-links instagram"></div>
+        <div class="footer-logo-links youtube"></div>
+        <div class="footer-logo-links twitter"></div>
+        <div class="follow-us">Follow Us</div>
+      </div>
+      <div class="footer-logo"></div>
+      <div class="usefull-footer-links">
+        <div class="usefull-footer-text">Support</div>
+        <div class="usefull-footer-text">How to buy</div>
+        <div class="usefull-footer-text">Reviews</div>
+        <div class="usefull-footer-text">About Us</div>
+        <div class="usefull-footer-text">Guaranty</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDe6on4PQWSdDjCydOW67CkQliM_TD0WcY",
+      authDomain: "zifiplay-e212f.firebaseapp.com",
+      databaseURL: "https://zifiplay-e212f.firebaseio.com",
+      projectId: "zifiplay-e212f",
+      storageBucket: "zifiplay-e212f.appspot.com",
+      messagingSenderId: "501773405576",
+      appId: "1:501773405576:web:5779e441f126727987fe3d",
+      measurementId: "G-Q7HLDYW2YV"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <script src="./static/global.js"></script>
+  <script src="./static/post.js"></script>
+  <!-- <script src="./static/order.js"></script> -->
+  <script src="./static/auth.js"></script>
+  <script src="./static/darktheme.js"></script>
+
+  <script src="https://js.mollie.com/v1/mollie.js" defer></script>
+  <script src="./static/payment.js" defer></script>
+</body>
+
+</html>

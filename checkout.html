@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/style.css">
+  <link rel="stylesheet" href="./static/media-queries.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <form id="form-checkout-id" style="background-color: aquamarine;">
+    <div id="card-holder"></div>
+    <div id="card-holder-error"></div>
+
+    <div id="card-number"></div>
+    <div id="card-number-error"></div>
+
+    <div id="expiry-date"></div>
+    <div id="expiry-date-error"></div>
+
+    <div id="verification-code"></div>
+    <div id="verification-code-error"></div>
+
+    <button type="button">Pay</button>
+  </form>
+
+  <script src="./static/post.js" defer></script>
+  <script src="https://js.mollie.com/v1/mollie.js" defer></script>
+</body>
+
+</html>

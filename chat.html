@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/style.css">
+  <link rel="stylesheet" href="./static/media-queries.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<header>
+  <div class="general-fixed-header">
+    <div class="first-header-div-container">
+      <div class="first-header-div-child-1">
+        <div class="logo"></div>
+        <div class="logo-dark"></div>
+    </div>
+      <div class="first-header-div-child-2">
+        <div class="support balance-button">S<div class="balance-support-550px">upport</div>
+        </div>
+        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">:
+              <span>45 USD</span></span></div>
+        </div>
+        <div class="user-logged-out-header-placeholder">
+          <div class="user-icon-2"></div>
+          <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="second-header-blacked">
+      <div class="second-header-div-container">
+
+        <div class="drop-down-main-category-banner" style="display: none;">
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Categories</div>
+            </div>
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign">A</div>
+              <div class="category-drop-dawn-name">Accounts</div>
+            </div>
+
+            <div class="main-drop-dawn-categories selected-drop-dawn-category">
+              <div class="category-drop-dawn-sign gradient-2">G</div>
+              <div class="category-drop-dawn-name">Game Coins</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign gradient-3">I</div>
+              <div class="category-drop-dawn-name">Items</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign gradient-4">B</div>
+              <div class="category-drop-dawn-name">Boosting</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Games</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Fortnite</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows" style="border: 0;">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Servers</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Europe</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="second-header-div-child-1">
+          <div class="all-categories-main-button padding-in-right-buttons-general-0">
+            All Categories
+            <!--<div class="categories-arrow"></div>-->
+          </div>
+          <div class="search-bar">
+            <input class="search-bar-input" placeholder="Search" autocomplete="off" maxlength="24">
+            <div class="search-icon"></div>
+          </div>
+        </div>
+        <div class="second-header-div-child-2">
+          <button class="theme-main-selector-moon" id="dark-mode-toggle">
+            <div class="moon-dark"></div>
+            <div class="sun-white"></div>
+        </button>
+          <div class="sell-with-us-header-2">Sell</div>
+          <div class="theme-main-selector-sun" style="display: none;"></div>
+          <div class="user-logged-in-main-icons">
+            <div class="comun-main-user-icons-header favorites-icon"> </div>
+            <div class="comun-main-user-icons-header bell-icon">
+              <div class="notification-point">3</div>
+            </div>
+            <div class="comun-main-user-icons-header chat-icon"> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<body>
+  <div class="container">
+    <div class="chat-main-container">
+      <div class="chat-part-1-user-lists">
+
+        <div class="chat-user-search-main-div">
+          <input id="search-bar-chat-id" class="search-bar-chat" placeholder="Search" autocomplete="off" maxlength="24">
+        </div>
+        <div id="chat-part-1-list-id" class="main-list-chat">
+
+          <!-- <div class="no-messages-chat">no messages</div> -->
+          <!-- <div class="user-section-chat">
+            <div class="chat-profile-1">
+              <div class="seller-is-online-for-chat">on</div>
+            </div>
+            <div class="section-2-2">
+              <p class="chat-nickname-list">mariooo
+                COMMENT <span class="blue-dott"></span> COMMENT
+              </p>
+              <p class="chat-message-list">mariooo</p>
+            </div>
+
+            <span class="arrow-chat"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-chevron-right chevron-for-chat">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg></span>
+          </div> -->
+
+        </div>
+      </div>
+      <div id="chat-part-2-user-lists-id" class="chat-part-2-user-lists">
+        <div class="chat-part-2-header">
+          <div id="chat-messages-user-photo-id" class="chat-profile-1">
+            <!-- <div class="seller-is-online-for-chat">on</div> -->
+          </div>
+          <div id="nickname-name-header-id" class="nickname-name-header"></div>
+          <!-- <div class="new-messages-bar">45 new messages</div> -->
+        </div>
+
+        <div class="type2-main-chat">
+          <div id="chat-messages-main-div-id" class="chat-messages-main-div">
+            
+            <div id="first-message-div-id" class="first-message-div">
+              <div id="profileimgchat-id" class="profileimgchat"></div>
+              <div id="firstmessages--main-div-id" class="firstmessages--main-div">
+                <!-- <div class="messagee">45 new messages</div> -->
+                <!-- <div class="chat-image-sent"></div> -->
+              </div>
+              <!-- <div class="seen">2m ago</div> -->
+            </div>
+
+            <div id="first-message-right-id-2" class="first-message-right">
+              <div id="firstmessages--main-div-id-2" class="firstmessages--main-div">
+                <!-- <div class="messagee messagee-right">45 new messages</div> -->
+                <!-- <div class="messagee messagee-right"></div> -->
+                <!-- <div class="chat-image-sent messagee-right"></div>  -->
+              </div>
+              <!-- <div class="seen seen-right">5m ago</div> -->
+            </div>
+
+          </div>
+          <div class="chat-bottom-header">
+            <p contenteditable="true" class="chat-messenger-input" placeholder="type a message" spellcheck="false"></p>
+            <div class="button-send" id="addImgLabel1">
+              <label for="addImg1" class="input-label inputLabelCss">
+                <div class="photosvg">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-camera camera-icon-chat">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                  </svg>
+                </div>
+              </label> <!-- ngIf: images.length<maxImagesForProduct --><input id="addImg1" type="file"
+                accept=".png, .jpg, .jpeg" style="display:none" multiple="">
+            </div>
+            <div class="button-send">
+              <div id="send-message-id" class="general-action-btn-chat"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-placeholder">
+      <div class="icons-to-follow-placeholder">
+        <div class="footer-logo-links"></div>
+        <div class="footer-logo-links instagram"></div>
+        <div class="footer-logo-links youtube"></div>
+        <div class="footer-logo-links twitter"></div>
+        <div class="follow-us">Follow Us</div>
+      </div>
+      <div class="footer-logo"></div>
+      <div class="usefull-footer-links">
+        <div class="usefull-footer-text">Support</div>
+        <div class="usefull-footer-text">How to buy</div>
+        <div class="usefull-footer-text">Reviews</div>
+        <div class="usefull-footer-text">About Us</div>
+        <div class="usefull-footer-text">Guaranty</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDe6on4PQWSdDjCydOW67CkQliM_TD0WcY",
+      authDomain: "zifiplay-e212f.firebaseapp.com",
+      databaseURL: "https://zifiplay-e212f.firebaseio.com",
+      projectId: "zifiplay-e212f",
+      storageBucket: "zifiplay-e212f.appspot.com",
+      messagingSenderId: "501773405576",
+      appId: "1:501773405576:web:5779e441f126727987fe3d",
+      measurementId: "G-Q7HLDYW2YV"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <script src="./static/global.js"></script>
+  <script src="./static/auth.js"></script>
+  <script src="./static/chat.js"></script>
+  <script src="./static/darktheme.js"></script>
+</body>
+
+</html>

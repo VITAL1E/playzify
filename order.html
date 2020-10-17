@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    <link rel="stylesheet" href="./static/media-queries.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+
+
+<header>
+  <!--
+
+    <div class="logo"></div>
+    <div class="search">
+    </div>
+    <div class="feed-icon"></div>
+
+    -->
+
+  <div class="general-fixed-header">
+    <div class="first-header-div-container">
+      <div class="first-header-div-child-1">
+        <div class="logo"></div>
+        <div class="logo-dark"></div>
+    </div>
+      <div class="first-header-div-child-2">
+        <a href="support.html"><div class="balance-button">S<div class="balance-support-550px">upport</div> </div></a>
+        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>45 USD</span></span></div></div>
+        <div class="user-logged-out-header-placeholder">
+            <div class="user-icon-2"></div>
+            <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
+        </div>
+    </div>
+    </div>
+    <div class="second-header-blacked">
+      <div class="second-header-div-container">
+
+        <div class="drop-down-main-category-banner" style="display: none;">
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Categories</div>
+            </div>
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign">A</div>
+              <div class="category-drop-dawn-name">Accounts</div>
+            </div>
+
+            <div class="main-drop-dawn-categories selected-drop-dawn-category">
+              <div class="category-drop-dawn-sign gradient-2">G</div>
+              <div class="category-drop-dawn-name">Game Coins</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign gradient-3">I</div>
+              <div class="category-drop-dawn-name">Items</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-sign gradient-4">B</div>
+              <div class="category-drop-dawn-name">Boosting</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Games</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Fortnite</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows" style="border: 0;">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Servers</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Europe</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="second-header-div-child-1">
+          <div class="all-categories-main-button padding-in-right-buttons-general-0">
+            All Categories
+            <!--<div class="categories-arrow"></div>-->
+          </div>
+          <div class="search-bar">
+            <input class="search-bar-input" placeholder="Search" autocomplete="off" maxlength="24">
+            <div class="search-icon"></div>
+          </div>
+        </div>
+        <div class="second-header-div-child-2">
+          <button class="theme-main-selector-moon" id="dark-mode-toggle">
+            <div class="moon-dark"></div>
+            <div class="sun-white"></div>
+        </button>
+          <div class="sell-with-us-header-2">Sell</div>
+          <div class="theme-main-selector-sun" style="display: none;"></div>
+          <div class="user-logged-in-main-icons">
+            <div class="comun-main-user-icons-header favorites-icon"> </div>
+            <div class="comun-main-user-icons-header bell-icon">
+              <div class="notification-point">3</div>
+            </div>
+            <div class="comun-main-user-icons-header chat-icon"> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+
+<!--POP-UP-img-view-->
+<div class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="img-view">
+      <div class="close-img"></div>
+      <img class="img-view-2"
+        src="https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-15/fr/e15/s1080x1080/103939052_258375325421544_4676289371263885247_n.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&_nc_cat=100&_nc_ohc=jYU-fA0lFb0AX9WiNY5&oh=02ce6b362606153a07631e90cf56dece&oe=5F1DC5A7">
+    </div>
+  </div>
+</div>
+
+<!--POP-UP-ORDER-HISTORY-->
+<div id="pop-up-order-history" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="history-order-main-div-pop-up">
+      <div class="main-intro-to-verification" style="border: 0;;">
+        Order History
+        <div class="close-modal"></div>
+      </div>
+
+      <div id="order-history-popup-id" class="history-order-main-list">
+        <div class="allordderaction">
+          <div class="history-order-nickname">marioo<span>BUYER</span></div>
+          <div class="history-order-nickname mn-change">paid for order<span>8 DAYS AGO</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--POP-UP-QUESTION-->
+<div id="pop-up-order-question" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="all-mini-main-div-pop-up">
+      <div class="question-pop-intro-all">Are you sure you want to accept this order?</div>
+      <div class="close-modal"></div>
+      <div id="sure-accept-order-confirmation-id" class="main-order-action-buttons" style="border: 0;">
+        <div id="sure-accept-order-yes" class="all-order-action-buttons">Yes</div>
+        <div id="sure-accept-order-no" class="all-order-action-buttons">No</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--POP-UP-DELIVERY-->
+<div id="pop-up-delivery" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="history-order-main-div-pop-up">
+      <div class="main-intro-to-verification">
+        Deliver
+      </div>
+
+      <div class="history-order-main-list">
+
+        <div class="delivery-info-divider" style="border-top: 0; margin-top: 0;">Game Account Information:</div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Account ID</p>
+          <input id="delivery-account-id" class="verification-main-input" placeholder="type account id" autocomplete="off" maxlength="24">
+          <div class="error-delivery"> some error </div>
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Password</p>
+          <input id="delivery-password" class="verification-main-input" placeholder="type password" autocomplete="off" maxlength="24">
+        </div>
+
+        <div class="delivery-info-divider">Registration Information:</div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">First name</p>
+          <input id="delivery-first-name" class="verification-main-input" placeholder="type first name" autocomplete="off" maxlength="24">
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Last name</p>
+          <input id="delivery-last-name" class="verification-main-input" placeholder="type last name" autocomplete="off" maxlength="24">
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Account country</p>
+          <input id="delivery-account-country" class="verification-main-input" placeholder="type account country" autocomplete="off" maxlength="24">
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Date of birth</p>
+          <input id="delivery-date-of-birth" class="verification-main-input" placeholder="type date of birth" autocomplete="off" maxlength="24">
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Account recovery email</p>
+          <input id="delivery-account-recovery-email" class="verification-main-input" placeholder="type account recovery email" autocomplete="off"
+            maxlength="24">
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Recovery email password</p>
+          <input id="delivery-recovery-email-password" class="verification-main-input" placeholder="type recovery email password" autocomplete="off"
+            maxlength="24">
+        </div>
+
+        <div class="delivery-info-divider">Secret Question & Answer:</div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Secret question</p>
+          <input id="delivery-secret-question" class="verification-main-input" placeholder="type secret question" autocomplete="off" maxlength="24">
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Secret answer</p>
+          <input id="delivery-secret-answer" class="verification-main-input" placeholder="type secret answer" autocomplete="off" maxlength="24">
+        </div>
+
+        <div class="delivery-info-divider">Additional information:</div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Add additional note ( optional )</p>
+          <p id="delivery-additional-note" contenteditable="true" id="productDescriptionInput" class="describe-your-item-contentible"
+            placeholder="describe your item" spellcheck="false"></p>
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Add a photo with your item (optional)</p>
+          <div class="row-of-id-photos">
+            <div class="two1 two2" id="addImgLabel1">
+              <label for="addImg1" class="input-label inputLabelCss">
+                <div class="photosvg">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-camera camera-icon camera-icon-2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                  </svg>
+                </div>
+              </label> <!-- ngIf: images.length<maxImagesForProduct --><input id="addImg1" type="file"
+                accept=".png, .jpg, .jpeg" style="display:none" multiple="">
+            </div>
+
+            <div class="id-document id-document-2">
+              <div class="id-document-close"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="deliver-item-id" class="main-order-action-buttons mmarginn" style="border-bottom: 0;">
+          <div id="deliver-item-button" class="all-order-action-buttons">Deliver</div>
+          <div id="cancel-delivery" class="all-order-action-buttons">Cancel</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<body>
+
+  <div class="container-for-limited-width">
+    <div class="main-for-limited-width">
+      <div class="seller-verification-main-div order-change">
+        <p class="main-intro-to-verification">
+          Order details
+        </p>
+
+        <div class="intro-to-order-general-info">
+          <div class="main-user-order-iiintro">
+            <div id="order-seller-profile-photo-id" class="chat-profile-1">
+              <div class="seller-is-online-for-chat">on</div>
+            </div>
+            <div id="nickname-order-seller-id" class="nickname-order"></div>
+          </div>
+
+          <div class="main-order-history-border-div">
+            <div id="order-history-button-id" class="order-history-border"><span>ORDER</span> HISTORY</div>
+        </div>
+
+        </div>
+
+        <div id="category-order-section-id" class="intro-to-order-general-game-info">
+          <div id="game-category-order-id" class="additional-order-game-info">
+            <!-- <span class="additional-order-game-info-greyyy">category:</span>
+            Accounts -->
+          </div>
+          <div id="game-type-order-id" class="additional-order-game-info">
+            <!-- <span class="additional-order-game-info-greyyy">game:</span>
+            Counter-Strike -->
+          </div>
+          <div id="game-server-order-id" class="additional-order-game-info">
+            <!-- <span class="additional-order-game-info-greyyy">server:</span>
+            EU -->
+          </div>
+        </div>
+
+        <div id="action-buttons-main-div" class="verification-main-input-div for-order-buttons-change">
+          <p id="action-buttons-text" class="verification-main-text for-order-buttons-change-2">Action buttons:</p>
+          <div id="accept-buttons-id" class="main-order-action-buttons">
+            <!-- <div id="accept-order" class="all-order-action-buttons">ACCEPT</div>
+            <div id="refuse-order" class="all-order-action-buttons">REFUSE</div> -->
+          </div>
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Additional order information:</p>
+          <div id="order-information-text-id" class="all-text-info-order">
+            <!-- You have X day to Accept or Refuse the order. If you ignore this order
+            it will be automatically refunded. -->
+          </div>
+        </div>
+
+        <div id="order-status-id" class="verification-main-input-div">
+          <p class="verification-main-text">Order status:</p>
+
+          <div class="order-status-line-main-div">
+            <div id="connect-the-dots-id" class="connect-the-dots"></div>
+            <div id="order-sold-id" class="all-order-status-divss paid" style="display:none">S<span>old</span></div>
+            <div id="order-paid-id" class="all-order-status-divss paid" style="display:none">P<span>aid</span></div>
+            <div id="order-accepted-id" class="all-order-status-divss accepted" style="display:none">A<span>ccepted</span></div>
+            <div id="order-delivered-id" class="all-order-status-divss delivered" style="display:none">D<span>elivered</span></div>
+            <div id="order-completed-id" class="all-order-status-divss completed" style="display:none">C<span>ompleted</span></div>
+            <div id="order-rejected-id" class="all-order-status-divss" style="display:none">R<span>ejected</span></div>          
+          </div>
+        </div>
+
+        <!-- UNCOMMENT DELIVERED ITEM DIV -->
+        <!-- <div class="verification-main-input-div">
+          <p class="verification-main-text">Delivered item:</p>
+          <div class="main-delivered-item">
+            <p class="verification-main-text" style="text-align: center;">Game Account Information:</p>
+            <div class="intro-to-delivered-info">Account ID</div>
+            <div class="all-text-info-order">
+              CV ACCOUNT ID
+            </div>
+
+            <div class="intro-to-delivered-info">Password</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div>
+
+            <div class="intro-to-delivered-info">First name</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div>
+
+            <div class="intro-to-delivered-info">Last name</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div>
+
+            <div class="intro-to-delivered-info">Account country</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div>
+
+            <div class="intro-to-delivered-info">Date of birth</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div>
+
+            <div class="intro-to-delivered-info">Account recovery email</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div>
+
+            <div class="intro-to-delivered-info">Recovery email password</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div>
+
+            <p class="verification-main-text" style="text-align: center;">Secret question & answer:</p>
+
+            <div class="intro-to-delivered-info">Secret question</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div>
+
+            <div class="intro-to-delivered-info">Secret answer</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div>
+
+            <p class="verification-main-text" style="text-align: center;">Additional information</p>
+
+            <div class="intro-to-delivered-info">Add additional note</div>
+            <div class="all-text-info-order">
+              cv parola
+            </div> -->
+
+
+
+            <!-- <div class="history-order-main-div-pop-up">
+              <div class="history-order-main-list">
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">First name</p>
+                  <input id="delivery-first-name" class="verification-main-input" placeholder="type first name" autocomplete="off" maxlength="24">
+                </div>
+        
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">Last name</p>
+                  <input id="delivery-last-name" class="verification-main-input" placeholder="type last name" autocomplete="off" maxlength="24">
+                </div>
+        
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">Account country</p>
+                  <input id="delivery-account-country" class="verification-main-input" placeholder="type account country" autocomplete="off" maxlength="24">
+                </div>
+        
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">Date of birth</p>
+                  <input id="delivery-date-of-birth" class="verification-main-input" placeholder="type date of birth" autocomplete="off" maxlength="24">
+                </div>
+        
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">Account recovery email</p>
+                  <input id="delivery-account-recovery-email" class="verification-main-input" placeholder="type account recovery email" autocomplete="off"
+                    maxlength="24">
+                </div>
+        
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">Recovery email password</p>
+                  <input id="delivery-recovery-email-password" class="verification-main-input" placeholder="type recovery email password" autocomplete="off"
+                    maxlength="24">
+                </div>
+        
+                <div class="delivery-info-divider">Secret Question & Answer:</div>
+        
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">Secret question</p>
+                  <input id="delivery-secret-question" class="verification-main-input" placeholder="type secret question" autocomplete="off" maxlength="24">
+                </div>
+        
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">Secret answer</p>
+                  <input id="delivery-secret-answer" class="verification-main-input" placeholder="type secret answer" autocomplete="off" maxlength="24">
+                </div>
+        
+                <div class="delivery-info-divider">Adittional information:</div>
+        
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">Add additional note ( optional )</p>
+                  <p id="delivery-additional-note" contenteditable="true" id="productDescriptionInput" class="describe-your-item-contentible"
+                    placeholder="describe your item" spellcheck="false"></p>
+                </div>
+        
+                <div class="verification-main-input-div">
+                  <p class="verification-main-text">Add a photo with your item (optional)</p>
+                  <div class="row-of-id-photos">
+                    <div class="two1 two2" id="addImgLabel1">
+                      <label for="addImg1" class="input-label inputLabelCss">
+                        <div class="photosvg">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-camera camera-icon camera-icon-2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                          </svg>
+                        </div>
+                      </label>START_COMMENT ngIf: images.length<maxImagesForProduct END_COMMENT<input id="addImg1" type="file"
+                        accept=".png, .jpg, .jpeg" style="display:none" multiple="">
+                    </div>
+        
+                    <div class="id-document id-document-2">
+                      <div class="id-document-close"></div>
+                    </div>
+                  </div>
+                </div>
+        
+                <div class="main-order-action-buttons mmarginn" style="border-bottom: 0;">
+                  <div id="deliver-item-button" class="all-order-action-buttons">Deliver</div>
+                  <div id="cancel-delivery" class="all-order-action-buttons">Cancel</div>
+                </div>
+        
+              </div>
+            </div> -->
+
+
+
+
+            <!-- UNCOMMENT DELIVERED ITEM DIV -->
+            <!-- <div class="intro-to-delivered-info">Photos</div>
+            <div class="delivered-photos-row">
+              <div class="id-document id-document-2">
+              </div>
+              <div class="id-document id-document-2">
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Item price (EU):</p>
+          <div id="game-price-order-id" class="all-text-info-order">45 EU</div>
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Quantity:</p>
+          <div id="game-quantity-order-id" class="all-text-info-order">3</div>
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Order ID:</p>
+          <div id="game-id-order-id" class="all-text-info-order"></div>
+        </div>
+
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Order link:</p>
+          <div id="game-post-link-order-id" class="all-text-info-order">View Order Page</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-placeholder">
+      <div class="icons-to-follow-placeholder">
+        <div class="footer-logo-links"></div>
+        <div class="footer-logo-links instagram"></div>
+        <div class="footer-logo-links youtube"></div>
+        <div class="footer-logo-links twitter"></div>
+        <div class="follow-us">Follow Us</div>
+      </div>
+      <div class="footer-logo"></div>
+      <div class="usefull-footer-links">
+        <div class="usefull-footer-text">Support</div>
+        <div class="usefull-footer-text">How to buy</div>
+        <div class="usefull-footer-text">Reviews</div>
+        <div class="usefull-footer-text">About Us</div>
+        <div class="usefull-footer-text">Guaranty</div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDe6on4PQWSdDjCydOW67CkQliM_TD0WcY",
+      authDomain: "zifiplay-e212f.firebaseapp.com",
+      databaseURL: "https://zifiplay-e212f.firebaseio.com",
+      projectId: "zifiplay-e212f",
+      storageBucket: "zifiplay-e212f.appspot.com",
+      messagingSenderId: "501773405576",
+      appId: "1:501773405576:web:5779e441f126727987fe3d",
+      measurementId: "G-Q7HLDYW2YV"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <script src="./static/global.js"></script>
+  <script src="./static/order.js"></script>
+  <script src="./static/auth.js"></script>
+  <script src="./static/darktheme.js"></script>
+
+</body>
+
+</html>

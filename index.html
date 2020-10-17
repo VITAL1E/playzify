@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/style.css">
+  <link rel="stylesheet" href="./static/media-queries.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<!--MODAL FILTER-->
+<div class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="history-order-main-div-pop-up">
+      <div class="main-intro-to-verification" style="border: 0;;">
+        Filter
+      </div>
+
+      <div class="verification-main-input-div" style="margin-top: 0;">
+        <p class="verification-main-text">By game type</p>
+
+        <div class="drop-dawn-add-game-list">
+          <div class="arrow-drop-down-games-main">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-chevron-right chevron-for-drop-down">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          <select name="cars" class="drop-dawn-add-game-select">
+            <option value="Counter Strike">Counter Strike</option>
+            <option value="Marioo">Marioo</option>
+            <option value="PUBG">PUBG</option>
+            <option value="Fortnite">Fortnite</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="verification-main-input-div">
+        <p class="verification-main-text">By game server</p>
+
+        <div class="drop-dawn-add-game-list">
+          <div class="arrow-drop-down-games-main">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-chevron-right chevron-for-drop-down">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          <select name="cars" class="drop-dawn-add-game-select">
+            <option value="Counter Strike">EU</option>
+            <option value="Marioo">USA</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="verification-main-input-div">
+        <p class="verification-main-text">By price</p>
+
+        <div class="drop-dawn-add-game-list">
+          <div class="arrow-drop-down-games-main">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-chevron-right chevron-for-drop-down">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          <select name="cars" class="drop-dawn-add-game-select">
+            <option value="Counter Strike">High</option>
+            <option value="Marioo">Low</option>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
+        <div class="all-order-action-buttons">Apply</div>
+        <div class="all-order-action-buttons">Cancel</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<header>
+  <!--
+
+    <div class="logo"></div>
+    <div class="search">
+    </div>
+    <div class="feed-icon"></div>
+
+    -->
+
+  <div class="general-fixed-header">
+    <div class="first-header-div-container">
+      <div class="first-header-div-child-1">
+        <div class="logo"></div>
+      </div>
+      <div class="first-header-div-child-3">
+        <div class="user-logged-out-header-placeholder">
+            <div class="user-icon"></div>
+            <div class="user-sign-in user-sign-in-450px">Hi, <span>Sign in</span></div>
+        </div>
+    </div>
+    </div>
+
+<div class="second-header-blacked">
+            <div class="second-header-div-container">
+
+                <div class="drop-down-main-category-banner" style="display: none;">
+                    <div class="category-drop-down-3-rows">
+                        <div class="main-drop-dawn-intros">
+                            <div class="category-drop-dawn-introo">Categories</div>
+                        </div>
+                        <div class="main-drop-dawn-categories">
+                            <div class="category-product-listed-mini-sign category-drop-dawn-sign"></div>
+                            <div class="category-drop-dawn-name">Accounts</div>
+                        </div>
+
+                        <div class="main-drop-dawn-categories selected-drop-dawn-category">
+                            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-2 category-drop-dawn-sign"></div>
+                            <div class="category-drop-dawn-name">Game Coins</div>
+                        </div>
+
+                        <div class="main-drop-dawn-categories">
+                            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-3 category-drop-dawn-sign"></div>
+                            <div class="category-drop-dawn-name">Items</div>
+                        </div>
+
+                        <div class="main-drop-dawn-categories">
+                            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-4 category-drop-dawn-sign"></div>
+                            <div class="category-drop-dawn-name">Boosting</div>
+                        </div>
+                    </div>
+                    <div class="category-drop-down-3-rows">
+                        <div class="main-drop-dawn-intros">
+                            <div class="category-drop-dawn-introo">Games</div>
+                        </div>
+                        
+                        <div class="main-drop-dawn-categories">
+                            <div class="category-drop-dawn-name">Fortnite</div>
+                        </div>
+                    </div>
+                    <div class="category-drop-down-3-rows" style="border: 0;">
+                        <div class="main-drop-dawn-intros">
+                            <div class="category-drop-dawn-introo">Servers</div>
+                        </div>
+                        
+                        <div class="main-drop-dawn-categories">
+                            <div class="category-drop-dawn-name">Europe</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="second-header-div-child-1 change-for-index-sell-with-us-1">
+                    <div class="all-categories-main-button padding-in-right-buttons-general-0">
+                        All Categories
+                        <!--<div class="categories-arrow"></div>-->
+                    </div>
+                    <div class="search-bar">
+                        <input class="search-bar-input" placeholder="Search" autocomplete="off" maxlength="24">
+                        <div class="search-icon"></div>
+                    </div>
+                </div>
+                <div class="second-header-div-child-2 change-for-index-sell-with-us-2">
+                    <div class="theme-main-selector-moon"></div>
+                    <div class="sell-with-us">Sell <span>with Play Zify</span></div>
+                </div>
+            </div>
+        </div>
+
+  </div>
+
+</header>
+
+
+<body>
+
+  <div class="container">
+
+    <div class="banner">
+      <div class="link-button">Learn More</div>
+      <div class="banner-selector-main-div">
+        <div class="selected-banner">
+          <span></span>
+        </div>
+        <div>
+          <span></span>
+        </div>
+        <div>
+          <span></span>
+        </div>
+        <div>
+          <span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="categories-home-intro">
+      <div class="categories-home-placeholder">
+
+          <div class="category-sign"></div>
+          <p class="category-sign-name">Accounts</p>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">PUBG Mobile</div>
+              <div class="game-offers-number-home">2759</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">League of Legends</div>
+              <div class="game-offers-number-home">6255</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">World Of Warcraft (US)</div>
+              <div class="game-offers-number-home">557</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">Clash Of Clans (Global)</div>
+              <div class="game-offers-number-home">2150</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">World Of Warcraft (EU)</div>
+              <div class="game-offers-number-home">1251</div>
+          </div>
+
+          <div class="show-more-games-home">Show More</div>
+
+      </div><div class="categories-home-placeholder">
+          <div class="category-sign category-sign-2"></div>
+          <p class="category-sign-name">Items</p>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">Path Of Exile (Global)</div>
+              <div class="game-offers-number-home gradient-3">18000</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">Fallout 76</div>
+              <div class="game-offers-number-home gradient-3">10852</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">Growtopia</div>
+              <div class="game-offers-number-home gradient-3">436</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">World Of Warcraft (US)</div>
+              <div class="game-offers-number-home gradient-3">85233</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">Escape from Tarkov</div>
+              <div class="game-offers-number-home gradient-3">1454</div>
+          </div>
+
+          <div class="show-more-games-home">Show More</div>
+
+      </div><div class="categories-home-placeholder no-margin-game-card-2">
+          <div class="category-sign category-sign-3"></div>
+          <p class="category-sign-name">Game Coins</p>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">World Of Warcraft (EU)</div>
+              <div class="game-offers-number-home gradient-2">10803</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">FIFA 20</div>
+              <div class="game-offers-number-home gradient-2">115</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">ArcheAge</div>
+              <div class="game-offers-number-home gradient-2">374</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">World Of Warcraft (US)</div>
+              <div class="game-offers-number-home gradient-2">11257</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">GTA 5 Online</div>
+              <div class="game-offers-number-home gradient-2">126</div>
+          </div>
+
+          <div class="show-more-games-home">Show More</div>
+
+      </div><div class="categories-home-placeholder no-margin-game-card">
+          <div class="category-sign category-sign-4"></div>
+          <p class="category-sign-name">Boosting</p>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">World Of Warcraft (EU)</div>
+              <div class="game-offers-number-home gradient-4">10657</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">GTA 5 Online</div>
+              <div class="game-offers-number-home gradient-4">537</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">Final Fantasy XIV (ARR)</div>
+              <div class="game-offers-number-home gradient-4">724</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">World Of Warcraft (US)</div>
+              <div class="game-offers-number-home gradient-4">6286</div>
+          </div>
+
+          <div class="game-in-category-home-placeholder">
+              <div class="game-name-category-home">League of Legends</div>
+              <div class="game-offers-number-home gradient-4">2176</div>
+          </div>
+
+          <div class="show-more-games-home">Show More</div>
+
+      </div>
+  </div>
+
+
+    <div class="product-list-home-placeholder">
+      <div class="intro-to-product-list">
+        <div class="products-count-home">Products placed: 87k</div>
+        <div class="filter-icon">filter</div>
+        <div class="remove-filter"></div>
+      </div>
+
+      <div class="product-list-home">
+        <div class="product-home-show" onclick="location.href='post.html'">
+          <div class="seller-round-image">
+            <div class="seller-is-online">on</div>
+          </div>
+          <div class="seller-name">sellername<div class="verified"></div>
+          </div>
+
+          <div class="product-description">
+            <span>Selling my Prestige 5 account with good rss and speed ups</span>
+            <div class="category-product-listed-mini-sign"></div>
+          </div>
+
+          <div class="listed-game-name">GTA 5 Online</div>
+
+          <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-chevron-right chevron-for-payment">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg></span></div>
+
+        </div><div class="product-home-show">
+          <div class="seller-round-image">
+            <div class="seller-is-online">on</div>
+          </div>
+          <div class="seller-name">sellername<div class="verified"></div>
+          </div>
+
+          <div class="product-description">
+            <span>Selling my Prestige 5 account with good rss and speed ups</span>
+            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-2"></div>
+          </div>
+
+          <div class="listed-game-name">GTA 5 Online</div>
+
+          <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-chevron-right chevron-for-payment">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg></span></div>
+
+        </div><div class="product-home-show">
+          <div class="seller-round-image">
+            <div class="seller-is-online main-seller-is-offline">off</div>
+          </div>
+          <div class="seller-name">sellername<div class="verified"></div>
+          </div>
+
+          <div class="product-description">
+            <span>Selling my Prestige 5 account with good rss and speed ups</span>
+            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-3"></div>
+          </div>
+
+          <div class="listed-game-name">GTA 5 Online</div>
+
+          <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-chevron-right chevron-for-payment">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg></span></div>
+
+        </div><div class="product-home-show">
+          <div class="seller-round-image">
+            <div class="seller-is-online">on</div>
+          </div>
+          <div class="seller-name">sellername<div class="verified"></div>
+          </div>
+
+          <div class="product-description">
+            <span>Selling my Prestige 5 account with good rss and speed ups</span>
+            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-4"></div>
+          </div>
+
+          <div class="listed-game-name">GTA 5 Online</div>
+
+          <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-chevron-right chevron-for-payment">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg></span></div>
+        </div>
+      </div>
+
+      <div class="show-more">Show More</div>
+    </div>
+
+  </div>
+  </div>
+
+  <footer>
+    <div class="footer-placeholder">
+      <div class="icons-to-follow-placeholder">
+        <div class="footer-logo-links"></div>
+        <div class="footer-logo-links instagram"></div>
+        <div class="footer-logo-links youtube"></div>
+        <div class="footer-logo-links twitter"></div>
+        <div class="follow-us">Follow Us</div>
+      </div>
+      <div class="footer-logo"></div>
+      <div class="usefull-footer-links">
+        <div class="usefull-footer-text">Support</div>
+        <div class="usefull-footer-text">How to buy</div>
+        <div class="usefull-footer-text">Reviews</div>
+        <div class="usefull-footer-text">About Us</div>
+        <div class="usefull-footer-text">Guaranty</div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDe6on4PQWSdDjCydOW67CkQliM_TD0WcY",
+      authDomain: "zifiplay-e212f.firebaseapp.com",
+      databaseURL: "https://zifiplay-e212f.firebaseio.com",
+      projectId: "zifiplay-e212f",
+      storageBucket: "zifiplay-e212f.appspot.com",
+      messagingSenderId: "501773405576",
+      appId: "1:501773405576:web:5779e441f126727987fe3d",
+      measurementId: "G-Q7HLDYW2YV",
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (!user) {
+        
+        window.location.href = "index-logged-in.html";
+        document.body.addEventListener("click", function (e) {
+          // signup
+        });
+      } else {
+        window.location.href = "index-logged-in.html";
+        console.log("Logged in");
+      }
+    });
+  </script>
+  <!-- <script src="./static/global.js"></script> -->
+  <script src="./static/auth.js"></script>
+  <!-- <script src="./static/index.js"></script> -->
+  <script src="./static/darktheme.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,531 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
+</head>
+
+
+<body style="
+    background: #13131A;
+"><header>
+    <!--
+
+    <div class="logo"></div>
+    <div class="search">
+    </div>
+    <div class="feed-icon"></div>
+
+    -->
+
+    <div class="general-fixed-header" style="
+    /* box-shadow: 0px 4px 29px #10101052; */
+    position: fixed;
+    height: fit-content;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1C1C24;
+">
+        <div class="first-header-div-container" style="
+    /* top: 7px; */
+">
+            <div class="first-header-div-child-1">
+                <div class="test-luck-header-button" style="display: none;">
+                    <div class="test-luck-icon"></div>
+                    <div class="try-your-luck">
+                        Try <span style="display: block;">your luck</span>
+                    </div>
+                </div>
+
+                <div class="logo"></div>
+            </div>
+            <div class="first-header-div-child-2">
+            </div>
+            <div class="first-header-div-child-3">
+                <div class="user-logged-out-header-placeholder">
+                    <div class="user-icon" style="
+    background-color: #1c1c24;
+"></div>
+                    <div class="user-sign-in" style="
+    color: white;
+">Hi, <span>Sign in</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="second-header-blacked" style="
+    background-color: #24242b;
+">
+            <div class="second-header-div-container">
+                <div class="second-header-div-child-1">
+                    <div class="all-categories-main-button padding-in-right-buttons-general-0" style="
+    background-color: #13131a;
+">
+                        All Categories
+                        <div class="categories-arrow"></div>
+                    </div>
+                </div>
+                <div class="second-header-div-child-2">
+                    <div class="search-bar" style="
+    height: 46px;
+    background-color: #13131a;
+    border-radius: 100px;
+    color: white;
+    width: 100%;
+    position: relative;
+">
+                        <input class="search-bar-input" placeholder="Search" autocomplete="off" maxlength="24">
+                        <div class="search-icon"></div>
+                    </div>
+                </div>
+                <div class="second-header-div-child-3">
+                    <div class="language-selector">
+                        <div class="language" style="opacity: 0.3;">RO</div>
+                        <div class="language">ENG</div>
+                    </div>
+                    <div class="sell-with-us">Sell with Play Zify</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+
+
+        <div class="container">
+
+            <div class="banner" style="
+    box-shadow: 0px 4px 29px #8e8e8e52;
+">
+                <div class="banner-selector-main-div">
+                    <div class="selected-banner">
+                        <span></span>
+                    </div>
+                    <div>
+                        <span></span>
+                    </div>
+                    <div>
+                        <span></span>
+                    </div>
+                    <div>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="categories-home-intro">
+                <div class="categories-home-placeholder" style="
+    width: 22.5%;
+    border-radius: 20px;
+    /* border: 1px solid #d8d8d88c; */
+    box-sizing: border-box;
+    box-shadow: 0px 4px 29px #2929292b;
+    background-color: #1C1C24;
+">
+
+                    <div class="category-sign">A</div>
+                    <p class="category-sign-name" style="
+    color: white;
+    font-size: 19px;
+    font-weight: 900;
+    display: block;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    margin-top: -9px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #00000085;
+">Accounts</p>
+
+                    <div class="game-in-category-home-placeholder" style="
+    border-bottom: 1px solid #00000085;
+">
+                        <div class="game-name-category-home">PUBG Mobile</div>
+                        <div class="game-offers-number-home">2759</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">League of Legends</div>
+                        <div class="game-offers-number-home">6255</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">World Of Warcraft (US)</div>
+                        <div class="game-offers-number-home">557</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">Clash Of Clans (Global)</div>
+                        <div class="game-offers-number-home">2150</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">World Of Warcraft (EU)</div>
+                        <div class="game-offers-number-home">1251</div>
+                    </div>
+
+                    <div class="show-more-games-home">Show More</div>
+
+                </div>
+
+                <div class="categories-home-placeholder">
+                    <div class="category-sign gradient-2">G</div>
+                    <p class="category-sign-name">Game Coins</p>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">World Of Warcraft (EU)</div>
+                        <div class="game-offers-number-home gradient-2">10803</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">FIFA 20</div>
+                        <div class="game-offers-number-home gradient-2">115</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">ArcheAge</div>
+                        <div class="game-offers-number-home gradient-2">374</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">World Of Warcraft (US)</div>
+                        <div class="game-offers-number-home gradient-2">11257</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">GTA 5 Online</div>
+                        <div class="game-offers-number-home gradient-2">126</div>
+                    </div>
+
+                    <div class="show-more-games-home">Show More</div>
+
+                </div>
+
+                <div class="categories-home-placeholder">
+                    <div class="category-sign gradient-3">I</div>
+                    <p class="category-sign-name">Items</p>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">Path Of Exile (Global)</div>
+                        <div class="game-offers-number-home gradient-3">18000</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">Fallout 76</div>
+                        <div class="game-offers-number-home gradient-3">10852</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">Growtopia</div>
+                        <div class="game-offers-number-home gradient-3">436</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">World Of Warcraft (US)</div>
+                        <div class="game-offers-number-home gradient-3">85233</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">Escape from Tarkov</div>
+                        <div class="game-offers-number-home gradient-3">1454</div>
+                    </div>
+
+                    <div class="show-more-games-home">Show More</div>
+
+                </div>
+
+                <div class="categories-home-placeholder">
+                    <div class="category-sign gradient-4">B</div>
+                    <p class="category-sign-name">Boosting</p>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">World Of Warcraft (EU)</div>
+                        <div class="game-offers-number-home gradient-4">10657</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">GTA 5 Online</div>
+                        <div class="game-offers-number-home gradient-4">537</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">Final Fantasy XIV (ARR)</div>
+                        <div class="game-offers-number-home gradient-4">724</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">World Of Warcraft (US)</div>
+                        <div class="game-offers-number-home gradient-4">6286</div>
+                    </div>
+
+                    <div class="game-in-category-home-placeholder">
+                        <div class="game-name-category-home">League of Legends</div>
+                        <div class="game-offers-number-home gradient-4">2176</div>
+                    </div>
+
+                    <div class="show-more-games-home">Show More</div>
+
+                </div>
+            </div>
+
+
+            <div class="product-list-home-placeholder">
+                <div class="intro-to-product-list">
+                    <div class="products-count-home" style="
+    color: white;
+">Products placed: 87k</div>
+                    <div class="filter-icon"></div>
+                </div>
+
+                <div class="product-list-home">
+                    <div class="product-home-show">
+                        <div class="seller-round-image" style="
+    background: url(https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-19/s320x320/88926967_1533765290111467_866104636551987200_n.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&amp;_nc_ohc=2TW4V6fcGAIAX-XUXGF&amp;oh=1148c70a10e8a43a8e06e8915c9b1388&amp;oe=5EE98F59) no-repeat center center;
+">
+                            <div class="seller-is-online" style="
+    background-color: #545454;
+">offline</div>
+                        </div>
+                        <div class="seller-name">artus<div class="verified"></div></div>
+
+                        <div class="product-description">
+                            <span>SELLING ROBLOX RICH ACCOUNT 150+ OUTFITS GAMEPASSES AND OWNED GAME MAPS THAT CAN BE</span>
+                            <div class="category-product-listed-mini-sign" style="
+    background-image: linear-gradient(120deg, #80a5ff 0%, #222475 100%);
+">B</div>
+                        </div>
+
+                        <div class="listed-game-name">Roblox</div>
+
+                        <div class="price-game-listed">325 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment"><polyline points="9 18 15 12 9 6"></polyline></svg></span></div>
+
+                    </div><div class="product-home-show">
+                        <div class="seller-round-image">
+                            <div class="seller-is-online">online</div>
+                        </div>
+                        <div class="seller-name">Maythe4<div class="verified"></div></div>
+
+                        <div class="product-description">
+                            <span>Elsword Online (Global) &gt; Solace-ES (Mil ED)</span>
+                            <div class="category-product-listed-mini-sign">A</div>
+                        </div>
+
+                        <div class="listed-game-name">Elsword Online </div>
+
+                        <div class="price-game-listed">15 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment"><polyline points="9 18 15 12 9 6"></polyline></svg></span></div>
+
+                    </div><div class="product-home-show">
+                        <div class="seller-round-image" style="
+    background: url(https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/80483097_157198275533049_4989555976900256704_n.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&amp;_nc_cat=109&amp;_nc_ohc=LOWuVgYfcEMAX8J_uqI&amp;oh=e29bc76f1487589f1ce5b435348892d9&amp;oe=5EE792A6) no-repeat center center;
+">
+                            <div class="seller-is-online">online</div>
+                        </div>
+                        <div class="seller-name" style="
+    color: white;
+    font-size: 18px;
+    font-weight: 900;
+    text-align: center;
+    line-height: 50px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #00000085;
+    padding-top: 10px;
+">babyyoda<div class="verified"></div></div>
+
+                        <div class="product-description">
+                            <span style="
+    color: white;
+">Over 10-Year-old account with multiple unique ZP &amp; MP weapons from 2008-2012</span>
+                            <div class="category-product-listed-mini-sign" style="
+    background-image: linear-gradient(120deg, #ffd587 0%, #ce8c13 100%);
+">I</div>
+                        </div>
+
+                        <div class="listed-game-name">Crossfire</div>
+
+                        <div class="price-game-listed">94 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment"><polyline points="9 18 15 12 9 6"></polyline></svg></span></div>
+
+                    </div><div class="product-home-show">
+                        <div class="seller-round-image" style="
+    background: url(https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-19/s320x320/12918663_209837422724650_1483492969_a.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&amp;_nc_ohc=oQ5E-BLIVjQAX_cMkNA&amp;oh=1d2707f7bcc8be062bd14b9260f47b06&amp;oe=5EE8C348) no-repeat center center;
+">
+                            <div class="seller-is-online" style="
+    background-color: #545454;
+">offline</div>
+                        </div>
+                        <div class="seller-name">sellername<div class="verified"></div></div>
+
+                        <div class="product-description">
+                            <span>Selling my Prestige 5 account with good rss and speed upsSelling my Prestige 5 account with good rss and speed upsSelling my Prestige 5 account with good rss and speed ups</span>
+                            <div class="category-product-listed-mini-sign" style="
+    background-image: linear-gradient(120deg, #f198ff 0%, #6d2f78 100%);
+">G</div>
+                        </div>
+
+                        <div class="listed-game-name">Clash of Kings</div>
+
+                        <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment"><polyline points="9 18 15 12 9 6"></polyline></svg></span></div>
+
+                    </div>
+
+                    
+
+                    
+
+                    
+                </div><div class="product-list-home">
+                    <div class="product-home-show">
+                        <div class="seller-round-image" style="
+    background: url(https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-19/s320x320/53112183_2079257298778247_1435960175830761472_n.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&amp;_nc_ohc=w0LuRoUXL-0AX8xDEQ5&amp;oh=7b5b7157020eb115a027bbae9433c50e&amp;oe=5EE854A6) no-repeat center center;
+">
+                            <div class="seller-is-online">online</div>
+                        </div>
+                        <div class="seller-name">kanaquest<div class="verified"></div></div>
+
+                        <div class="product-description">
+                            <span>Clash of Clans Level Push Up</span>
+                            <div class="category-product-listed-mini-sign">A</div>
+                        </div>
+
+                        <div class="listed-game-name">Clash Of Clans</div>
+
+                        <div class="price-game-listed">13 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment"><polyline points="9 18 15 12 9 6"></polyline></svg></span></div>
+
+                    </div><div class="product-home-show">
+                        <div class="seller-round-image" style="
+    background: url(https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-19/s320x320/12393671_1698318513739138_726189152_a.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&amp;_nc_ohc=esFy-2UZ8ckAX8Cklp1&amp;oh=8103fa8af5e12026341a30944dcadabf&amp;oe=5EE9495B) no-repeat center center;
+url(
+    https: //instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-19/s320x320/12393671_1698318513739138_726189152_a.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&amp;_nc_ohc=esFy-2UZ8ckAX8Cklp1&amp;oh=8103fa8af5e12026341a30944dcadabf&amp;oe=5EE9495B) no-repeat center center;
+">
+                            <div class="seller-is-online" style="
+    background-color: #545454;
+">offline</div>
+                        </div>
+                        <div class="seller-name">pixel<div class="verified"></div></div>
+
+                        <div class="product-description">
+                            <span>LVL 88 Soul Dancer ZP &amp; MP weapons from 2008-2012</span>
+                            <div class="category-product-listed-mini-sign" style="
+    background-image: linear-gradient(120deg, #80a5ff 0%, #222475 100%);
+">B</div>
+                        </div>
+
+                        <div class="listed-game-name">Dragon Raja</div>
+
+                        <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment"><polyline points="9 18 15 12 9 6"></polyline></svg></span></div>
+
+                    </div><div class="product-home-show">
+                        <div class="seller-round-image" style="
+    background: url(https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-19/s320x320/41560115_282563489020292_6348268461591887872_n.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&amp;_nc_ohc=cN203ksTjJsAX9nOj5S&amp;oh=826b915c7c3756e2d5e84c23917f8add&amp;oe=5EE8B240) no-repeat center center;
+">
+                            <div class="seller-is-online">online</div>
+                        </div>
+                        <div class="seller-name">skullegend<div class="verified"></div></div>
+
+                        <div class="product-description">
+                            <span>Selling my Prestige 5 account with good rss and speed upsSelling my Prestige 5 account with good rss and speed upsSelling my Prestige 5 account with good rss and speed ups</span>
+                            <div class="category-product-listed-mini-sign" style="
+    background-image: linear-gradient(120deg, #f198ff 0%, #6d2f78 100%);
+">G</div>
+                        </div>
+
+                        <div class="listed-game-name">Clash Of Clans </div>
+
+                        <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment"><polyline points="9 18 15 12 9 6"></polyline></svg></span></div>
+
+                    </div><div class="product-home-show">
+                        <div class="seller-round-image" style="
+    background: url(https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-19/s320x320/26155176_151795118810151_2176395014194593792_n.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&amp;_nc_ohc=k5vzph7FRosAX-bykc8&amp;oh=960cf59e9c98d3df1cbf9bf6c093bf33&amp;oe=5EE7C49A) no-repeat center center;
+">
+                            <div class="seller-is-online">online</div>
+                        </div>
+                        <div class="seller-name">hidden<div class="verified"></div></div>
+
+                        <div class="product-description">
+                            <span>Killing Floor + Garry's Mod + DARK SOULS™ II (Steam Account) NO LIMIT(you can add friends) + Full Access | 87</span>
+                            <div class="category-product-listed-mini-sign">A</div>
+                        </div>
+
+                        <div class="listed-game-name">Garry's Mod</div>
+
+                        <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment"><polyline points="9 18 15 12 9 6"></polyline></svg></span></div>
+
+                    </div>
+
+                    
+
+                    
+
+                    
+                </div>
+
+
+                <div class="show-more" style="
+    line-height: 68px;
+    font-size: 19px;
+    font-weight: 800;
+    text-align: center;
+    color: white;
+    width: 100%;
+    margin-bottom: 3vw;
+    border-radius: 20px;
+    border: 1px solid black;
+    background-color: #1C1C24;
+">Show More</div>
+            </div>
+
+            </div>
+        
+
+
+        <footer style="
+    background-color: #1C1C24;
+    height: 169px;
+">
+            <div class="footer-placeholder">
+                <div class="icons-to-follow-placeholder">
+                    <div class="footer-logo-links"></div>
+                    <div class="footer-logo-links instagram"></div>
+                    <div class="footer-logo-links youtube"></div>
+                    <div class="footer-logo-links twitter"></div>
+                    <div class="follow-us" style="
+    line-height: 40px;
+    height: fit-content;
+    font-size: 15px;
+    font-weight: 800;
+    text-align: center;
+    color: white;
+">Follow Us</div>
+                </div>
+                <div class="footer-logo"></div>
+                <div class="usefull-footer-links">
+                    <div class="usefull-footer-text" style="
+    line-height: 50px;
+    height: fit-content;
+    font-size: 15px;
+    font-weight: 800;
+    color: white;
+    width: 18%;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 100px;
+    margin-bottom: 25px;
+    background-color: #13131a;
+">Support</div>
+                    <div class="usefull-footer-text">How to buy</div>
+                    <div class="usefull-footer-text">Reviews</div>
+                    <div class="usefull-footer-text">About Us</div>
+                    <div class="usefull-footer-text">Guaranty</div>
+                </div>
+
+            </div>
+        </footer>
+
+
+
+</body></html>

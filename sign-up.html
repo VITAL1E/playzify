@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    <link rel="stylesheet" href="./static/media-queries.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap"
+      rel="stylesheet">
+  </head>
+
+<div class="main-register-div">
+
+  <!--Inregistrarea-->
+  <div class="content-sign-in">
+    <div class="register-logo"></div>
+    <input id="sign-up-username" class="sign-in-input" placeholder="Username">
+    <input id="sign-up-password" type="password" class="sign-in-input" placeholder="Password">
+    <input id="sign-up-confirm-password" type="password" class="sign-in-input" placeholder="Confirm password">
+    <input id="sign-up-email" class="sign-in-input" placeholder="Email">
+
+    <div class="security-question">Security Question ( For payments, password chaging.. )</div>
+    <div class="drop-dawn-add-game-list drop-dawn-add-game-list-register">
+      <div class="arrow-drop-down-games-main">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="feather feather-chevron-right chevron-for-drop-down">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </div>
+      <select id="sign-up-security-question-type" name="cars" class="drop-dawn-add-game-select"
+        onchange="onSelectChangeSecurityQuestionType();">
+        <option value="FirstPetName">First pet name</option>
+        <option value="FavoriteCityName">Favorite city name</option>
+        <option value="FirstSchoolName">First school name</option>
+        <option value="FavoriteCarBrand">Favorite car brand</option>
+      </select>
+    </div>
+    <input id="sign-up-security-question-answer" class="sign-in-input" placeholder="Type">
+
+    <div class="register-error"></div>
+
+    <div class="sign-in-button" onclick="signUp();">Sign up</div>
+    <div class="sign_in_with_google" onclick="signUpWithGoogle();">
+      Sign up with google
+      <span></span>
+    </div>
+
+    <p class="by-signing-in">By signing in, you agree to the Zify Play Terms and Coditions & Privacy Policies.</p>
+  </div>
+
+</div>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDe6on4PQWSdDjCydOW67CkQliM_TD0WcY",
+    authDomain: "zifiplay-e212f.firebaseapp.com",
+    databaseURL: "https://zifiplay-e212f.firebaseio.com",
+    projectId: "zifiplay-e212f",
+    storageBucket: "zifiplay-e212f.appspot.com",
+    messagingSenderId: "501773405576",
+    appId: "1:501773405576:web:5779e441f126727987fe3d",
+    measurementId: "G-Q7HLDYW2YV"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
+<script src="./static/auth.js"></script>
+<script src="./static/darktheme.js"></script>
+
+</html>

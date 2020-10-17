@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "zifiplay-e212f",
+  "private_key_id": "a6c64badee18baafbfb2956449d5fdd93c6f30f2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC2nob0oS8jf4aJ\nA5ptwX9iF7pDOdTgQAJ+xVLV7MxqsCvP4QyfsFIzHlnRwhDulo034RpqdZH5SgtQ\nLVWIz9bgbugu30kbWwugW5mNT2c/rcv+ibz15yfqTXoMRS+VVaoRJlIcOzworPp4\nGFpqDunJnkhXrluNXfmfLXB3dftYRQZhRHC3eR3BWj/G5FUEF6TJsfc+BRZWFVSd\nzUC84DyZW8q+4IUf/LGFID0fX5ZLIPVetJ6WSYcuN+ywdUXSNi5KpjU2MHO0BuC0\naLe+5ZA6bK8XRxqhWJaHVboJSoKX3WTnlOeDVK9CmEyKRaRykMBXxu2QnS9UcYXk\nPp1tAJUfAgMBAAECggEANUq7zWXAMNbFNvSzOzZNax3LgFS/F5X2ZHJHAyCwYq34\nixh8q5kz07EWuwysDkQm/9iT8d9PcvU1qfcgz+T/Ks2SuiL03aPLF8fDXqZ+Vens\n7uHZH9WOI2TqqewCv8yY7ZpGOfDbVG9uRF+u+uZROUIUkGnUU8PJ1bbX7DSk3ZQA\nSxjzV6iAoGp4nRqJ60T+LZNe6DWTXBxS5T+tNAP8EHYVEsRwrxdVhECoW1tc5h2B\n6+gTmdoSy830UR5OONVF7Dcg3C68Z3aDBhNzFqP2usD91/ATCP4sF9+4DxhXm6yK\naxcLKOpudpnzsZhixZs4aw1wZ8cHjUfY6tTKN3rAAQKBgQDt9hG86WYW4PXMV0vB\ntfMAmVlCGL/9rPqk8DflimYpO4FEQtbKIDpcgpz4OqC2We0SQVUrqXHRpgbZRFOr\n+1Q4X0/8RqWoZ6cpVBWVIa670OCMvnDU+l1fHWxPlPC5m0MgFsrZp5nf7cFSeV6q\n6ksX2T00oFf8EGrkpyUrYGQ1HwKBgQDEdnqXNIQ9FuJJ617sWVWuJ03KtydAjc1D\ng7t48bOJ/1X12trZFTPfyLmGuUy0lGvnzrt7TjbHS921Zpuo7FHeIGIidQP+Oluj\n/Gvo6FH4h815irnvYYwdWe6Oi2wS5uOe60zNMWPI7sFlLw8Zk905JieWF8diZ94D\n5R6gBnegAQKBgQDonOI6CO4C72VXmv4zHemtbDoUop0LHUzmbuw1NlUneUOjtrLA\nY0CprgRDowv3NXDJp5PaWokop2OKf4BLXiO193X45haJyMlfXRK79XEZp9XZv1AM\n4bDkiZ6XLMEkruGvPJiOq4d/nqqcNIiWCvHdHj72csePX30eh0WOYWuTgQKBgBDY\nI6yhKRFfy+kQkCPtiOYUopvV1jy3q7i1K7az6nPTe5hHumnQYpE2UYnWi1gUPagz\nVmm9C/9MZubttDzofiBwYFmZ9MywTjkiJFJk0NphMmHQXh7DG1NM6aI5G/wG5c8z\nV3NkX6zTo6s8PKwxvE7xEYXR5htu0l89HsITq+ABAoGAe7A2Vbp1ADLS26jRGWtZ\nlr0vW8qBlQJJTng4XAG4HVT/flbAqGd6PKdulGZxGjtNDYzbI2gfdCkv7RVez6IH\nsUU3+zGuWmATr5GHmDDc0BO4Uos45kZGTtnM+ay9J9jh3FAUPHWU3i0sDkM1qp/S\n23lGbX98+yiZ6dIMEfaaCSU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-e1dle@zifiplay-e212f.iam.gserviceaccount.com",
+  "client_id": "104058368815898110997",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-e1dle%40zifiplay-e212f.iam.gserviceaccount.com"
+}

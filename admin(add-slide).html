@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<!--Modalu unde confirmi ca ai facut withdraw la tranzactiile pending-->
+<div class="modal-general" style="display: none;">
+    <div class="modal-general-absolute">
+        <div class="admin-main-div-pop-up">
+
+            <div class="main-intro-to-verification">
+                Add category
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Add slide photo</p>
+                <div class="row-of-id-photos">
+                    <div class="two1 two2" id="addImgLabel1">
+                        <label for="addImg1" class="input-label inputLabelCss">
+                            <div class="photosvg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera camera-icon camera-icon-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle>
+                                </svg>
+                            </div>
+                        </label> <!-- ngIf: images.length<maxImagesForProduct --><input id="addImg1" type="file" accept=".png, .jpg, .jpeg" style="display:none" multiple="">
+                    </div>
+
+                    <div class="id-document id-document-2">
+                        <div class="id-document-close"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Page Name ( optional )</p>
+                <input class="verification-main-input" placeholder="type page name" autocomplete="off" maxlength="24">
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Page text ( optional )</p>
+                <p contenteditable="true" id="productDescriptionInput" class="describe-your-item-contentible" placeholder="type page text" spellcheck="false"></p>
+            </div>
+
+            <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
+                <div class="all-order-action-buttons">Done</div>
+                <div class="all-order-action-buttons">Cancel</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<body>
+
+    <div class="container">
+        <div class="admin-header">
+            <div class="admin-logo">
+                <div class="logo"></div>
+            </div>
+            <div class="admin-admins-main">
+                <div class="name-admin">adminname</div>
+                <div class="icon-admin"></div>
+            </div>
+        </div>
+
+        <div class="main-admin-content">
+
+          <div class="admin-navigation">
+            <div id="general-button" class="general-navigation">General</div>
+            <div id="admins-button" class="general-navigation">Admins</div>
+            <div id="support-button" class="general-navigation">Support</div>
+            <div id="seller-verifications-button" class="general-navigation">Seller verifications</div>
+            <div id="withdraws-button" class="general-navigation">Withdraws</div>
+            <div id="users-button" class="general-navigation">Users</div>
+            <div id="add-category-button" class="general-navigation">Add category</div>
+            <div id="add-slide-button" class="general-navigation general-navigation-selected">Add slide</div>
+        </div>
+
+            <div class="admin-content-nav">
+                <div class="main-admins-div">
+                    <div class="intro-to-real-transaction" style="margin-top: 0 ;">
+                        <div class="intro-to-real-transaction-1">Slides:</div>
+                        <div class="admin-button-add" style="margin-right: 0px;">add</div>
+                    </div>
+
+                    <div class="main-slides-div-admn">
+                        <div class="sllidess-admin">
+                            <div class="sllidess-admin-1">
+                                <div class="sllidess-admin-2">2</div>
+                                <div class="sllidess-admin-3"></div>
+                            </div>
+                        </div>
+                        <div class="sllidess-admin"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDe6on4PQWSdDjCydOW67CkQliM_TD0WcY",
+      authDomain: "zifiplay-e212f.firebaseapp.com",
+      databaseURL: "https://zifiplay-e212f.firebaseio.com",
+      projectId: "zifiplay-e212f",
+      storageBucket: "zifiplay-e212f.appspot.com",
+      messagingSenderId: "501773405576",
+      appId: "1:501773405576:web:5779e441f126727987fe3d",
+      measurementId: "G-Q7HLDYW2YV"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <script src="./static/global.js"></script>
+  <script src="./static/admin-add-slide.js"></script>
+  <script src="./static/auth.js"></script>
+  <!-- <script src="./static/darktheme.js"></script> -->
+
+</body>
+
+</html>

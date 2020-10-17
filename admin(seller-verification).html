@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<!--Modalu unde adminii verifica cerelele de la vinzatori -->
+<div id="modal-general-popup-id" class="modal-general" style="display: none;">
+    <div class="modal-general-absolute">
+        <div class="admin-main-div-pop-up">
+
+            <div class="intro-to-admins-access-111">
+                <div id="seller-picture-id" class="intro-to-admins-access-1"></div>
+                <div id="seller-name-id" class="intro-to-admins-access-2">sellerName</div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Name & Surname:</p>
+                <div id="name-surname-id" class="admin-verification-info-general">
+                </div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Birth Date:</p>
+                <div id="month-birthday-id" class="admin-verification-info-general">
+                </div>
+                <div id="day-birthday-id" class="admin-verification-info-general">
+              </div>
+              <div id="year-birthday-id" class="admin-verification-info-general">
+            </div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Country:</p>
+                <div id="country-id" class="admin-verification-info-general">
+                </div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">City:</p>
+                <div id="city-id" class="admin-verification-info-general">
+                </div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Adress:</p>
+                <div id="street-id" class="admin-verification-info-general">
+                </div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Postal Code:</p>
+                <div id="postal-code-id" class="admin-verification-info-general">
+                </div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Id Document:</p>
+                <div id="row-of-documents-id" class="row-of-id-photos">
+                    <div class="id-document id-document-2"></div>
+                    <div class="id-document id-document-2"></div>
+                    <div class="id-document id-document-2"></div>
+                </div>
+            </div>
+
+            <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
+                <div id="verify-button-id" class="all-order-action-buttons">Verfiy</div>
+                <div id="refuse-button-id" class="all-order-action-buttons">Refuse</div>
+                <div id="cancel-button-id" class="all-order-action-buttons">Cancel</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<body>
+
+    <div class="container">
+        <div class="admin-header">
+            <div class="admin-logo">
+                <div class="logo"></div>
+            </div>
+            <div class="admin-admins-main">
+                <div class="name-admin">adminname</div>
+                <div class="icon-admin"></div>
+            </div>
+        </div>
+
+        <div class="main-admin-content">
+
+          <div class="admin-navigation">
+            <div id="general-button" class="general-navigation">General</div>
+            <div id="admins-button" class="general-navigation">Admins</div>
+            <div id="support-button" class="general-navigation">Support</div>
+            <div id="seller-verifications-button" class="general-navigation general-navigation-selected">Seller verifications</div>
+            <div id="withdraws-button" class="general-navigation">Withdraws</div>
+            <div id="users-button" class="general-navigation">Users</div>
+            <div id="add-category-button" class="general-navigation">Add category</div>
+            <div id="add-slide-button" class="general-navigation">Add slide</div>
+        </div>
+
+            <div class="admin-content-nav">
+                <div class="main-admins-div">
+                    <div class="intro-to-real-transaction" style="margin-top: 0 ;">
+                        <div class="intro-to-real-transaction-1">Verification requests:</div>
+                        <div class="drop-dawn-add-game-list transaction-edit-1">
+                            <div class="arrow-drop-down-games-main">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-drop-down"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                            <select name="Transactions" class="drop-dawn-add-game-select">
+                                <option value="Pending">Pending</option>
+                                <option value="Done">Verified</option>
+                                <option value="Done">Refused</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="verifications-array-id" class="transactions-admin-mm-div">
+
+                        <!--Tranzactia cand admin o verificat seller-->
+                        <!-- <div class="transaction cc-cursor">
+                            <div class="transaction-sign transaction-sign-check"></div>
+                            <div class="transaction-info-all admin-verification-change" style="padding-left: 0; border: 0;">
+                                <div class="transaction-info-all-2">
+                                    status:
+                                    <span class="transaction-info-all-span"></span>
+                                </div>
+                            </div>
+    
+                            <div class="transaction-info-all admin-verification-change">
+                                <div class="transaction-info-all-2">
+                                    from:
+                                    <span class="transaction-info-all-span"></span>
+                                </div>
+                            </div>
+    
+                            <div class="transaction-info-all admin-verification-change">
+                                <div class="transaction-info-all-2">
+                                    time:
+                                    <span class="transaction-info-all-span">1h ago</span>
+                                </div>
+                            </div>
+                        </div> -->
+
+
+                        <!--Tranzactia cand admin o primit cerere de verificare de la vinzator-->
+                        <!-- <div class="transaction cc-cursor">
+                            <div class="transaction-sign"></div>
+                            <div class="transaction-info-all admin-verification-change" style="padding-left: 0; border: 0;">
+                                <div class="transaction-info-all-2">
+                                    status:
+                                    <span class="transaction-info-all-span">Pending</span>
+                                </div>
+                            </div>
+    
+                            <div class="transaction-info-all admin-verification-change">
+                                <div class="transaction-info-all-2">
+                                    from:
+                                    <span class="transaction-info-all-span">sellername</span>
+                                </div>
+                            </div>
+    
+                            <div class="transaction-info-all admin-verification-change">
+                                <div class="transaction-info-all-2">
+                                    time:
+                                    <span class="transaction-info-all-span">1h ago</span>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <!--Tranzactia cand admin o refuzat verificare-->
+                        <!-- <div class="transaction cc-cursor">
+                            <div class="transaction-sign transaction-sign-minus"></div>
+                            <div class="transaction-info-all admin-verification-change" style="padding-left: 0; border: 0;">
+                                <div class="transaction-info-all-2">
+                                    status:
+                                    <span class="transaction-info-all-span">Refused</span>
+                                </div>
+                            </div>
+    
+                            <div class="transaction-info-all admin-verification-change">
+                                <div class="transaction-info-all-2">
+                                    from:
+                                    <span class="transaction-info-all-span">sellername</span>
+                                </div>
+                            </div>
+    
+                            <div class="transaction-info-all admin-verification-change">
+                                <div class="transaction-info-all-2">
+                                    time:
+                                    <span class="transaction-info-all-span">1h ago</span>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDe6on4PQWSdDjCydOW67CkQliM_TD0WcY",
+      authDomain: "zifiplay-e212f.firebaseapp.com",
+      databaseURL: "https://zifiplay-e212f.firebaseio.com",
+      projectId: "zifiplay-e212f",
+      storageBucket: "zifiplay-e212f.appspot.com",
+      messagingSenderId: "501773405576",
+      appId: "1:501773405576:web:5779e441f126727987fe3d",
+      measurementId: "G-Q7HLDYW2YV"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <script src="./static/global.js"></script>
+  <script src="./static/admin-verification.js"></script>
+  <script src="./static/auth.js"></script>
+  <!-- <script src="scripts/darktheme.js"></script> -->
+
+</body>
+
+</html>

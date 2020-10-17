@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<!--Modalu unde adminii verifica cerelele de la vinzatori -->
+<div class="modal-general" style="display: none;">
+    <div class="modal-general-absolute">
+        <div class="admin-main-div-pop-up">
+
+            <div class="intro-to-admins-access" style="padding-bottom: 25px;
+            border-bottom: 1px solid #d8d8d88c;">
+                <div class="intro-to-admins-access-1"></div>
+                <div class="intro-to-admins-access-2">userName</div>
+            </div>
+
+            <div class="verification-main-input-div" style="margin: 0;">
+                <p class="verification-main-text">User email:</p>
+                <div class="all-text-info-order">descrierea problemei aici</div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Time:</p>
+                <div class="all-text-info-order">10h ago</div>
+            </div>
+
+            <div class="verification-main-input-div">
+                <p class="verification-main-text">Problem description:</p>
+                <div class="all-text-info-order">descrierea problemei aici</div>
+            </div>
+
+            <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
+                <div class="all-order-action-buttons">Solved</div>
+                <div class="all-order-action-buttons">Cancel</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<body>
+
+    <div class="container">
+        <div class="admin-header">
+            <div class="admin-logo">
+                <div class="logo"></div>
+            </div>
+            <div class="admin-admins-main">
+                <div class="name-admin">adminname</div>
+                <div class="icon-admin"></div>
+            </div>
+        </div>
+
+        <div class="main-admin-content">
+
+          <div class="admin-navigation">
+            <div id="general-button" class="general-navigation">General</div>
+            <div id="admins-button" class="general-navigation">Admins</div>
+            <div id="support-button" class="general-navigation general-navigation-selected">Support</div>
+            <div id="seller-verifications-button" class="general-navigation">Seller verifications</div>
+            <div id="withdraws-button" class="general-navigation">Withdraws</div>
+            <div id="users-button" class="general-navigation">Users</div>
+            <div id="add-category-button" class="general-navigation">Add category</div>
+            <div id="add-slide-button" class="general-navigation">Add slide</div>
+        </div>
+
+            <div class="admin-content-nav">
+                <div class="main-admins-div">
+                    <div class="intro-to-real-transaction" style="margin-top: 0 ;">
+                        <div class="intro-to-real-transaction-1">Support:</div>
+                        <div class="space-admin">
+                            <div class="admin-button-add">add</div>
+                            <div class="drop-dawn-add-game-list transaction-edit-1">
+                                <div class="arrow-drop-down-games-main">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-drop-down"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </div>
+                                <select name="Transactions" class="drop-dawn-add-game-select">
+                                    <option value="Pending">Active</option>
+                                    <option value="Done">Resolved</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="transactions-admin-mm-div">
+
+                        <!--Problemele de support unresolved-->
+                        <div class="request-support-admin-main-div">
+                            <div class="request-support-user-photo-name-main-div">
+                                <div class="request-support-user-photo-name-main-div-1"></div>
+                                <div class="request-support-user-photo-name-main-div-2">username</div>
+                            </div>
+
+                            <div class="support-content-problem-main-div">
+                                <div class="support-content-problem-main-div-1">Problem title</div>
+                            </div>
+
+                            <div class="general-support-request-information">
+                                    <div class="general-support-request-information-1">
+                                        <div class="transaction-info-all-2">
+                                            status:
+                                            <span class="transaction-info-all-span rred-support-admin-status">unresolved</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="general-support-request-information-1">
+                                        <div class="transaction-info-all-2">
+                                            time:
+                                            <span class="transaction-info-all-span">5m ago</span>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <!--Problemele de support unresolved-->
+                        <div class="request-support-admin-main-div">
+                            <div class="request-support-user-photo-name-main-div">
+                                <div class="request-support-user-photo-name-main-div-1"></div>
+                                <div class="request-support-user-photo-name-main-div-2">username</div>
+                            </div>
+
+                            <div class="support-content-problem-main-div">
+                                <div class="support-content-problem-main-div-1">Problem title</div>
+                            </div>
+
+                            <div class="general-support-request-information">
+                                    <div class="general-support-request-information-1">
+                                        <div class="transaction-info-all-2">
+                                            status:
+                                            <span class="transaction-info-all-span greeen-support-admin-status">resolved</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="general-support-request-information-1">
+                                        <div class="transaction-info-all-2">
+                                            time:
+                                            <span class="transaction-info-all-span">5m ago</span>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDe6on4PQWSdDjCydOW67CkQliM_TD0WcY",
+      authDomain: "zifiplay-e212f.firebaseapp.com",
+      databaseURL: "https://zifiplay-e212f.firebaseio.com",
+      projectId: "zifiplay-e212f",
+      storageBucket: "zifiplay-e212f.appspot.com",
+      messagingSenderId: "501773405576",
+      appId: "1:501773405576:web:5779e441f126727987fe3d",
+      measurementId: "G-Q7HLDYW2YV"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <script src="./static/global.js"></script>
+  <script src="./static/admin-support.js"></script>
+  <script src="./static/auth.js"></script>
+  <!-- <script src="./static/darktheme.js"></script> -->
+
+</body>
+
+</html>
