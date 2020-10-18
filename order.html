@@ -134,14 +134,14 @@
     <div class="history-order-main-div-pop-up">
       <div class="main-intro-to-verification" style="border: 0;;">
         Order History
-        <div class="close-modal"></div>
+        <div id="order-history-close-popup-id" class="close-modal"></div>
       </div>
 
       <div id="order-history-popup-id" class="history-order-main-list">
-        <div class="allordderaction">
+        <!-- <div class="allordderaction">
           <div class="history-order-nickname">marioo<span>BUYER</span></div>
           <div class="history-order-nickname mn-change">paid for order<span>8 DAYS AGO</span></div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -275,7 +275,7 @@
 
   <div class="container-for-limited-width">
     <div class="main-for-limited-width">
-      <div class="seller-verification-main-div order-change">
+      <div id="order-product-data-id" class="seller-verification-main-div order-change">
         <p class="main-intro-to-verification">
           Order details
         </p>
@@ -335,9 +335,13 @@
             <div id="order-accepted-id" class="all-order-status-divss accepted" style="display:none">A<span>ccepted</span></div>
             <div id="order-delivered-id" class="all-order-status-divss delivered" style="display:none">D<span>elivered</span></div>
             <div id="order-completed-id" class="all-order-status-divss completed" style="display:none">C<span>ompleted</span></div>
-            <div id="order-rejected-id" class="all-order-status-divss" style="display:none">R<span>ejected</span></div>          
+            <div id="order-rejected-id" class="all-order-status-divss refunded-disputed-refused" style="display:none">R<span>ejected</span></div>   
+            <div id="order-disputed-id" class="all-order-status-divss refunded-disputed-refused" style="display:none">D<span>isputed</span></div>          
+            <div id="order-refunded-id" class="all-order-status-divss refunded-disputed-refused" style="display:none">R<span>efunded</span></div>                 
           </div>
         </div>
+
+
 
         <!-- UNCOMMENT DELIVERED ITEM DIV -->
         <!-- <div class="verification-main-input-div">
@@ -503,6 +507,9 @@
             </div>
           </div>
         </div> -->
+
+
+
 
         <div class="verification-main-input-div">
           <p class="verification-main-text">Item price (EU):</p>

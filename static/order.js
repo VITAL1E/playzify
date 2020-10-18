@@ -34,6 +34,8 @@
   let orderDeliveredStatus = document.getElementById("order-delivered-id");
   let orderCompletedStatus = document.getElementById("order-completed-id");
   let orderRejectedStatus = document.getElementById("order-rejected-id");
+  let orderDisputedStatus = document.getElementById("order-disputed-id");
+  let orderRefundedStatus = document.getElementById("order-refunded-id");
   // ORDER STATUS
   //let divMainOrderStatus = document.getElementById("order-status-id");
 
@@ -51,25 +53,19 @@
   );
 
   // ORDER HISTORY
+  let orderHistoryClosePopup = document.getElementById(
+    "order-history-close-popup-id"
+  );
+
+  // ORDER PRODUCT DATA
+  let divOrderMainProductData = document.getElementById("order-product-data-id")
+
+  let historyActionsArray = [];
+  let historyActionsSorted = [];  
+  let divMainHistoryActions;
 
   if (orderHistoryButton !== null) {
     orderHistoryButton.addEventListener("click", () => {
-      let orderMainHistoryEvent = document.createElement("div");
-      orderMainHistoryEvent.setAttribute("class", "allordderaction");
-
-      let orderHistoryUsername = document.createElement("div");
-      orderHistoryUsername.setAttribute("class", "history-order-nickname");
-
-      let orderUsernameSpan = document.createElement("span");
-
-      let orderHistoryAction = document.createElement("div");
-      orderHistoryAction.setAttribute(
-        "class",
-        "history-order-nickname mn-change"
-      );
-
-      let orderActionSpan = document.createElement("span");
-
       const url = new URL(window.location.href);
       let orderId = url.searchParams.get("id");
 
@@ -79,38 +75,53 @@
         .get()
         .then((snapshot) => {
           let divMainHistoryValuesMapObject = snapshot.data().history;
-          let divMainHistoryActions;
 
-          for (const [key, value] of Object.entries(divMainHistoryValuesMapObject)) {
+          historyActionsSorted = Object.entries(divMainHistoryValuesMapObject)
+            .sort(([, a], [, b]) => b.seconds - a.seconds)
+            .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
+          console.log("historyActionsSorted " + historyActionsSorted);
+
+          for (let [key, value] of Object.entries(historyActionsSorted)) {
             console.log(`${key}: ${value.seconds}`);
 
             divMainHistoryActions = document.createElement("div");
             divMainHistoryActions.setAttribute("class", "allordderaction");
 
             let divHistoryAction = document.createElement("div");
-            divHistoryAction.setAttribute("class", "history-order-nickname mn-change");
+            divHistoryAction.setAttribute(
+              "class",
+              "history-order-nickname mn-change"
+            );
 
-            let divHistoryActionTextContent = document.createElement("span");
-            divHistoryActionTextContent.textContent = key;
+            divHistoryAction.textContent = key;
 
-            let divHistoryActionSpan = document.createElement("span")
-            console.log(value);
-            divHistoryActionSpan.textContent = new Date(value.seconds * 1000);
+            let divHistoryActionSpan = document.createElement("span");
+            divHistoryActionSpan.textContent = getTimeSince(
+              new Date(value.seconds * 1000)
+            );
 
-            divHistoryAction.appendChild(divHistoryActionTextContent);
             divHistoryAction.appendChild(divHistoryActionSpan);
 
-            divMainHistoryActions.appendChild(divHistoryAction);
+            historyActionsArray.push(divHistoryAction);
+          }
+
+          for (let i = 0; i < historyActionsArray.length; i++) {
+            divMainHistoryActions.appendChild(historyActionsArray[i]);
           }
           orderHistoryPopup.appendChild(divMainHistoryActions);
-
-
-          // we will have array here, therefore an forEach or smth.
-          orderHistoryUsername.textContent = `${snapshot.data().buyer}`;
-          orderHistoryAction.textContent = `${snapshot.data().action}`;
         });
-      // MOVE up ?
       popupOrderHistory.style.display = "block";
+    });
+  }
+
+  if (orderHistoryClosePopup !== null) {
+    orderHistoryClosePopup.addEventListener("click", function () {
+      historyActionsArray = [];
+      historyActionsSorted = {};
+      if (divMainHistoryActions !== "undefined") {
+        divMainHistoryActions.remove();
+      }
+      popupOrderHistory.style.display = "none";
     });
   }
 
@@ -166,9 +177,16 @@
               !("Delivered" in orderSelected.status) &&
               !("Completed" in orderSelected.status)
             ) {
+
+
+
+
+
               console.log("Order is paid");
               if (orderSelected.seller === user.displayName) {
+
                 // ACTION BUTTONS
+                console.log("User is seller");
                 let divAcceptButton = document.createElement("div");
                 let divRefuseButton = document.createElement("div");
 
@@ -190,8 +208,12 @@
 
                 // ORDER STATUS
                 // maybe not just yet, after payment confirmed
-                orderSoldStatus.style.display = "block";
+                let status = "Sold";
+                getOrderStatus(status);
 
+                //orderSoldStatus.style.display = "block";
+
+                // ACCEPT CLICK
                 divAcceptButton.addEventListener("click", function () {
                   popupOrderQuestion.style.display = "block";
 
@@ -211,14 +233,22 @@
                     firebase
                       .firestore()
                       .doc(`/orders/${orderId}`)
-                      .set(
-                        {
-                          status: {
-                            Accepted: new Date().toISOString(),
-                          },
-                        },
-                        { merge: true }
-                      );
+                      // .set(
+                      //   {
+                      //     status: {
+                      //       Accepted: new Date().toISOString(),
+                      //     },
+                      //   },
+                      //   { merge: true }
+                      // );
+                      .update({
+                        // Interesting how will be saved to Firestore
+                        "status.Accepted": new Date().toISOString()
+                      });
+                      alert("You accepted the order");
+
+                      status = "Sold-Accepted";
+                      getOrderStatus(status);
                   });
 
                   areYouSureAcceptNo.addEventListener("click", function () {
@@ -226,21 +256,42 @@
                   });
                 });
 
+                // REFUSE CLICK
                 divRefuseButton.addEventListener("click", function () {
                   // MAKE REFUND
                   // call endpoint for refund
+                  alert("You refused the order");
+
+                  firebase
+                  .firestore()
+                  .doc(`/orders/${orderId}`)
+                  // .set(
+                  //   {
+                  //     status: {
+                  //       Accepted: new Date().toISOString(),
+                  //     },
+                  //   },
+                  //   { merge: true }
+                  // );
+                  .update({
+                    // Interesting how will be saved to Firestore
+                    "status.Rejected": new Date().toISOString()
+                  });
+
+                  let status = "Rejected";
+                  getOrderStatus(status);
                 });
 
                 // append child STUFF
               } else if (orderSelected.buyer === user.displayName) {
+                console.log("User is buyer");
+
                 // ACTION BUTTONS
                 let divDisputeButton = document.createElement("div");
-
                 divDisputeButton.setAttribute(
                   "class",
                   "all-order-action-buttons"
                 );
-                // SURE DISPUTE?
                 divDisputeButton.textContent = "DISPUTE";
 
                 // ORDER INFROMATION
@@ -248,10 +299,30 @@
                   "Seller has X days to Accept or Refuse the order. If he ignores this order, it will be automatically refunded.";
 
                 // ORDER STATUS
-                orderPaidStatus.style.display = "block";
+                let status = "Paid";
+                getOrderStatus(status);
+                //orderPaidStatus.style.display = "block";
+
+                // DISPUTE CLICK
+                divDisputeButton.addEventListener("click", function () {
+                  alert("You disputed the order");
+
+                  firebase
+                  .firestore()
+                  .doc(`/orders/${orderId}`)
+                  .update({
+                    // Interesting how will be saved to Firestore
+                    "status.Disputed": new Date().toISOString()
+                  });
+
+                  let status = "Disputed";
+                  getOrderStatus(status);
+                });
+
               } else {
                 console.log("GET THE FUCK OUTTA HERE");
-              }
+              }          
+            
             } else if (
               "Paid" in orderSelected.status &&
               "Accepted" in orderSelected.status &&
@@ -260,14 +331,15 @@
             ) {
               console.log("Order is accepted");
               if (orderSelected.seller === user.displayName) {
+                console.log("User is seller");
+
                 // ACTION BUTTONS
                 let divDeliverButton = document.createElement("div");
-                let divCancelButton = document.createElement("div");
-
                 divDeliverButton.setAttribute(
                   "class",
                   "all-order-action-buttons"
                 );
+                let divCancelButton = document.createElement("div");
                 divCancelButton.setAttribute(
                   "class",
                   "all-order-action-buttons"
@@ -281,9 +353,23 @@
                   "You have X day to Deliver the order. If you ignore this order, it will be automatically refunded.";
 
                 // ORDER STATUS
-                orderSoldStatus.style.display = "block";
-                orderAcceptedStatus.style.display = "block";
+                let status = "Sold-Accepted";
+                getOrderStatus(status);
+                // orderSoldStatus.style.display = "block";
+                // orderAcceptedStatus.style.display = "block";
+
+                // DELIVER CLICK
+                divDeliverButton.addEventListener("click", addItemDelivery, false);
+
+                // CANCEL CLICK
+                divCancelButton.addEventListener("click", function () {
+
+                })
+
+
               } else if (orderSelected.buyer === user.displayName) {
+                console.log("User is buyer");
+
                 // ACTION BUTTONS
                 let divDisputeButton = document.createElement("div");
 
@@ -299,8 +385,10 @@
                   "Seller has X day to Deliver the order. If he ignores this order, it will be automatically refunded.";
 
                 // ORDER STATUS
-                orderPaidStatus.style.display = "block";
-                orderAcceptedStatus.style.display = "block";
+                let status = "Paid-Accepted";
+                getOrderStatus(status);
+                // orderPaidStatus.style.display = "block";
+                // orderAcceptedStatus.style.display = "block";
               } else {
                 console.log("GET THE FUCK OUTTA HERE");
               }
@@ -314,6 +402,8 @@
               console.log("USer " + user);
 
               if (orderSelected.seller === user.displayName) {
+                console.log("User is seller");
+
                 // ACTION BUTTONS
                 let divConfirmButton = document.createElement("div");
 
@@ -329,10 +419,14 @@
                   "You have Delivered the order. Waiting for buyer to confirm the order.";
 
                 // ORDER STATUS
-                orderSoldStatus.style.display = "block";
-                orderAcceptedStatus.style.display = "block";
-                orderDeliveredStatus.style.display = "block";
+                let status = "Sold-Accepted-Delivered";
+                getOrderStatus(status);
+                // orderSoldStatus.style.display = "block";
+                // orderAcceptedStatus.style.display = "block";
+                // orderDeliveredStatus.style.display = "block";
               } else if (orderSelected.buyer === user.displayName) {
+                console.log("User is buyer");
+
                 // ACTION BUTTONS
                 let divConfirmButton = document.createElement("div");
 
@@ -348,9 +442,11 @@
                   "The order was Delivered to you. You have to confirm it.";
 
                 // ORDER STATUS
-                orderPaidStatus.style.display = "block";
-                orderAcceptedStatus.style.display = "block";
-                orderDeliveredStatus.style.display = "block";
+                let status = "Paid-Accepted-Delivered";
+                getOrderStatus(status);
+                // orderPaidStatus.style.display = "block";
+                // orderAcceptedStatus.style.display = "block";
+                // orderDeliveredStatus.style.display = "block";
               } else {
                 console.log("GET THE FUCK OUTTA HERE");
               }
@@ -366,6 +462,8 @@
               actionButtons.remove();
 
               if (orderSelected.seller === user.displayName) {
+                console.log("User is seller");
+
                 // ACTION BUTTONS
 
                 // ORDER INFROMATION
@@ -373,20 +471,37 @@
                   "The order is Complete.";
 
                 // ORDER STATUS
-                orderSoldStatus.style.display = "block";
-                orderAcceptedStatus.style.display = "block";
-                orderDeliveredStatus.style.display = "block";
-                orderCompletedStatus.style.display = "block";
+                let status = "Sold-Accepted-Delivered-Completed";
+                getOrderStatus(status);
+                // orderSoldStatus.style.display = "block";
+                // orderAcceptedStatus.style.display = "block";
+                // orderDeliveredStatus.style.display = "block";
+                // orderCompletedStatus.style.display = "block";
+
+                // ORDER PRODUCT DATA
+                createDeliveredItem(orderSelected.productData, orderSelected.productData.photos);
+
               } else if (orderSelected.buyer === user.displayName) {
+                console.log("User is buyer");
+
                 // ORDER INFROMATION
                 divMainOrderInformationText.textContent =
                   "The order is Complete.";
 
                 // ORDER STATUS
-                orderPaidStatus.style.display = "inline-block";
-                orderAcceptedStatus.style.display = "inline-block";
-                orderDeliveredStatus.style.display = "inline-block";
-                orderCompletedStatus.style.display = "inline-block";
+                let status = "Paid-Accepted-Delivered-Completed";
+                getOrderStatus(status);
+                // orderPaidStatus.style.display = "inline-block";
+                // orderAcceptedStatus.style.display = "inline-block";
+                // orderDeliveredStatus.style.display = "inline-block";
+                // orderCompletedStatus.style.display = "inline-block";
+
+                // ORDER PRODUCT DATA
+                createDeliveredItem(orderSelected.productData, orderSelected.productData.photos);
+
+                console.log(JSON.stringify(orderSelected.productData));
+                console.log(orderSelected.productData.accountId);
+                console.log(orderSelected.productData.password);
               } else {
                 console.log("GET THE FUCK OUTTA HERE");
                 console.log("Order buyer " + orderSelected.buyer);
@@ -396,23 +511,7 @@
               console.log("Lol nothing at all neither buyer / seller");
             }
 
-            // if (orderSelected.images) {
-            //   for (let i = 0; i < orderSelected.images.length; i++) {
-            //     let imagePreview = document.createElement("div");
-            //     let imageBackground = document.createElement("img");
-            //     imagePreview.setAttribute("class", "post-images");
-            //     imageBackground.setAttribute(
-            //       "style",
-            //       "width: inherit; height: inherit; border-radius: 20px;"
-            //     );
-            //     imageBackground.setAttribute("src", `${orderSelected.images[i]}`);
-            //     imagePreview.appendChild(imageBackground);
-            //     postImages.appendChild(imagePreview);
-            //   }
-            // }
-
             // ORDER - SELLER CATEGORY SERVER GAME
-
             let divSellerProfilePhoto = document.createElement("img");
             divSellerProfilePhoto.setAttribute(
               "src",
@@ -464,37 +563,311 @@
             orderGameId.textContent = `${orderId}`;
             orderPostLink.textContent = `playzify.com/post.html?id=${orderSelected.orderId}`;
 
-            // orderGameCategory.appendChild(gameCategorySpan);
-            // categorySection.appendChild(orderGameCategory);
-
-            // orderGameServer.appendChild(gameCategorySpan);
-            // categorySection.appendChild(orderGameServer);
-
-            // orderGameType.appendChild(gameCategorySpan);
-            // categorySection.appendChild(orderGameType);
-
             // SAVE post link in Firestore?
             // WHAT IF INSTEAD of showing previous page, user accesses by link? Cannot display post link ...
             console.log(document.referrer);
-            // orderPostLink.innerText = document.referrer;
-            // postTitle.innerText = `${orderSelected.title}`;
-            // postDescription.innerText = `${orderSelected.description}`;
-            // postPrice.innerText = `${orderSelected.price} EUR`;
-            // postQuantity.innerText = `${orderSelected.quantity}`;
-            // postGaranty.innerText = `${orderSelected.garanty}`;
-            //postImages.innerText = `${orderSelected.images}`;
           })
           .catch((err) => {
             console.log(err);
           });
-        // here add braket
       } else {
         console.log("User not logged in, no information available");
       }
     });
   }
 
-  function deliveryAddItem() {
+  function createDeliveredItem(item, photos) {
+    console.log("reached delivered item method");
+    let divMainDeliveredItem = document.createElement("div");
+    divMainDeliveredItem.setAttribute("class", "verification-main-input-div");
+
+    let pDeliveredItemText = document.createElement("p");
+    pDeliveredItemText.setAttribute("class", "verification-main-text");
+    pDeliveredItemText.textContent = "Delivered item";
+
+    let divDeliveredItem = document.createElement("div");
+    divDeliveredItem.setAttribute("class", "main-delivered-item");
+
+    let pDeliveredItemGameInfoText = document.createElement("p");
+    pDeliveredItemGameInfoText.setAttribute("class", "verification-main-text");
+    pDeliveredItemGameInfoText.style.textAlign = "center";
+    pDeliveredItemGameInfoText.textContent = "Game Account Information:";
+
+    let divDeliveredItemAccountIdText = document.createElement("div");
+    divDeliveredItemAccountIdText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemAccountIdText.textContent = "Account ID";
+
+    let divDeliveredItemAccountIdValue = document.createElement("div");
+    divDeliveredItemAccountIdValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemAccountIdValue.textContent = item.accountId; // account id
+
+    let divDeliveredItemPasswordText = document.createElement("div");
+    divDeliveredItemPasswordText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemPasswordText.textContent = "Password";
+
+    let divDeliveredItemPasswordValue = document.createElement("div");
+    divDeliveredItemPasswordValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemPasswordValue.textContent = item.password;
+
+    let divDeliveredItemFirstNameText = document.createElement("div");
+    divDeliveredItemFirstNameText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemFirstNameText.textContent = "First name";
+
+    let divDeliveredItemFirstNameValue = document.createElement("div");
+    divDeliveredItemFirstNameValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemFirstNameValue.textContent = item.firstName;
+
+    let divDeliveredItemLastNameText = document.createElement("div");
+    divDeliveredItemLastNameText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemLastNameText.textContent = "Last name";
+
+    let divDeliveredItemLastNameValue = document.createElement("div");
+    divDeliveredItemLastNameValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemLastNameValue.textContent = item.lastName;
+
+    let divDeliveredItemAccountCountryText = document.createElement("div");
+    divDeliveredItemAccountCountryText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemAccountCountryText.textContent = "Account country";
+
+    let divDeliveredItemAccountCountryValue = document.createElement("div");
+    divDeliveredItemAccountCountryValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemAccountCountryValue.textContent = item.accountCountry;
+
+    let divDeliveredItemDateOfBirthText = document.createElement("div");
+    divDeliveredItemDateOfBirthText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemDateOfBirthText.textContent = "Date of birth";
+
+    let divDeliveredItemDateOfBirthValue = document.createElement("div");
+    divDeliveredItemDateOfBirthValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemDateOfBirthValue.textContent = item.dateOfBirth;
+
+    let divDeliveredItemAccountRecoveryEmailText = document.createElement("div");
+    divDeliveredItemAccountRecoveryEmailText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemAccountRecoveryEmailText.textContent = "Account recovery email";
+
+    let divDeliveredItemAccountRecoveryEmailValue = document.createElement("div");
+    divDeliveredItemAccountRecoveryEmailValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemAccountRecoveryEmailValue.textContent = item.accountRecoveryEmail;
+
+    let divDeliveredItemAccountRecoveryEmaiPasswordText = document.createElement("div");
+    divDeliveredItemAccountRecoveryEmaiPasswordText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemAccountRecoveryEmaiPasswordText.textContent = "Recovery email password";
+
+    let divDeliveredItemAccountRecoveryEmaiPasswordValue = document.createElement("div");
+    divDeliveredItemAccountRecoveryEmaiPasswordValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemAccountRecoveryEmaiPasswordValue.textContent = item.recoveryEmailPassword;
+
+    // p
+    let pSecretQuestionAnswer = document.createElement("p");
+    pSecretQuestionAnswer.setAttribute("class", "verification-main-text");
+    pSecretQuestionAnswer.style.textAlign = "center";
+    pSecretQuestionAnswer.textContent = "Secret question & answer:";
+
+    let divDeliveredItemSecretQuestionText = document.createElement("div");
+    divDeliveredItemSecretQuestionText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemSecretQuestionText.textContent = "Secret question";
+
+    let divDeliveredItemSecretQuestionValue = document.createElement("div");
+    divDeliveredItemSecretQuestionValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemSecretQuestionValue.textContent = item.secretQuestion;
+
+    let divDeliveredItemSecretAnswerText = document.createElement("div");
+    divDeliveredItemSecretAnswerText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemSecretAnswerText.textContent = "Secret answer";
+
+    let divDeliveredItemSecretAnswerValue = document.createElement("div");
+    divDeliveredItemSecretAnswerValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemSecretAnswerValue.textContent = item.secretAnswer;
+
+    // p
+    let pAdditionalInformation = document.createElement("p");
+    pAdditionalInformation.setAttribute("class", "verification-main-text");
+    pAdditionalInformation.style.textAlign = "center";
+    pAdditionalInformation.textContent = "Additional information:";
+
+    let divDeliveredItemAdditionalNoteText = document.createElement("div");
+    divDeliveredItemAdditionalNoteText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemAdditionalNoteText.textContent = "Additional note";
+
+    let divDeliveredItemAdditionalNoteValue = document.createElement("div");
+    divDeliveredItemAdditionalNoteValue.setAttribute("class", "all-text-info-order");
+    divDeliveredItemAdditionalNoteValue.textContent = item.additionalNote;
+
+    let divDeliveredItemPhotosText = document.createElement("div");
+    divDeliveredItemPhotosText.setAttribute("class", "intro-to-delivered-info");
+    divDeliveredItemPhotosText.textContent = "Photos";
+
+    let divDeliveredItemPhotosRow = document.createElement("div");
+    divDeliveredItemPhotosRow.setAttribute("class", "delivered-photos-row");
+    //divDeliveredItemPhotosRow.textContent = item;
+
+    // better send array of photos as parameter to this method
+    for (let i = 0; i < photos.length; i++) {
+      // forEach photo, create id-document html class div
+      let divDeliveredItemPhoto = document.createElement("div");
+      divDeliveredItemPhoto.setAttribute("class", "id-document id-document-2");
+
+      let photo = document.createElement("img");
+      photo.setAttribute("src", photos[i]);
+
+      divDeliveredItemPhoto.appendChild(photo);
+      divDeliveredItemPhotosRow.appendChild(divDeliveredItemPhoto);
+    }
+
+    // append children
+    divDeliveredItem.appendChild(pDeliveredItemGameInfoText);
+    divDeliveredItem.appendChild(divDeliveredItemAccountIdText); 
+    divDeliveredItem.appendChild(divDeliveredItemAccountIdValue); 
+    divDeliveredItem.appendChild(divDeliveredItemPasswordText);
+    divDeliveredItem.appendChild(divDeliveredItemPasswordValue); 
+    divDeliveredItem.appendChild(divDeliveredItemFirstNameText); 
+    divDeliveredItem.appendChild(divDeliveredItemFirstNameValue); 
+    divDeliveredItem.appendChild(divDeliveredItemLastNameText); 
+    divDeliveredItem.appendChild(divDeliveredItemLastNameValue); 
+    divDeliveredItem.appendChild(divDeliveredItemAccountCountryText); 
+    divDeliveredItem.appendChild(divDeliveredItemAccountCountryValue); 
+    divDeliveredItem.appendChild(divDeliveredItemDateOfBirthText); 
+    divDeliveredItem.appendChild(divDeliveredItemDateOfBirthValue); 
+    divDeliveredItem.appendChild(divDeliveredItemAccountRecoveryEmailText); 
+    divDeliveredItem.appendChild(divDeliveredItemAccountRecoveryEmailValue); 
+    divDeliveredItem.appendChild(divDeliveredItemAccountRecoveryEmaiPasswordText); 
+    divDeliveredItem.appendChild(divDeliveredItemAccountRecoveryEmaiPasswordValue); 
+    divDeliveredItem.appendChild(pSecretQuestionAnswer); 
+    divDeliveredItem.appendChild(divDeliveredItemSecretQuestionText); 
+    divDeliveredItem.appendChild(divDeliveredItemSecretQuestionValue); 
+    divDeliveredItem.appendChild(divDeliveredItemSecretAnswerText); 
+    divDeliveredItem.appendChild(divDeliveredItemSecretAnswerValue); 
+    divDeliveredItem.appendChild(pAdditionalInformation); 
+    divDeliveredItem.appendChild(divDeliveredItemAdditionalNoteText); 
+    divDeliveredItem.appendChild(divDeliveredItemAdditionalNoteValue); 
+    divDeliveredItem.appendChild(divDeliveredItemPhotosText); 
+
+    // photo row
+    divDeliveredItem.appendChild(divDeliveredItemPhotosRow); 
+
+    divMainDeliveredItem.appendChild(pDeliveredItemText);
+    divMainDeliveredItem.appendChild(divDeliveredItem);
+
+    divOrderMainProductData.appendChild(divMainDeliveredItem);
+  }
+
+  function getOrderStatus(status) {
+    switch (status) {
+      case "Paid":
+        // orderSoldStatus.style.display = "none";
+        orderPaidStatus.style.display = "block";
+        // orderAcceptedStatus.style.display = "none";
+        // orderDeliveredStatus.style.display = "none";
+        // orderCompletedStatus.style.display = "none";
+        // orderRejectedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        // orderRefundedStatus.style.display = "none";
+        break;
+      case "Sold":
+        orderSoldStatus.style.display = "block";
+        // orderAcceptedStatus.style.display = "none";
+        // orderDeliveredStatus.style.display = "none";
+        // orderCompletedStatus.style.display = "none";
+        // orderRejectedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        // orderRefundedStatus.style.display = "none";
+        break;
+      case "Paid-Accepted":
+        orderPaidStatus.style.display = "block";
+        orderAcceptedStatus.style.display = "block";
+        // orderSoldStatus.style.display = "block";
+        // orderDeliveredStatus.style.display = "block";
+        // orderCompletedStatus.style.display = "block";
+        // orderRejectedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        // orderRefundedStatus.style.display = "none";
+        break;
+      case "Sold-Accepted":
+        orderSoldStatus.style.display = "block";
+        orderAcceptedStatus.style.display = "block";
+        // orderDeliveredStatus.style.display = "block";
+        // orderCompletedStatus.style.display = "block";
+        // orderRejectedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        // orderRefundedStatus.style.display = "none";
+        break;    
+      case "Paid-Accepted-Delivered":
+        orderPaidStatus.style.display = "block";
+        orderAcceptedStatus.style.display = "block";
+        orderDeliveredStatus.style.display = "block";
+        // orderCompletedStatus.style.display = "block";
+        // orderRejectedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        // orderRefundedStatus.style.display = "none";
+        break;
+      case "Sold-Accepted-Delivered":
+        orderSoldStatus.style.display = "block";
+        orderAcceptedStatus.style.display = "block";
+        orderDeliveredStatus.style.display = "block";
+        // orderCompletedStatus.style.display = "block";
+        // orderRejectedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        // orderRefundedStatus.style.display = "none";
+        break;        
+      case "Paid-Accepted-Delivered-Completed":
+        orderPaidStatus.style.display = "block";
+        orderAcceptedStatus.style.display = "block";
+        orderDeliveredStatus.style.display = "block";
+        orderCompletedStatus.style.display = "block";
+        // orderRejectedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        // orderRefundedStatus.style.display = "none";
+        break;
+      case "Sold-Accepted-Delivered-Completed":
+        orderSoldStatus.style.display = "block";
+        orderAcceptedStatus.style.display = "block";
+        orderDeliveredStatus.style.display = "block";
+        orderCompletedStatus.style.display = "block";
+        // orderRejectedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        // orderRefundedStatus.style.display = "none";
+        break;  
+      case "Rejected":
+        orderRejectedStatus.style.display = "block";
+        // orderSoldStatus.style.display = "none";
+        // orderAcceptedStatus.style.display = "none";
+        // orderDeliveredStatus.style.display = "none";
+        // orderCompletedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        // orderRefundedStatus.style.display = "none";
+        break;  
+      case "Disputed":
+        orderDisputedStatus.style.display = "none";
+        // orderSoldStatus.style.display = "none";
+        // orderAcceptedStatus.style.display = "none";
+        // orderDeliveredStatus.style.display = "none";
+        // orderCompletedStatus.style.display = "none";
+        // orderRejectedStatus.style.display = "block";
+        // orderRefundedStatus.style.display = "none";
+        break;   
+      case "Refunded":
+        orderRefundedStatus.style.display = "block";
+        // orderSoldStatus.style.display = "none";
+        // orderAcceptedStatus.style.display = "none";
+        // orderDeliveredStatus.style.display = "none";
+        // orderCompletedStatus.style.display = "none";
+        // orderRejectedStatus.style.display = "none";
+        // orderDisputedStatus.style.display = "none";
+        break;   
+      default:
+        alert("Action buttons method not working");
+    }
+  }
+
+  let numberOfImages = 0;
+  let imagesArray = [];
+
+  // work with this
+  function addItemDelivery() {
+    popupDelivery.style.display = "block";
+
+    let addPhoto = document.getElementById("addImgLabel1"); 
+
     // DELIVERY POPUP
     let deliverPopupAccountId = document.getElementById("delivery-account-id")
       .value;
@@ -527,6 +900,9 @@
     );
     let textDeliverPopupAdditionalNote = deliverPopupAdditionalNote.textContent;
 
+    // check addImageToForm classes if concatenated properly
+    addPhoto.addEventListener("change", addImageToForm, false);
+
     console.log(deliverPopupAccountId);
     console.log(deliverPopupPassword);
     console.log(deliverPopupFirstName);
@@ -539,15 +915,32 @@
     console.log(deliverPopupSecretAnswer);
     console.log(textDeliverPopupAdditionalNote);
 
-    firebase.firestore().collection("orders").doc("order-first-example").set({
-      buyer: BUYER, // set buyer here
-      category: deliverPopupAccountCountry, // CHANGE
+    // DELIVER BUTTON
+    deliveryButton.addEventListener("click", () => {
+      alert("Item successfully submitted");
+      firebase.firestore().collection("orders").doc(orderId).set({
+        productData: {
+          accountCountry: deliverPopupAccountCountry,
+          accountId: deliverPopupAccountId,
+          accountRecoveryEmail: deliverPopupAccountRecoveryEmail,
+          additionalNote: deliverPopupAdditionalNote,
+          dateOfBirth: deliverPopupDateOfBirth,
+          firstName: deliverPopupFirstName,
+          lastName: deliverPopupLastName,
+          password: deliverPopupPassword,
+          photos: getImageURLsFromArray(...imagesArray), // TODO
+          recoveryEmailPassword: deliverPopupRecoveryEmailPassword,
+          secretAnswer: deliverPopupSecretAnswer,
+          secretQuestion: deliverPopupSecretQuestion
+        }
+      });
+    });
+
+    // DELIVER BUTTON
+    cancelDeliveyButton.addEventListener("click", () => {
+      popupDelivery.style.display = "none";
     });
   }
-
-  cancelDeliveyButton.addEventListener("click", () => {
-    popupDelivery.style.display = "none";
-  });
 
   Array.from(closeModalButton).forEach((e) => {
     e.addEventListener("click", function () {
@@ -569,76 +962,76 @@
 
   // });
 
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      console.log(user.displayName);
-      console.log(user);
+  // firebase.auth().onAuthStateChanged(function (user) {
+  //   if (user) {
+  //     console.log(user.displayName);
+  //     console.log(user);
 
-      // User PAYS and order is CREATED in firestore
-      // from that order select it and change it HERE
+  //     // User PAYS and order is CREATED in firestore
+  //     // from that order select it and change it HERE
 
-      firebase
-        .firestore()
-        .doc(`/users/${user.displayName}`)
-        .get()
-        .then((doc) => {
+  //     firebase
+  //       .firestore()
+  //       .doc(`/users/${user.displayName}`)
+  //       .get()
+  //       .then((doc) => {
           // FOR PRODUCTION ONLY. TESTING W/O VERIFICATION
-          if (doc.data().verified === true) {
-            console.log("User verified");
-            orderAcceptButton.addEventListener("click", () => {
-              // POPUP
-              // get ORDER by ID
-              // add to ORDER HISTORY collection Accepted status
-              // display Accepted
+          // if (doc.data().verified === true) {
+          //   console.log("User verified");
+          //   orderAcceptButton.addEventListener("click", () => {
+          //     // POPUP
+          //     // get ORDER by ID
+          //     // add to ORDER HISTORY collection Accepted status
+          //     // display Accepted
 
-              // firebase
-              // .firestore()
-              // .doc(`orders/${orderId}`)
-              // .collection("history")
-              // .add({ createdAt: new Date().toISOString(), status: "Accepted" });
+          //     // firebase
+          //     // .firestore()
+          //     // .doc(`orders/${orderId}`)
+          //     // .collection("history")
+          //     // .add({ createdAt: new Date().toISOString(), status: "Accepted" });
 
-              // ARE you sure ? POPUP
-              popupOrderQuestion.style.display = "block";
+          //     // ARE you sure ? POPUP
+          //     popupOrderQuestion.style.display = "block";
 
-              // ARE YOU SURE ACCEPT ORDER POPUP?
-              let areYouSureAcceptYes = document.getElementById(
-                "sure-accept-order-yes"
-              );
-              let areYouSureAcceptNo = document.getElementById(
-                "sure-accept-order-no"
-              );
+          //     // ARE YOU SURE ACCEPT ORDER POPUP?
+          //     let areYouSureAcceptYes = document.getElementById(
+          //       "sure-accept-order-yes"
+          //     );
+          //     let areYouSureAcceptNo = document.getElementById(
+          //       "sure-accept-order-no"
+          //     );
 
-              areYouSureAcceptYes.addEventListener("click", () => {
-                popupOrderQuestion.style.display = "none";
+          //     areYouSureAcceptYes.addEventListener("click", () => {
+          //       popupOrderQuestion.style.display = "none";
 
-                // ADD ORDER POPUP
-                popupDelivery.style.display = "block";
+          //       // ADD ORDER POPUP
+          //       popupDelivery.style.display = "block";
 
-                deliveryButton.addEventListener(
-                  "click",
-                  deliveryAddItem,
-                  false
-                ); // NOT SURE WHY BUT MAYBE
-                // deliveryButton.addEventListener("click", () => {
-                //   firebase.firestore().collection("orders").doc("order-first-example").set({
+          //       deliveryButton.addEventListener(
+          //         "click",
+          //         deliveryAddItem,
+          //         false
+          //       ); // NOT SURE WHY BUT MAYBE
+          //       // deliveryButton.addEventListener("click", () => {
+          //       //   firebase.firestore().collection("orders").doc("order-first-example").set({
 
-                //   })
-                // })
-              });
+          //       //   })
+          //       // })
+          //     });
 
-              // ORDER ACCEPTED
-              //orderAcceptedStatus.style.display = "inline-block";
-            });
-            orderRefuseButton.addEventListener("click", () => {
-              // DELETE order and REFUND money
-            });
-          } else {
-            console.log("Not verified");
-          }
-        })
-        .catch((err) => {
-          console.log("Error " + err);
-        });
+          //     // ORDER ACCEPTED
+          //     //orderAcceptedStatus.style.display = "inline-block";
+          //   });
+          //   orderRefuseButton.addEventListener("click", () => {
+          //     // DELETE order and REFUND money
+          //   });
+          // } else {
+          //   console.log("Not verified");
+          // }
+        // })
+        // .catch((err) => {
+        //   console.log("Error " + err);
+        // });
 
       // let everyHeaderUsername = document.getElementsByClassName("user-header-username");
       // for (let i = 0; i < everyHeaderUsername.length; ++i) {
@@ -651,10 +1044,103 @@
 
       //auth.signOut();
       //console.log(user);
-    } else {
-      console.log("Not logged in");
+  //   } else {
+  //     console.log("Not logged in");
+  //   }
+  // });
+
+  function addImageToForm(e) {
+    let files = e.target.files;
+    if (numberOfImages + files.length > 4) {
+      alert("You can only upload at most 4 files!");
+      return;
     }
-  });
+    numberOfImages += files.length;
+  
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+  
+      if (file) {
+        const reader = new FileReader();
+        reader.addEventListener("load", function (e) {
+          console.log(this);
+  
+          let imageFile = e.target;
+  
+          const reference = firebase.storage().ref("product_images/" + file.name);
+  
+          let divDocument = document.createElement("div");
+          let divDocumentClose = document.createElement("div");
+          let image = document.createElement("img");
+  
+          divDocument.setAttribute("class", "id-document");
+          divDocumentClose.setAttribute("class", "id-document-close");
+          divDocumentClose.addEventListener("click", function () {
+            divDocument.style.display = "none";
+            numberOfImages--;
+            const reference = firebase.storage().ref("product_images/" + file.name);
+            reference
+              .delete();
+              //.then(snapshot => snapshot.ref.getDownloadURL());
+          });
+          image.setAttribute("class", "image-preview");
+          image.setAttribute(
+            "style",
+            "width: inherit; height: inherit; border-radius: 20px;"
+          );
+          image.setAttribute("src", imageFile.result);
+  
+          divDocument.appendChild(divDocumentClose);
+          divDocument.appendChild(image);
+          rowOfPhotos.appendChild(divDocument);
+        });
+        const reference = firebase.storage().ref("product_images/" + file.name);
+        reference
+          .put(file)
+          .then(snapshot => snapshot.ref.getDownloadURL())
+          .then(url => {
+            //console.log(url);
+            imagesArray.push(url);
+            //window.alert(url);
+           });
+        reader.readAsDataURL(file);
+      } else {
+        image.style.display = null;
+      }
+    }
+  }
+
+  function getImageURLsFromArray(...imagesArray) {
+    console.log(...imagesArray);
+    return imagesArray;
+  }
+
+  function getTimeSince(date) {
+    let seconds = Math.floor((new Date() - date) / 1000);
+
+    let interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return Math.floor(interval) + " years ago";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " months ago";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " days ago";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " hours ago";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " minutes ago";
+    }
+    return Math.floor(seconds) + " seconds ago";
+  }
 
   function guidGenerator() {
     let S4 = function () {
