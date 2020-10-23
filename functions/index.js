@@ -4,10 +4,12 @@
 
 const { createMollieClient } = require("@mollie/api-client");
 const functions = require("firebase-functions");
+const admin = require("firebase-admin");
 const axios = require("axios");
 const cors = require("cors");
 
-let ID_OF_PAYMENT;
+admin.initializeApp();
+admin.firestore().settings({ ignoreUndefinedProperties: true });
 
 //const mollieSecretKey = process.env.MOLLIE_SECRET_KEY;
 
@@ -16,13 +18,6 @@ const mollieClient = createMollieClient({
 });
 
 console.log(mollieClient);
-// console.log(mollieClient.getCheckoutUrl);
-// console.log(mollieClient.redirect);
-// console.log(mollieClient.redirectUrl);
-// console.log(mollieClient.payments.PaymentsResource.httpClient.request);
-// console.log(mollieClient.payments.PaymentsResource.httpClient.getUri);
-// console.log(mollieClient.payments.PaymentsResource.httpClient.defaults);
-// console.log(mollieClient.payments.PaymentsResource.httpClient.interceptors);
 
 const express = require("express");
 const app = express();
@@ -38,7 +33,7 @@ app.use(express.static("../../project"));
 app.use(express.json());
 //app.use(express.static('../static'));
 
-app.listen(3000);
+app.listen(3001);
 
 // app.use(function (req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "https://www.mollie.com/payscreen");
@@ -55,6 +50,59 @@ app.post("/payment", function (req, res) {
   console.log(req.method);
   console.log(req.headers);
 
+  let postPurchased = {};
+
+  admin
+    .firestore()
+    .collection("games")
+    .doc(req.body.postId)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists) {
+        console.log(snapshot.data());
+        postPurchased = {
+          title: snapshot.data().title,
+          price: snapshot.data().price,
+          description: snapshot.data().description,
+          quantity: snapshot.data().quantity,
+          garanty: snapshot.data().garanty,
+          images: snapshot.data().images,
+        };
+      } else {
+        console.log("No such document");
+      }
+      return null;
+    })
+    .catch((error) => {
+      console.log(error);
+      return null;
+    });
+
+  let paymentID;
+  let ordersReference = admin.firestore().collection("orders").doc();
+  ordersReference
+    .set({
+      title: postPurchased.title,
+      price: postPurchased.price,
+      description: postPurchased.description,
+      quantity: postPurchased.quantity,
+      garanty: postPurchased.garanty,
+      images: postPurchased.images,
+    })
+    .then(function () {
+      ordersReference.set(
+        {
+          orderId: ordersReference.id,
+        },
+        { merge: true }
+      );
+      return null;
+    })
+    .catch(function (error) {
+      console.log(error);
+      return null;
+    });
+
   mollieClient.payments
     .create({
       amount: {
@@ -63,9 +111,9 @@ app.post("/payment", function (req, res) {
       },
       description: req.body.description,
       // redirectUrl: 'https://yourwebshop.example.org/order/123456', // notification page
-      redirectUrl: "https://google.com", // give some random ID // notification page
+      redirectUrl: "https://www.google.com", //`https://firebase-zify.com/order.html?id=${orderId}`, // notification page
       webhookUrl:
-        "https://us-central1-zifiplay-e212f.cloudfunctions.net/webhook",
+        "https://us-central1-zifiplay-e212f.cloudfunctions.net/webhooks/",
     })
     .then((payment) => {
       // Forward the customer to the payment.getCheckoutUrl()
@@ -76,12 +124,11 @@ app.post("/payment", function (req, res) {
       // undefined
       console.log(payment.customerId);
       // real ID we need
-      ID_OF_PAYMENT = payment.id;
       console.log(payment.id);
+      paymentID = payment.id;
       // set expired
       console.log(payment.isExpired);
       console.log(payment);
-
       //return payment.getCheckoutUrl();
       //res.send(payment.getCheckoutUrl());
       // console.log(mollieClient.getCheckoutUrl);
@@ -99,18 +146,20 @@ app.post("/payment", function (req, res) {
     });
 });
 
-app.get(`payments/${ID_OF_PAYMENT}`, function (req, res) {
-  mollieClient.payments
-    .get(payment.id)
-    .then((payment) => {
-      // E.g. check if the payment.isPaid()
-      console.log(payment);
-      return payment;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-});
+function getPayment(id) {
+  app.get(`payments/${id}`, function (req, res) {
+    mollieClient.payments
+      .get(req.params.id)
+      .then((payment) => {
+        // E.g. check if the payment.isPaid()
+        console.log(payment);
+        return payment;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+}
 
 // mollieClient.payments.get(payment.id)
 //   .then(payment => {
@@ -138,7 +187,7 @@ app.get(`payments/${ID_OF_PAYMENT}`, function (req, res) {
 //}
 //});
 
-exports.webhook = functions.https.onRequest(function (req, res) {
+exports.webhooks = functions.https.onRequest(function (req, res) {
   // let url = 'https://api.mollie.com/v2/payments/tr_V86jsf3a9f';
 
   // axios({
@@ -157,16 +206,18 @@ exports.webhook = functions.https.onRequest(function (req, res) {
   //   console.error(error);
   // });
 
-  // console.log(req.params);
-  // console.log(req.params.id);
-  // res.send("Hello from Webhook");
+  console.log(req.query.id);
 
   (async () => {
+    console.log(req.query.id);
     try {
-      const payment = await mollieClient.payments.get("tr_V86jsf3a9f");
+      const payment = await mollieClient.payments.get(req.query.id);
+      console.log(req.query.id);
 
       // Check if payment is paid
       const isPaid = payment.isPaid();
+
+      console.log("Hello");
 
       if (isPaid) {
         console.log("Payment is paid");
