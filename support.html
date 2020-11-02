@@ -32,7 +32,7 @@
       </div>
       <div class="first-header-div-child-2">
         <a href="support.html"><div class="balance-button">S<div class="balance-support-550px">upport</div> </div></a>
-        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>45 USD</span></span></div></div>
+        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>0 USD</span></span></div></div>
         <div class="user-logged-out-header-placeholder">
             <div class="user-icon-2"></div>
             <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
@@ -131,7 +131,7 @@
 
         <div class="verification-main-input-div">
           <p class="verification-main-text">Name your problem</p>
-          <input class="verification-main-input" placeholder="type problem name" autocomplete="off" maxlength="24">
+          <input id="support-problem-name-id" class="verification-main-input" placeholder="type problem name" autocomplete="off" maxlength="24">
         </div>
 
         <div class="verification-main-input-div">
@@ -140,8 +140,27 @@
             placeholder="describe your problem" spellcheck="false"></p>
         </div>
 
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Add photo (optional)</p>
+          <div id="support-row-photos-id" class="row-of-id-photos">
+            <div class="two1 two2" id="addImgLabel1">
+                <label for="addImg1" class="input-label inputLabelCss">
+                    <div class="photosvg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera camera-icon camera-icon-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                    </div>
+                </label> <!-- ngIf: images.length<maxImagesForProduct --><input id="addImg1" type="file" accept=".png, .jpg, .jpeg" style="display:none" multiple="">
+            </div>
+
+            <div class="id-document id-document-2">
+                <div class="id-document-close" style="display: none;"></div>
+            </div>
+
+        </div>
+        </div>
+
         <div class="verification-main-input-div bottom-add-item">
-          <div class="Verify-seller-accountt">Send Report</div>
+          <div id="send-report-button-id" class="Verify-seller-accountt">Send Report</div>
         </div>
 
       </div>
@@ -160,11 +179,29 @@
       </div>
       <div class="footer-logo"></div>
       <div class="usefull-footer-links">
-        <div class="usefull-footer-text">Support</div>
-        <div class="usefull-footer-text">How to buy</div>
-        <div class="usefull-footer-text">Reviews</div>
-        <div class="usefull-footer-text">About Us</div>
-        <div class="usefull-footer-text">Guaranty</div>
+        <div class="usefull-footer-text">
+          <a href="footer(contact).html">
+            <div>Contact</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(about-us).html">
+            <div>About Us</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(terms).html">
+            <div>Terms</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(privacy).html">
+            <div>Privacy</div>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -180,6 +217,8 @@
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
 
   <script>
     // Your web app's Firebase configuration
@@ -200,6 +239,7 @@
 
   <script src="./static/global.js"></script>
   <script src="./static/auth.js"></script>
+  <script src="./static/support.js"></script>
   <script src="./static/darktheme.js"></script>
 
 </body>

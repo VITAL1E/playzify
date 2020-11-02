@@ -44,7 +44,7 @@ function addImageToForm(e) {
 
         let imageFile = e.target;
 
-        const reference = firebase.storage().ref(`${username}/document_images/` + file.name);
+        //const reference = firebase.storage().ref(`${username}/document_images/` + file.name);
 
         let divDocument = document.createElement("div");
         let divDocumentClose = document.createElement("div");

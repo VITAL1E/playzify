@@ -3,11 +3,16 @@ let addFileButton = document.getElementById("add-file-id");
 let chatMessageText = document.querySelector(".chat-messenger-input");
 let chatUnseenMessagesCount = document.querySelector("new-messages-bar");
 let chatSellerProfilePictureHeader = document.querySelector("chat-profile-1");
-//let chatSellerUsernameHeader = document.querySelector("nickname-name-header");
 let chatSellerUsernameHistory = document.querySelector("chat-nickname-list");
-let chatSellerConversationHistorySection = document.querySelectorAll("user-section-chat");
-let chatSellerMessagesConversation = document.getElementById("chat-messages-main-div-id");
-let chatSellerProfilePictureStartConversation = document.querySelector("profileimgchat");
+let chatSellerConversationHistorySection = document.querySelectorAll(
+  "user-section-chat"
+);
+let chatSellerMessagesConversation = document.getElementById(
+  "chat-messages-main-div-id"
+);
+let chatSellerProfilePictureStartConversation = document.querySelector(
+  "profileimgchat"
+);
 let inputFile = document.getElementById("addImgLabel1");
 let searchBar = document.getElementById("search-bar-chat-id");
 
@@ -15,56 +20,71 @@ let mainDivMessagesLeft = document.getElementById("first-message-div-id");
 let divMessagesLeft = document.getElementById("firstmessages--main-div-id");
 
 let div = document.createElement("div");
-div.setAttribute("class", "messagee");
-div.textContent = "Welcome to Zify";
+//div.setAttribute("class", "messagee");
+//div.textContent = "Welcome to Zify";
 
-let secmsg = document.getElementById("first-message-right-id-2");
-let secondmessage = document.getElementById("firstmessages--main-div-id-2");
+// let secmsg = document.getElementById("first-message-right-id-2");
+// let secondmessage = document.getElementById("firstmessages--main-div-id-2");
 
-let divUser = document.createElement("div");
-divUser.setAttribute("class", "messagee messagee-right");
+// let divUser = document.createElement("div");
+// divUser.setAttribute("class", "messagee messagee-right");
 
-mainDivMessagesLeft.appendChild(divMessagesLeft);
-divMessagesLeft.appendChild(div);
+// mainDivMessagesLeft.appendChild(divMessagesLeft);
+// divMessagesLeft.appendChild(div);
 
 // secmsg.appendChild(secondmessage);
 // secondmessage.appendChild
 
 // Chat list
 let chatHistoryUsersList = document.getElementById("chat-part-1-list-id");
-let chatMessagesPart2Header = document.getElementById("chat-part-2-user-lists-id");
+let chatMessagesPart2Header = document.getElementById(
+  "chat-part-2-user-lists-id"
+);
 
 let chatsArray = [];
 let chatWithObject = {};
 
+const url = new URL(window.location.href);
+let userId = url.searchParams.get("id");
+
 searchBar.addEventListener("keyup", (e) => {
   let searchString = e.target.value.toLowerCase();
-  let filteredChats = chatsArray.filter(chat => {
+  let filteredChats = chatsArray.filter((chat) => {
     return chat.username.toLowerCase().includes(searchString);
   });
   console.log("Filtered chats " + filteredChats);
-  removePosts();
+  removeChats();
   filteredChats.forEach((chat) => {
     createChatUser(chat);
   });
 });
 
-const removePosts = () => {
-  let elements = document.getElementsByClassName("main-list-chat");
+const removeChats = () => {
+  let elements = document.getElementsByClassName("user-section-chat");
 
   while (elements[0]) {
     elements[0].parentNode.removeChild(elements[0]);
   }
-}
+};
+
+const removeMessages = () => {
+  chatSellerMessagesConversation.innerHTML = "";
+  // let elementsSent = document.getElementsByClassName("messagee");
+  // let elementsReceived = document.getElementsByClassName("messagee messagee-right");
+
+  // while (elementsSent[0] && elementsReceived[0]) {
+  //   elementsSent[0].parentNode.removeChild(elementsSent[0]);
+  //   elementsReceived[0].parentNode.removeChild(elementsReceived[0]);
+  // }
+};
 
 function createChatUser(userChats) {
-  let chatMainListSectionUser = document.createElement("div");
-  chatMainListSectionUser.setAttribute("class", "main-list-chat");
-
   if (chatsCollectionSize === 0) {
     // DISPALY
     let noMessagesText = document.createElement("div");
     noMessagesText.setAttribute("class", "no-messages-chat");
+
+    chatHistoryUsersList.appendChild(noMessagesText);
   } else {
     let chatEntireSectionUser = document.createElement("div");
     chatEntireSectionUser.setAttribute("class", "user-section-chat");
@@ -74,7 +94,7 @@ function createChatUser(userChats) {
 
     // Find in Storage URL for his profile picture
     let chatProfileImage = document.createElement("img");
-    chatProfileImage.setAttribute("src", userChats.profilePhoto); 
+    chatProfileImage.setAttribute("src", userChats.profilePhoto);
 
     chatProfileImageUserPart1.appendChild(chatProfileImage);
 
@@ -98,7 +118,11 @@ function createChatUser(userChats) {
 
     // PAY ATTENTION
     let svg = document.createElement("svg");
-    svg.setAttributeNS(null, "class", "feather feather-chevron-right chevron-for-chat");
+    svg.setAttributeNS(
+      null,
+      "class",
+      "feather feather-chevron-right chevron-for-chat"
+    );
 
     chatProfileImageUserPart1.appendChild(chatSellerOnline);
     chatUsernameMessageUserPart2.appendChild(chatUsernameBold);
@@ -109,129 +133,266 @@ function createChatUser(userChats) {
     chatEntireSectionUser.appendChild(chatUsernameMessageUserPart2);
     chatEntireSectionUser.appendChild(arrowChat);
 
-    chatMainListSectionUser.appendChild(chatEntireSectionUser);
-    chatHistoryUsersList.appendChild(chatMainListSectionUser);
+    chatEntireSectionUser.addEventListener("click", function () {
+      removeMessages();
+      loadMessages(userChats.username);
+      chatWithObject = userChats;
 
-    // console.log(userChats.username);
-    // console.log(userChats.lastMessage);
-    // console.log(userChats.lastUpdated);
-    // console.log(userChats.profilePhoto);
-
-    chatEntireSectionUser.addEventListener("click", function() {
-      let chatMessagesProfilePicturePart2 = document.getElementById("chat-messages-user-photo-id");
-      let chatMessagesUsernamePart2 = document.getElementById("nickname-name-header-id");
-      let chatProfileImagePart2 = document.getElementById("profileimgchat-id");
+      let chatMessagesProfilePicturePart2 = document.getElementById(
+        "chat-messages-user-photo-id"
+      );
+      let chatMessagesUsernamePart2 = document.getElementById(
+        "nickname-name-header-id"
+      );
 
       chatMessagesUsernamePart2.textContent = `${userChats.username}`;
-
-      let chatProfilePicturePart2Img1 = document.createElement("img");
-      chatProfilePicturePart2Img1.setAttribute("src", userChats.profilePhoto);
-      chatMessagesProfilePicturePart2.appendChild(chatProfilePicturePart2Img1);
-
-      let chatProfilePicturePart2Img2 = document.createElement("img");
-      chatProfilePicturePart2Img2.setAttribute("src", userChats.profilePhoto);     
-      chatProfileImagePart2.appendChild(chatProfilePicturePart2Img2);
-
-      chatWithObject = {};
-      chatWithObject.username = userChats.username;
-
-      // LOAD MESSAGES
-      async function loadMessages() {
-        firebase.auth().onAuthStateChanged(async function (user) {
-          if (user) {
-              let messagesReference = firebase
-              .firestore()
-              .doc(`/chats/${user.displayName}`)
-              .collection(`/chats/${userChats.username}/messages`)
-              .orderBy("createdAt");
-        
-            let docs;
-            let lastVisible;
-              
-            await messagesReference
-              .get()
-              .then(function (snapshot) {
-                docs = snapshot;
-                lastVisible = snapshot.docs[snapshot.docs.length - 1];
-                //console.log("last", lastVisible.data().message);
-        
-                /////// WORKS
-                // snapshot.forEach(function (doc) {
-                //   const message = `<div class="messagee messagee-right">${doc.data().message}</div>`;
-                //   secondmessage.innerHTML += message;
-                // });
-                //////
-
-                snapshot.forEach(function (doc) {
-                  console.log(doc.data().message);
-                  if (doc.data().from === userChats.username || doc.data().to === user.displayName) {
-                    const message = `<div class="messagee">${doc.data().message}</div>`;
-                    divMessagesLeft.innerHTML += message;
-                    // let divReceived = document.createElement("div");
-                    //   divReceived.setAttribute("class", "messagee");
-                    //   divReceived.textContent = `${doc.data().message}`;
-                    //   console.log("Messages from other");
-                  } else {
-                    const message = `<div class="messagee messagee-right">${doc.data().message}</div>`;
-                    secondmessage.innerHTML += message;
-                    // console.log("Messages from me");
-                    // console.log("Me " + user.displayName);
-                    // console.log("Other " + userChats.username);
-                  }
-                });
-              });
-          } else {
-            console.log("Not logged in");
-          }
-        });
-      }
-      loadMessages();
+      chatMessagesProfilePicturePart2.setAttribute(
+        "style",
+        `background-size: cover; background-image:url(${userChats.profilePhoto})`
+      );
 
       // Messages only appended
       //chatMessagesPart2Header.appendChild();
     });
+
+    chatHistoryUsersList.appendChild(chatEntireSectionUser);
   }
 }
 
-
-// LOAD CHAT ROOMS
-// let chatsCollectionSize;
-// firebase.auth().onAuthStateChanged(function (user) {
-//   let docs;
-//   if (user) {
-//     console.log("Username " + user.displayName);
-//     firebase
-//     .firestore()
-//     .doc(`/chats/${user.displayName}`)
-//     .collection("chats")
-//     .get()
-//     .then(function(querySnapshot) {
-//       docs = querySnapshot;
-//       chatsCollectionSize = querySnapshot.size;
-//       console.log("Size " + chatsCollectionSize);
-//       querySnapshot.forEach(function(doc) {
-//         createChatUser(doc.data());
-//     });
-//     docs["docs"].forEach((doc) => {
-//       console.log("Docs " + JSON.stringify(doc.data()));
-//       //chatsArray.push(doc.data());
-//     });
-//   });
-//   } else {
-//     console.log("Not logged in chat");
-//   }
-// });
+async function getMainChat() {
+  firebase.auth().onAuthStateChanged(async function (user) {
+    let PROFILE_PHOTO;
+    let LAST_CHAT_USERNAME;
 
 
+    if (userId) {
+      LAST_CHAT_USERNAME = userId;
+      chatWithObject.username = userId;
+
+      console.log("userId " + LAST_CHAT_USERNAME);
+
+      firebase
+      .firestore()
+      .collection("users")
+      .doc(userId)
+      .get()
+      .then((snapshot) => {
+        console.log(snapshot.data());
+        PROFILE_PHOTO = snapshot.data().profilePicture
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    } else {
+      firebase
+      .firestore()
+      .collection("chats")
+      .doc(user.displayName)
+      .collection("chats")
+      .orderBy("lastUpdated", "desc")
+      .limit(1)
+      .get()
+      .then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+          console.log(doc.data());
+
+          LAST_CHAT_USERNAME = doc.data().username;
+
+          console.log("userId " + LAST_CHAT_USERNAME);
+
+          let chatMessagesProfilePicturePart2 = document.getElementById(
+            "chat-messages-user-photo-id"
+          );
+          chatMessagesProfilePicturePart2.setAttribute(
+            "style",
+            `background-size: cover; background-image:url(${
+              doc.data().profilePhoto
+            })`
+          );
+
+          let chatMessagesUsernamePart2 = document.getElementById(
+            "nickname-name-header-id"
+          );
+          chatMessagesUsernamePart2.textContent = doc.data().username;
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+
+    if (user) {
+      console.log("user " + LAST_CHAT_USERNAME);
+      firebase
+        .firestore()
+        .collection("chats")
+        .doc(user.displayName)
+        .collection("chats")
+        .doc(LAST_CHAT_USERNAME)
+        .get()
+        .then(async (snapshot) => {
+          if (snapshot.exists) {
+              let chatMessagesProfilePicturePart2 = document.getElementById(
+                "chat-messages-user-photo-id"
+              );
+              chatMessagesProfilePicturePart2.setAttribute(
+                "style",
+                `background-size: cover; background-image:url(${
+                  snapshot.data().profilePhoto
+                })`
+              );
+              let chatMessagesUsernamePart2 = document.getElementById(
+                "nickname-name-header-id"
+              );
+              chatMessagesUsernamePart2.textContent = snapshot.data().username;
+
+            await firebase
+              .firestore()
+              .collection("chats")
+              .doc(user.displayName)
+              .collection("chats")
+              .doc(userId)
+              .collection("messages")
+              .get()
+              .then((snapshot) => {
+                if (snapshot.exists) {
+                  console.log("There are messages");
+                  loadMessages(userId);
+                } else {
+                  console.log("No messages");
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+
+          } else {
+            // INITIALIZED CHAT
+            
+            console.log(userId);
+            firebase
+            .firestore()
+            .collection("chats")
+            .doc(user.displayName)
+            .collection("chats")
+            .doc(userId)
+            .set({
+              lastMessage: "",
+              lastUpdated: new Date(),
+              profilePhoto: PROFILE_PHOTO,
+              username: userId,
+            })
+            .then(() => {
+              console.log("Created successfully");
+              let chatMessagesProfilePicturePart2 = document.getElementById(
+                "chat-messages-user-photo-id"
+              );
+              chatMessagesProfilePicturePart2.setAttribute(
+                "style",
+                `background-size: cover; background-image:url(${
+                  PROFILE_PHOTO
+                })`
+              );
+
+              let chatMessagesUsernamePart2 = document.getElementById(
+                "nickname-name-header-id"
+              );
+              chatMessagesUsernamePart2.textContent = userId;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.log("Not logged in");
+    }
+  });
+}
+
+// LOAD MESSAGES
+async function loadMessages(userId) {
+  firebase.auth().onAuthStateChanged(async function (user) {
+    if (user) {
+      let messagesReference = firebase
+        .firestore()
+        .collection("chats")
+        .doc(user.displayName)
+        .collection("chats")
+        .doc(userId)
+        .collection("messages")
+        .orderBy("createdAt")
+        .get()
+        .then((snapshot) => {
+          snapshot.docs.forEach((message) => {
+            console.log(message.data());
+            let div = document.createElement("div");
+
+            // if other user sent us message
+            if (
+              message.data().from === userId ||
+              message.data().to === user.displayName
+            ) {
+              console.log("From him");
+              div.setAttribute("class", "messagee");
+              div.textContent = message.data().message;
+              // if we sent the message
+            } else {
+              console.log("From me");
+              div.setAttribute("class", "messagee messagee-right");
+              div.textContent = message.data().message;
+            }
+            chatSellerMessagesConversation.appendChild(div);
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      // await messagesReference.get().then(function (snapshot) {
+      //   console.log(snapshot.docs.data());
+      //   docs = snapshot;
+      //   lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      //   //console.log("last", lastVisible.data().message);
+
+      //   /////// WORKS
+      //   // snapshot.forEach(function (doc) {
+      //   //   const message = `<div class="messagee messagee-right">${doc.data().message}</div>`;
+      //   //   secondmessage.innerHTML += message;
+      //   // });
+      //   //////
+
+      //   snapshot.forEach(function (doc) {
+      //     console.log(doc.data().message);
+      //     if (
+      //       doc.data().from === userChats.username ||
+      //       doc.data().to === user.displayName
+      //     ) {
+      //       const message = `<div class="messagee">${doc.data().message}</div>`;
+      //       divMessagesLeft.innerHTML += message;
+      //     } else {
+      //       const message = `<div class="messagee messagee-right">${
+      //         doc.data().message
+      //       }</div>`;
+      //       secondmessage.innerHTML += message;
+      //     }
+      //   });
+      // });
+    } else {
+      console.log("Not logged in");
+    }
+  });
+}
 
 let chatsCollectionSize;
-
 const getChatRooms = async () => {
   firebase.auth().onAuthStateChanged(async function (user) {
-    let lastVisible;
-    // Commented postsArray and put it above global
-    // let chatsArray = [];
     let docs;
+    let lastVisible;
     let chatsReference;
 
     if (user) {
@@ -239,18 +400,16 @@ const getChatRooms = async () => {
         .firestore()
         .doc(`/chats/${user.displayName}`)
         .collection("chats")
-        //.orderBy("lastUpdated");
+        .orderBy("lastUpdated", "desc");
 
-        await chatsReference
-        .get()
-        .then((snapshot) => {
-          docs = snapshot;
-          chatsCollectionSize = snapshot.size;
-          lastVisible = snapshot.docs[snapshot.docs.length - 1];
-          // strange behavior
-          console.log("last", lastVisible.data());
+      await chatsReference.get().then((snapshot) => {
+        docs = snapshot;
+        chatsCollectionSize = snapshot.size;
+        lastVisible = snapshot.docs[snapshot.docs.length - 1];
+        console.log("last", lastVisible.data());
       });
       docs["docs"].forEach((doc) => {
+        console.log(doc.data());
         chatsArray.push(doc.data());
       });
       chatsArray.forEach((chat) => {
@@ -260,10 +419,7 @@ const getChatRooms = async () => {
       console.log("Not logged in");
     }
   });
-}
-
-
-
+};
 
 
 //window.onload = toBottom;
@@ -284,75 +440,76 @@ function toBottom() {
 }
 
 // PRESS ENTER SEND MESSAGE
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     chatMessageText.addEventListener(
       "keyup",
       async function (e) {
-        if (e.keyCode === 13) {
-          if (!chatMessageText.textContent.trim()) {
-            window.alert("type message");
-            return;
-          }
-          const chatReference = await firebase
-            .firestore()
-            .collection(`/chats/${user.displayName}/chats/${chatWithObject.username}/messages`)
-            .add({
-              message: chatMessageText.textContent,
-              from: user.displayName,
-              to: chatWithObject.username,
-              createdAt: new Date().toISOString(),
-            });
+        firebase.auth().onAuthStateChanged(async function (user) {
+          if (user) {
+            if (e.keyCode === 13) {
+              if (!chatMessageText.textContent.trim()) {
+                window.alert("type message");
+                return;
+              }
+              const chatReference = await firebase
+                .firestore()
+                .collection(
+                  `/chats/${user.displayName}/chats/${chatWithObject.username}/messages`
+                )
+                .add({
+                  message: chatMessageText.textContent,
+                  from: user.displayName,
+                  to: chatWithObject.username,
+                  createdAt: new Date(),
+                });
 
-          firebase
-            .firestore()
-            .doc(`/chats/${user.displayName}/chats/${chatWithObject.username}`)
-            .set({
-              lastMessage: chatMessageText.textContent,
-            }, { merge: true });
+              firebase
+                .firestore()
+                .doc(
+                  `/chats/${user.displayName}/chats/${chatWithObject.username}`
+                )
+                .set(
+                  {
+                    lastMessage: chatMessageText.textContent,
+                    lastUpdated: new Date(),
+                  },
+                  { merge: true }
+                )
+                .then(() => {
+                  console.log("Added message");
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
 
-          // reference child_added on call updateMessage
-          // collectionMessagesReference.onSnapshot(function (querySnapshot) {
-          //   querySnapshot.docChanges().forEach(function (change) {
-          //     console.log(change);
-    
-          //     const message = `<div class="messagee messagee-right">${change.doc.data().content}</div>`;
-          //     secondmessage.innerHTML += message;
-          //     if (change.type === "added") {
-          //       console.log("new message " + change.doc.data());
-          //       console.log(change.doc.data().content, change.doc.data().from);
-          //     }
-          //   })
-          // }, function (error) {
-          //   console.log(error);
-          // });
+              chatReference.onSnapshot(function (change) {
+                let div = document.createElement("div");
+                div.setAttribute("class", "messagee messagee-right");
+                div.textContent = change.data().message;
 
-          chatReference.onSnapshot(function (change) {
-            console.log(change.data());
-            const message = `<div class="messagee messagee-right">${
-              change.data().message
-            }</div>`;
-            secondmessage.innerHTML += message;
-    
-            if (change.type === "added") {
-              console.log("new message " + change.doc.data());
-              console.log(change.doc.data().message, change.doc.data().from);
+                chatSellerMessagesConversation.appendChild(div);
+
+                console.log(change.data());
+              });
+              chatMessageText.textContent = "";
             }
-          });
-          chatMessageText.textContent = "";
-        }
+          } else {
+            console.log("Not logged in");
+          }
+        });
       },
       function (error) {
         console.log(error);
       }
     );
   } else {
-    console.log("Not logged in");
+    window.location.href = "sign-in.html";
   }
 });
 
-// CLICK SEND, SEND MESSAGE 
-firebase.auth().onAuthStateChanged(function(user) {
+// CLICK SEND, SEND MESSAGE
+firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     sendMessageButton.addEventListener(
       "click",
@@ -363,7 +520,9 @@ firebase.auth().onAuthStateChanged(function(user) {
         }
         const chatReference = await firebase
           .firestore()
-          .collection(`/chats/${user.displayName}/chats/${chatWithObject.username}/messages`)
+          .collection(
+            `/chats/${user.displayName}/chats/${chatWithObject.username}/messages`
+          )
           .add({
             message: chatMessageText.textContent,
             to: chatWithObject.username,
@@ -371,40 +530,31 @@ firebase.auth().onAuthStateChanged(function(user) {
             createdAt: new Date().toISOString(),
           });
 
-          firebase
-            .firestore()
-            .doc(`/chats/${user.displayName}/chats/${chatWithObject.username}`)
-            .set({
+        firebase
+          .firestore()
+          .doc(`/chats/${user.displayName}/chats/${chatWithObject.username}`)
+          .set(
+            {
               lastMessage: chatMessageText.textContent,
-            }, { merge: true });
-
-        // reference child_added on call updateMessage
-        // collectionMessagesReference.onSnapshot(function (querySnapshot) {
-        //   querySnapshot.docChanges().forEach(function (change) {
-        //     console.log(change);
-    
-        //     const message = `<div class="messagee messagee-right">${change.doc.data().content}</div>`;
-        //     secondmessage.innerHTML += message;
-        //     if (change.type === "added") {
-        //       console.log("new message " + change.doc.data());
-        //       console.log(change.doc.data().content, change.doc.data().from);
-        //     }
-        //   })
-        // }, function (error) {
-        //   console.log(error);
-        // });
+              lastUpdated: new Date(),
+            },
+            { merge: true }
+          )
+          .then(() => {
+            console.log("Added message");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
         chatReference.onSnapshot(function (change) {
+          let div = document.createElement("div");
+          div.setAttribute("class", "messagee messagee-right");
+          div.textContent = change.data().message;
+
+          chatSellerMessagesConversation.appendChild(div);
+
           console.log(change.data());
-          const message = `<div class="messagee messagee-right">${
-            change.data().message
-          }</div>`;
-          secondmessage.innerHTML += message;
-    
-          if (change.type === "added") {
-            console.log("new message " + change.doc.data());
-            console.log(change.doc.data().message, change.doc.data().from);
-          }
         });
         chatMessageText.textContent = "";
       },
@@ -413,21 +563,18 @@ firebase.auth().onAuthStateChanged(function(user) {
       }
     );
   } else {
-    console.log("Not logged in");
+    // No user is signed in.
+    window.location.href = "sign-in.html";
   }
 });
-
-let numberOfImages = 0;
-let imagesArray = [];
 
 // SEND IMAGE MESSAGE
 function addImageToForm(e) {
   let files = e.target.files;
   if (files.length > 1) {
-    alert("You can only upload at most 1 files!");
+    alert("You can only send at most 1 file!");
     return;
   }
-  numberOfImages += files.length;
 
   for (let i = 0; i < files.length; i++) {
     let file = files[i];
@@ -435,49 +582,56 @@ function addImageToForm(e) {
     if (file) {
       const reader = new FileReader();
       reader.addEventListener("load", function (e) {
-        console.log(this);
 
         let imageFile = e.target;
 
-        const reference = firebase.storage().ref("chat_images/" + file.name);
-
-        let divDocument = document.createElement("div");
-        // let divDocumentClose = document.createElement("div");
         let image = document.createElement("img");
-
-        divDocument.setAttribute("class", "messagee messagee-right chat-image-sent");
-        // divDocumentClose.setAttribute("class", "id-document-close");
-        divDocument.addEventListener("click", function () {
-          divDocument.style.display = "none";
-          numberOfImages--;
-          const reference = firebase.storage().ref("chat_images/" + file.name);
-          reference.delete();
-          //.then(snapshot => snapshot.ref.getDownloadURL());
-        });
         image.setAttribute("class", "image-preview");
-        image.setAttribute("style", "width: inherit; height: inherit; border-radius: 20px;");
+        // image.setAttribute("style", "width: inherit; height: inherit; border-radius: 20px;");
         image.setAttribute("src", imageFile.result);
 
-        // divDocument.appendChild(divDocumentClose);
-        divDocument.appendChild(image);
-        secondmessage.appendChild(divDocument);
-      });
-      const reference = firebase.storage().ref("chat_images/" + file.name);
-      reference
+        const reference = firebase.storage().ref("chat_images/" + file.name);
+        reference
         .put(file)
         .then((snapshot) => snapshot.ref.getDownloadURL())
         .then((url) => {
-          //console.log(url);
-          imagesArray.push(url);
-          //window.alert(url);
+          // image.setAttribute("src", url);
+          console.log(url);
+        })
+        .catch((error) => {
+          console.log(error);
         });
+
+        let divDocument = document.createElement("div");
+        divDocument.setAttribute(
+          "class",
+          "messagee messagee-right chat-image-sent"
+        );
+
+        divDocument.appendChild(image);
+        chatSellerMessagesConversation.appendChild(divDocument);
+
+        divDocument.addEventListener("click", function () {
+          // open images big
+        });
+        divDocument.setAttribute("style", `background-size: cover; background-image:url(${imageFile.result})`);
+      });
+
       reader.readAsDataURL(file);
     } else {
-      image.style.display = null;
+      console.log("WTF not file");
     }
   }
 }
 
 inputFile.addEventListener("change", addImageToForm, false);
 
+window.onload = function() {
+  if(!window.location.hash) {
+      window.location = window.location + '#loaded';
+      window.location.reload();
+  }
+}
+
 getChatRooms();
+getMainChat();

@@ -11,42 +11,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 
-<body>
-  <div id="admin-main-popup-id" class="modal-general" style="display: none;">
+<!--MODALU UNDE SE PASTREAZA ISTORIA LA ADMINI-->
+<div id="popup-main-admins-id" class="modal-general" style="display: none;">
     <div class="modal-general-absolute">
-        <div class="admin-main-div-pop-up">
-
-            <div class="intro-to-admins-access">
-                <div id="admin-main-popup-photo-id" class="intro-to-admins-access-1"></div>
-                <div id="admin-main-popup-username-id" class="intro-to-admins-access-2"></div>
-            </div>
-
-            <div id="category-order-section-id" class="intro-to-order-general-game-info">
-                <div id="popup-sold-id" class="additional-order-game-info">
-                  <span id="popup-sold-span-id" class="additional-order-game-info-greyyy"></span>
-                </div>
-                <div id="popup-active-id" class="additional-order-game-info">
-                  <span class="additional-order-game-info-greyyy">active:</span>
-                </div>
-                <div id="popup-dispute-id" class="additional-order-game-info">
-                  <span class="additional-order-game-info-greyyy">dispute:</span>
-                </div>
-              </div>
-
-              <div class="fees-change">
-                <p class="fees-change-1">Fee</p>
-                <input class="fees-change-2" placeholder="change fees" autocomplete="off" maxlength="24">
-                <div class="fees-change-3"> 4.5% Fee </div>
-              </div>
-
-            <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
-                <div id="save-button" class="all-order-action-buttons">Save</div>
-                <div id="block-user-button" class="all-order-action-buttons">Block user</div>
-                <div id="cancel-button" class="all-order-action-buttons">Cancel</div>
-            </div>
+      <div class="history-order-main-div-pop-up">
+        <div class="main-intro-to-verification" style="border: 0;">
+          Order History
+          <div id="popup-cancel-button" class="close-modal"></div>
         </div>
+  
+        <div id="order-history-popup-id" class="history-order-main-list">
+          <div class="allordderaction">
+            <div id="popup-username-id" class="history-order-nickname"></div>
+            <div id="popup-action-id" class="history-order-nickname mn-change">did something<span>8 DAYS AGO</span></div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
+
+<body>
 
     <div class="container">
         <div class="admin-header">
@@ -54,7 +39,7 @@
                 <div class="logo"></div>
             </div>
             <div class="admin-admins-main">
-                <div class="name-admin">adminname</div>
+                <div class="name-admin"></div>
                 <div class="icon-admin"></div>
             </div>
         </div>
@@ -67,24 +52,26 @@
             <div id="support-button" class="general-navigation">Support</div>
             <div id="seller-verifications-button" class="general-navigation">Seller verifications</div>
             <div id="withdraws-button" class="general-navigation">Withdraws</div>
-            <div id="users-button" class="general-navigation general-navigation-selected">Users</div>
+            <div id="users-button" class="general-navigation">Users</div>
             <div id="add-category-button" class="general-navigation">Add category</div>
             <div id="add-slide-button" class="general-navigation">Add slide</div>
-            <div id="history" class="general-navigation">History</div>
+            <div id="history" class="general-navigation general-navigation-selected">History</div>
         </div>
 
             <div class="admin-content-nav">
-                
-                <div id="main-users-id" class="main-admins-div">
-                    <div class="intro-to-real-transaction" style="margin-top: 0 ;">
-                        <div class="intro-to-real-transaction-1">Users:</div>
-                        <div class="space-admin">
-                            <input id="search-bar-id" class="search-bar-user-admin" placeholder="Search user" autocomplete="off" maxlength="24">
-                        </div>
+                <div id="main-admins-list-id" class="main-admins-div">
+                    <!-- <div class="admins-admin">
+                        <div class="admins-admin-1"></div>
+                        <div class="admins-admin-2">adminsname</div>
                     </div>
-                    <div id="transactions-main-id" class="transactions-admin-mm-div">
-                      
+                    <div class="admins-admin">
+                        <div class="admins-admin-1"></div>
+                        <div class="admins-admin-2">adminsname</div>
                     </div>
+                    <div class="admins-admin">
+                        <div class="admins-admin-1"></div>
+                        <div class="admins-admin-2">adminsname</div>
+                    </div> -->
                 </div>
             </div>
 
@@ -120,7 +107,7 @@
   </script>
 
   <script src="./static/global.js"></script>
-  <script src="./static/admin-users.js"></script>
+  <script src="./static/admin-history.js"></script>
   <script src="./static/auth.js"></script>
   <!-- <script src="scripts/darktheme.js"></script> -->
 

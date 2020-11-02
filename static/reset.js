@@ -1,3 +1,7 @@
+(function (window, document, undefined) {
+
+  "use strict";
+
 const resetPassword = document.getElementById("reset-password-submit-button");
 const mailField = document.getElementById("reset-password-email");
 const signForm = document.querySelector(".content-sign-in");
@@ -18,3 +22,5 @@ const resetPasswordFunction = () => {
 };
 
 resetPassword.addEventListener('click', resetPasswordFunction);
+
+})(window, document);

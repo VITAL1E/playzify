@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    <link rel="stylesheet" href="./static/media-queries.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
 
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./static/style.css">
-  <link rel="stylesheet" href="./static/media-queries.css">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap"
-    rel="stylesheet">
-</head>
 
 <header>
   <!--
@@ -28,7 +28,7 @@
       <div class="first-header-div-child-1">
         <div class="logo"></div>
         <div class="logo-dark"></div>
-      </div>
+    </div>
       <div class="first-header-div-child-2">
         <a href="support.html"><div class="balance-button">S<div class="balance-support-550px">upport</div> </div></a>
         <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>0 USD</span></span></div></div>
@@ -37,7 +37,6 @@
             <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
         </div>
     </div>
-
     </div>
     <div class="second-header-blacked">
       <div class="second-header-div-container">
@@ -109,7 +108,7 @@
             <div class="comun-main-user-icons-header bell-icon">
               <div class="notification-point">3</div>
             </div>
-            <div class="comun-main-user-icons-header chat-icon"></div>
+            <div class="comun-main-user-icons-header chat-icon"> </div>
           </div>
         </div>
       </div>
@@ -118,112 +117,27 @@
 
 </header>
 
-<!-- MODALU CU FOLLOWERS -->
-<div id="popup-followers-id" class="modal-general" style="display: none;">
-  <div class="modal-general-absolute">
-      <div class="history-order-main-div-pop-up">
-          <div class="main-intro-to-verification">
-              Followers
-              <div id="close-followers-modal-id" class="close-modal"></div>
-          </div>
-
-          <div class="history-order-main-list">
-            <div id="followers-list-id" class="main-followers-list">
-              <!-- <div class="main-followers-list-2">
-                <div class="main-followers-list-3">
-                  <div class="main-followers-img"></div>
-                  <div class="main-followers-text">cv nume</div>
-                </div>
-                <div class="follow-for-modal-btn">follow</div>
-              </div>
-
-              <div class="main-followers-list-2">
-                <div class="main-followers-list-3">
-                  <div class="main-followers-img"></div>
-                  <div class="main-followers-text">cv nume</div>
-                </div>
-                <div class="unfollow-for-modal-btn">unfollow</div>
-              </div> -->
-            </div>
-
-          </div>
-      </div>
-  </div>
-</div>
-
-<div id="popup-reviews-id" class="modal-general" style="display: none;">
-  <div class="modal-general-absolute">
-      <div class="history-order-main-div-pop-up">
-          <div class="main-intro-to-verification" style="border: 0;">
-              Reviews
-              <div id="close-reviews-modal-id" class="close-modal"></div>
-          </div>
-
-          <div id="reviews-list-id" class="history-order-main-list">
-              <!-- <div class="allordderaction reviews-changes">
-                  <div class="history-order-nickname">marioo</div>
-                  <div class="history-order-nickname mn-change">paid for order<span>8 DAYS AGO</span></div>
-                  <div class="positive-review"></div>
-                  <div class="negative-review" style="display: none;"></div>
-              </div> -->
-          </div>
-      </div>
-  </div>
-</div>
 
 <body>
 
-  <div class="container">
-
-    <div class="user-container">
-
-      <div id="settings-div-id" class="settings-div" style="display: none;"></div>
-      <div id="message-div-id" class="settings-div message-user-seller" style="display: none;"></div>
-
-      <div class="user-profile-info">
-        <div id="main-seller-image-id" class="main-seller-img">
-          <!--Cand user ii online-->
-          <!-- <div class="main-seller-is-online" style="display: none;">on</div> -->
-          <!--Cand user ii offline-->
-          <!-- <div class="main-seller-is-online main-seller-is-offline">off</div> -->
-        </div>
-        <div class="user-name-container">
-          <p id="user-nickname-id" class="nickname">
-            <!-- <span class="verified-user"></span> -->
-          </p>
-          <div class="follow-section">
-            <div id="follow-button-id" class="follow-button" style="display: none;">follow</div>
-            <div id="unfollow-button-id" class="follow-button" style="display: none;">unfollow</div>
-            <div id="followers-id" class="follower-number-222 follower-number"></div>
-          </div>
-        </div>
-      </div>
-
-      <div id="user-reviews-id" class="user-reviews">
-        <p class="success-rate-number">95%
-          <span class="additional-rate-info">Success Rate out of 141 Orders</span>
+  <div class="container-for-limited-width">
+    <div class="main-for-limited-width">
+      <div class="seller-verification-main-div">
+        <p class="main-intro-to-verification">
+          Contact
         </p>
 
-        <div class="rate-line">
-          <div class="green-line"></div>
-          <div class="white-line"></div>
-          <div class="red-line"></div>
+        <div class="verification-main-input-div">
+          <p class="verification-main-text">Contact</p>
+          <div id="game-post-link-order-id" class="all-text-info-order">hi@zifyplay.com</div>
+        </div>
+
+        <div class="verification-main-input-div" style="margin-bottom: 25px;">
+          <p class="verification-main-text">Support</p>
+          <div id="game-post-link-order-id" class="all-text-info-order">support@zifyplay.com</div>
         </div>
       </div>
     </div>
-
-    <div class="user-switcher">
-      <div id="selling-button-id" class="switch-1 switch-1-selected">SELLING</div>
-      <div id="about-button-id" class="switch-1">ABOUT</div>
-    </div>
-
-    <div id="about-text-id" class="about-text" style="display: none;">
-    </div>
-
-    <div id="product-list-selling-id" class="product-list-home"></div>
-
-
-    <div id="selling-text-id" class="no-something" style="display: none;">there are no items</div>
   </div>
 
   <footer>
@@ -261,7 +175,6 @@
           </a>
         </div>
       </div>
-
     </div>
   </footer>
 
@@ -269,12 +182,14 @@
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
 
   <!-- TODO: Add SDKs for Firebase products that you want to use
-       https://firebase.google.com/docs/web/setup#available-libraries -->
+     https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
 
   <script>
     // Your web app's Firebase configuration
@@ -294,7 +209,6 @@
   </script>
 
   <script src="./static/global.js"></script>
-  <script src="./static/user.js"></script>
   <script src="./static/auth.js"></script>
   <script src="./static/darktheme.js"></script>
 

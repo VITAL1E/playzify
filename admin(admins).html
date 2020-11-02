@@ -12,28 +12,28 @@
 </head>
 
 <!--MODALU CU POPUP UNDE ADMIN PRINCIPAL ALEGE UNDE POATE INTRA ALTI ADMINI-->
-<div class="modal-general" style="display: none;">
+<div id="popup-main-admins-id" class="modal-general" style="display: none;">
     <div class="modal-general-absolute">
         <div class="admin-main-div-pop-up">
 
             <div class="intro-to-admins-access">
-                <div class="intro-to-admins-access-1"></div>
-                <div class="intro-to-admins-access-2">adminsName</div>
+                <div id="popup-photo-id" class="intro-to-admins-access-1"></div>
+                <div id="popup-username-id" class="intro-to-admins-access-2"></div>
             </div>
 
             <div class="type-of-access-admin">
-                <div class="type-of-access-admin-1 type-of-access-admin-active">Admins</div>
-                <div class="type-of-access-admin-1">Support</div>
-                <div class="type-of-access-admin-1">Seller Verifications</div>
-                <div class="type-of-access-admin-1">Withdraws</div>
-                <div class="type-of-access-admin-1">Users</div>
-                <div class="type-of-access-admin-1">Add category</div>
-                <div class="type-of-access-admin-1">Add slide</div>
+                <div id="popup-admins-id" class="type-of-access-admin-1">Admins</div>
+                <div id="popup-support-id" class="type-of-access-admin-1">Support</div>
+                <div id="popup-seller-verifications-id" class="type-of-access-admin-1">Seller Verifications</div>
+                <div id="popup-withdraws-id" class="type-of-access-admin-1">Withdraws</div>
+                <div id="popup-users-id" class="type-of-access-admin-1">Users</div>
+                <div id="popup-add-category-id" class="type-of-access-admin-1">Add category</div>
+                <div id="popup-add-slide-id" class="type-of-access-admin-1">Add slide</div>
             </div>
 
             <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
-                <div class="all-order-action-buttons">Save</div>
-                <div class="all-order-action-buttons">Cancel</div>
+                <div id="popup-save-button" class="all-order-action-buttons">Save</div>
+                <div id="popup-cancel-button" class="all-order-action-buttons">Cancel</div>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
                 <div class="logo"></div>
             </div>
             <div class="admin-admins-main">
-                <div class="name-admin">adminname</div>
+                <div class="name-admin"></div>
                 <div class="icon-admin"></div>
             </div>
         </div>
@@ -64,11 +64,12 @@
             <div id="users-button" class="general-navigation">Users</div>
             <div id="add-category-button" class="general-navigation">Add category</div>
             <div id="add-slide-button" class="general-navigation">Add slide</div>
+            <div id="history" class="general-navigation">History</div>
         </div>
 
             <div class="admin-content-nav">
-                <div class="main-admins-div">
-                    <div class="admins-admin">
+                <div id="main-admins-list-id" class="main-admins-div">
+                    <!-- <div class="admins-admin">
                         <div class="admins-admin-1"></div>
                         <div class="admins-admin-2">adminsname</div>
                     </div>
@@ -79,7 +80,7 @@
                     <div class="admins-admin">
                         <div class="admins-admin-1"></div>
                         <div class="admins-admin-2">adminsname</div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 

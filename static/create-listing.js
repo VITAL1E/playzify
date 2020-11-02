@@ -3,6 +3,8 @@ let inputFile = document.getElementById("addImg1");
 
 let addItemButton = document.getElementById("create-listing-add-item-id");
 
+let userCreateListing = {};
+
 function onSelectChangeCategoryType() {
   let categoryType = document.getElementById("create-listing-category-type");
   let categoryTypeOption =
@@ -36,6 +38,30 @@ function onSelectChangeGameDelivery() {
   return gameDeliveryOption;
 }
 
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+    // User is signed in.
+    let usernameVerification = firebase.auth().currentUser.displayName;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(usernameVerification)
+      .get()
+      .then((snapshot) => {
+        console.log(snapshot.data());
+        userCreateListing = snapshot.data();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    console.log(usernameVerification);
+    console.log("signed");
+  } else {
+    // No user is signed in.
+    console.log("Not signed");
+  }
+});
+
 let numberOfImages = 0;
 let imagesArray = [];
 
@@ -57,7 +83,7 @@ function addImageToForm(e) {
 
         let imageFile = e.target;
 
-        const reference = firebase.storage().ref("game_images/" + file.name);
+        //const reference = firebase.storage().ref("game_images/" + file.name);
 
         let divDocument = document.createElement("div");
         let divDocumentClose = document.createElement("div");
@@ -68,10 +94,12 @@ function addImageToForm(e) {
         divDocumentClose.addEventListener("click", function () {
           divDocument.style.display = "none";
           numberOfImages--;
-          const reference = firebase.storage().ref("game_images/" + file.name);
-          reference
-            .delete();
-            //.then(snapshot => snapshot.ref.getDownloadURL());
+          // it might not work because of username
+          const reference = firebase
+            .storage()
+            .ref(`${username}/game_images/` + file.name);
+          reference.delete();
+          //.then(snapshot => snapshot.ref.getDownloadURL());
         });
         image.setAttribute("class", "image-preview");
         image.setAttribute(
@@ -87,12 +115,12 @@ function addImageToForm(e) {
       const reference = firebase.storage().ref("game_images/" + file.name);
       reference
         .put(file)
-        .then(snapshot => snapshot.ref.getDownloadURL())
-        .then(url => {
+        .then((snapshot) => snapshot.ref.getDownloadURL())
+        .then((url) => {
           //console.log(url);
           imagesArray.push(url);
           //window.alert(url);
-         });
+        });
       reader.readAsDataURL(file);
     } else {
       image.style.display = null;
@@ -106,75 +134,89 @@ function getImageURLsFromArray(...imagesArray) {
 }
 
 function addItemValidation() {
-  let gameTitle = document.getElementById("create-listing-title").value;
-  let gamePrice = document.getElementById("create-listing-price").value;
-  let gameQuantity = document.getElementById("create-listing-quantity").value;
-  let gameDescription = document.getElementById("create-listing-description");
-  let gameDescriptionContent = gameDescription.textContent;
-  console.log(gameDescriptionContent);
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      let gameTitle = document.getElementById("create-listing-title").value;
+      let gamePrice = document.getElementById("create-listing-price").value;
+      let gameQuantity = document.getElementById("create-listing-quantity")
+        .value;
+      let gameDescription = document.getElementById(
+        "create-listing-description"
+      );
+      let gameDescriptionContent = gameDescription.textContent;
+      console.log(gameDescriptionContent);
 
-  let categoryTypeOption = onSelectChangeCategoryType();
-  let gameTypeOption = onSelectChangeGameType();
-  let gameServerOption = onSelectChangeGameServer();
-  let gameGarantyOption = onSelectChangeGameGaranty();
-  let gameDeliveryOption = onSelectChangeGameDelivery();
+      let categoryTypeOption = onSelectChangeCategoryType();
+      let gameTypeOption = onSelectChangeGameType();
+      let gameServerOption = onSelectChangeGameServer();
+      let gameGarantyOption = onSelectChangeGameGaranty();
+      let gameDeliveryOption = onSelectChangeGameDelivery();
 
-  if (
-    categoryTypeOption != "" &&
-    gameServerOption != "" &&
-    gameGarantyOption != "" &&
-    gameDeliveryOption != "" &&
-    gameTypeOption != "" &&
-    gameTitle != "" &&
-    !isNaN(gamePrice) &&
-    gamePrice > 0 &&
-    gamePrice < 10000 &&
-    !isNaN(gameQuantity) &&
-    gameQuantity > 0 &&
-    gameQuantity < 100 &&
-    gameDescriptionContent != ""
-  ) {
-    let gameData = {
-      postId: "",
-      // solve with postId
-      category: categoryTypeOption,
-      type: gameTypeOption,
-      title: gameTitle,
-      price: gamePrice,
-      images: getImageURLsFromArray(...imagesArray),
-      quantity: gameQuantity,
-      description: gameDescriptionContent,
-      server: gameServerOption,
-      garanty: gameGarantyOption,
-      delivery: gameDeliveryOption,
-      createdAt: new Date().toISOString()
-    };
+      if (
+        (categoryTypeOption != "" ||
+          gameServerOption != "" ||
+          gameGarantyOption != "" ||
+          gameDeliveryOption != "" ||
+          gameTypeOption != "" ||
+          gameTitle != "" ||
+          !isNaN(gamePrice) ||
+          gamePrice > 0 ||
+          gamePrice < 10000 ||
+          !isNaN(gameQuantity) ||
+          gameQuantity > 0 ||
+          gameQuantity < 100 ||
+          gameDescriptionContent != "") &&
+        userCreateListing.verified !== true
+      ) {
+        let gameData = {
+          postId: "",
+          seller: user.displayName,
+          sellerPhoto: user.photoURL,
+          category: categoryTypeOption,
+          type: gameTypeOption,
+          title: gameTitle,
+          price: gamePrice,
+          images: getImageURLsFromArray(...imagesArray),
+          quantity: gameQuantity,
+          description: gameDescriptionContent,
+          server: gameServerOption,
+          garanty: gameGarantyOption,
+          delivery: gameDeliveryOption,
+          createdAt: new Date().toISOString(),
+        };
 
-    let gamesReference = firebase.firestore().collection("games").doc();
+        let gamesReference = firebase.firestore().collection("games").doc();
 
-    gamesReference.set(gameData)
-    .then(function() {
-      // console.log("Game ID is " + gamesReference.id);
-      gamesReference.set({
-        postId: gamesReference.id
-      }, { merge: true });
-    })
-    .then(function (error) {
-      if (error) {
-        let errorMessage = error.message;
-        console.log(errorMessage);
-        window.alert("Message " + errorMessage);
+        gamesReference
+          .set(gameData)
+          .then(function () {
+            gamesReference.set(
+              {
+                postId: gamesReference.id,
+              },
+              { merge: true }
+            );
+          })
+          // CHANGED .then -> .catch
+          .catch(function (error) {
+            if (error) {
+              let errorMessage = error.message;
+              console.log(errorMessage);
+              window.alert("Message " + errorMessage);
+            } else {
+              console.log("Success");
+              window.location.href = "homepage.html";
+            }
+          });
       } else {
-        console.log("Success");
-        window.location.href = "index-logged-in.html";
+        window.alert("All fields required");
+        window.location.reload(false);
       }
-    });
-  } else {
-    window.alert("All fields required");
-    window.location.reload(false); 
-  }
+    } else {
+      console.log("fuck off");
+    }
+  });
 }
 
 inputFile.addEventListener("change", addImageToForm, false); // false, inner div first then outter handled
 addItemButton.addEventListener("click", addItemValidation, false);
-

@@ -30,7 +30,7 @@
     </div>
       <div class="first-header-div-child-2">
         <a href="support.html"><div class="balance-button">S<div class="balance-support-550px">upport</div> </div></a>
-        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>45 USD</span></span></div></div>
+        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>0 USD</span></span></div></div>
         <div class="user-logged-out-header-placeholder">
             <div class="user-icon-2"></div>
             <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
@@ -105,7 +105,7 @@
           <div class="user-logged-in-main-icons">
             <div class="comun-main-user-icons-header favorites-icon"> </div>
             <div class="comun-main-user-icons-header bell-icon">
-              <div class="notification-point">3</div>
+              <div class="notification-point"></div>
             </div>
             <div class="comun-main-user-icons-header chat-icon"> </div>
           </div>
@@ -118,7 +118,7 @@
 
 <body>
 
-  <div class="modal-general" style="display: none;">
+  <div id="request-withdraw-popup-id" class="modal-general" style="display: none;">
     <div class="modal-general-absolute">
       <div class="history-order-main-div-pop-up">
         <div class="main-intro-to-verification">
@@ -129,17 +129,17 @@
 
           <div class="verification-main-input-div">
             <p class="verification-main-text">Amount</p>
-            <input class="verification-main-input" placeholder="type amount" autocomplete="off" maxlength="24">
+            <input id="withdraw-amount-id" class="verification-main-input" placeholder="type amount" autocomplete="off" maxlength="24">
           </div>
 
           <div class="verification-main-input-div">
             <p class="verification-main-text">Paypal email</p>
-            <input class="verification-main-input" placeholder="type email" autocomplete="off" maxlength="24">
+            <input id="withdraw-email-id" class="verification-main-input" placeholder="type email" autocomplete="off" maxlength="24">
           </div>
 
           <div class="main-order-action-buttons mmarginn" style="border-bottom: 0; border-top: 0;">
-            <div class="all-order-action-buttons">Withdraw</div>
-            <div class="all-order-action-buttons">Cancel</div>
+            <div id="withdraw-button-id" class="all-order-action-buttons">Withdraw</div>
+            <div id="cancel-button-id" class="all-order-action-buttons">Cancel</div>
           </div>
 
         </div>
@@ -154,15 +154,15 @@
               <div class="money-details">
                   <div class="your-balance-number">
                       <span class="rn-balance">Your balance:</span>
-                      56 EU
+                      <!-- 56 EU -->
                   </div>
 
                   <div class="your-balance-number">
                       <span class="rn-balance">Money on hold:</span>
-                      11 EU
+                      <!-- 11 EU -->
                   </div>
               </div>
-              <div class="request-withdraw">Request Withdraw</div>
+              <div id="request-withdraw-button-id" class="request-withdraw">Request Withdraw</div>
           </div>
       </div>
 
@@ -172,23 +172,23 @@
               <div class="arrow-drop-down-games-main">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-drop-down"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </div>
-              <select name="cars" class="drop-dawn-add-game-select">
-                  <option value="Accounts">All transactions</option>
-                  <option value="GameCoins">Withdraw</option>
-                  <option value="Items">Sold</option>
-                  <option value="Boosting">Refund</option>
-                  <option value="Boosting">Paid</option>
+              <select id="select-transactions-id" name="cars" class="drop-dawn-add-game-select" onchange="getOnSelectTransactionsChange();">
+                  <option id="options-all-transactions-id" value="All">All transactions</option>
+                  <option id="options-withdraw-id" value="Withdraw">Withdraw</option>
+                  <option id="options-sold-id" value="Sold">Sold</option>
+                  <option id="options-refund-id" value="Refund">Refund</option>
+                  <option id="options-paid-id" value="Paid">Paid</option>
               </select>
           </div>
       </div>
 
-      <div class="transactions-main-divs-intro">
+      <div id="transactions-main-div-id" class="transactions-main-divs-intro">
 
 
-          <div class="no-something" style="display: none;">there is no something</div>
+          <div id="there-is-nothing-id" class="no-something" style="display: none;">there is no something</div>
 
 
-          <div class="transaction">
+          <!-- <div class="transaction">
               <div class="transaction-sign"></div>
               <div class="transaction-info-all" style="padding-left: 0; border: 0;">
                   <div class="transaction-info-all-2">
@@ -217,9 +217,9 @@
                       <span class="transaction-info-all-span">3m ago</span>
                   </div>
               </div>
-          </div>
+          </div> -->
 
-          <div class="transaction">
+          <!-- <div class="transaction">
               <div class="transaction-sign transaction-sign-minus"></div>
               <div class="transaction-info-all" style="padding-left: 0; border: 0;">
                   <div class="transaction-info-all-2">
@@ -248,9 +248,11 @@
                       <span class="transaction-info-all-span">10m ago</span>
                   </div>
               </div>
-          </div>
+          </div> -->
 
-          <div class="transaction">
+
+
+          <!-- <div class="transaction">
               <div class="transaction-sign transaction-sign-check"></div>
               <div class="transaction-info-all" style="padding-left: 0; border: 0;">
                   <div class="transaction-info-all-2">
@@ -279,9 +281,9 @@
                       <span class="transaction-info-all-span">1h ago</span>
                   </div>
               </div>
-          </div>
+          </div> -->
 
-          <div class="transaction">
+          <!-- <div class="transaction">
               <div class="transaction-sign transaction-sign-minus"></div>
               <div class="transaction-info-all" style="padding-left: 0; border: 0;">
                   <div class="transaction-info-all-2">
@@ -310,9 +312,9 @@
                       <span class="transaction-info-all-span">1h ago</span>
                   </div>
               </div>
-          </div>
-      </div>
+          </div> -->
 
+      </div>
 
   </div>
   </div>
@@ -328,11 +330,29 @@
       </div>
       <div class="footer-logo"></div>
       <div class="usefull-footer-links">
-        <div class="usefull-footer-text">Support</div>
-        <div class="usefull-footer-text">How to buy</div>
-        <div class="usefull-footer-text">Reviews</div>
-        <div class="usefull-footer-text">About Us</div>
-        <div class="usefull-footer-text">Guaranty</div>
+        <div class="usefull-footer-text">
+          <a href="footer(contact).html">
+            <div>Contact</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(about-us).html">
+            <div>About Us</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(terms).html">
+            <div>Terms</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(privacy).html">
+            <div>Privacy</div>
+          </a>
+        </div>
       </div>
     </div>
   </footer>
@@ -367,6 +387,7 @@
 
   <script src="./static/global.js"></script>
   <script src="./static/auth.js"></script>
+  <script src="./static/balance.js"></script>
   <script src="./static/darktheme.js"></script>
 </body>
 

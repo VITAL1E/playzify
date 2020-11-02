@@ -12,22 +12,22 @@
 </head>
 
 <!--Modalu unde confirmi ca ai facut withdraw la tranzactiile pending-->
-<div class="modal-general" style="display: none;">
+<div id="popup-withdraw-id" class="modal-general" style="display: none;">
     <div class="modal-general-absolute">
         <div class="admin-main-div-pop-up">
 
             <div class="intro-to-admins-access">
-                <div class="intro-to-admins-access-1"></div>
-                <div class="intro-to-admins-access-2">sellerName</div>
+                <div id="popup-image-id" class="intro-to-admins-access-1"></div>
+                <div id="popup-username-id" class="intro-to-admins-access-2"></div>
             </div>
 
             <div class="general-divv-pop-up-admin">
-                <div class="addmmin-amount">Amount: 45 EU</div>
+                <div id="popup-amount-id" class="addmmin-amount">Amount: </div>
             </div>
 
             <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
-                <div class="all-order-action-buttons">Done</div>
-                <div class="all-order-action-buttons">Cancel</div>
+                <div id="popup-done-button-id" class="all-order-action-buttons">Done</div>
+                <div id="popup-cancel-button-id" class="all-order-action-buttons">Cancel</div>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
                 <div class="logo"></div>
             </div>
             <div class="admin-admins-main">
-                <div class="name-admin">adminname</div>
+                <div class="name-admin"></div>
                 <div class="icon-admin"></div>
             </div>
         </div>
@@ -58,6 +58,8 @@
             <div id="users-button" class="general-navigation">Users</div>
             <div id="add-category-button" class="general-navigation">Add category</div>
             <div id="add-slide-button" class="general-navigation">Add slide</div>
+            <div id="history" class="general-navigation">History</div>
+
         </div>
 
             <div class="admin-content-nav">
@@ -68,17 +70,18 @@
                             <div class="arrow-drop-down-games-main">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-drop-down"><polyline points="9 18 15 12 9 6"></polyline></svg>
                             </div>
-                            <select name="Transactions" class="drop-dawn-add-game-select">
+                            <select id="select-withdraws-id" name="Transactions" class="drop-dawn-add-game-select">
                                 <option value="Pending">Pending</option>
                                 <option value="Done">Done</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="transactions-admin-mm-div">
+                    <div id="div-withdraws-list-id" class="transactions-admin-mm-div">
 
+                      
                         <!--Tranzactia cand admin o acceptat withdraw-->
-                        <div class="transaction cc-cursor">
+                        <!-- <div class="transaction cc-cursor">
                             <div class="transaction-sign transaction-sign-check"></div>
                             <div class="transaction-info-all" style="padding-left: 0; border: 0;">
                                 <div class="transaction-info-all-2">
@@ -107,11 +110,14 @@
                                     <span class="transaction-info-all-span">1h ago</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+
+
+
 
 
                         <!--Tranzactia cand admin o primit cerere de withdraw de la vinzator-->
-                        <div class="transaction cc-cursor">
+                        <!-- <div class="transaction cc-cursor">
                             <div class="transaction-sign"></div>
                             <div class="transaction-info-all" style="padding-left: 0; border: 0;">
                                 <div class="transaction-info-all-2">
@@ -140,7 +146,7 @@
                                     <span class="transaction-info-all-span">1h ago</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

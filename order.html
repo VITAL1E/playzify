@@ -31,7 +31,7 @@
     </div>
       <div class="first-header-div-child-2">
         <a href="support.html"><div class="balance-button">S<div class="balance-support-550px">upport</div> </div></a>
-        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>45 USD</span></span></div></div>
+        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>0 USD</span></span></div></div>
         <div class="user-logged-out-header-placeholder">
             <div class="user-icon-2"></div>
             <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
@@ -161,6 +161,23 @@
   </div>
 </div>
 
+<!--POP-UP-DISPUTE-->
+<div id="pop-up-order-dispute" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="all-mini-main-div-pop-up">
+      <div class="question-pop-intro-all">Are you sure you want to dispute this order?</div>
+      <div class="close-modal"></div>
+      <div id="dispute-pop-div-id" class="cont-dispute-pop-div">
+        <p id="dispute-content-explanation-id" contenteditable="true" class="cont-dispute-pop" placeholder="type explanation" spellcheck="false"></p>
+      </div>
+      <div id="sure-dispute-order-confirmation-id" class="main-order-action-buttons" style="border: 0;">
+        <div id="sure-dispute-order-yes" class="all-order-action-buttons">Dispute</div>
+        <div id="sure-dispute-order-no" class="all-order-action-buttons">Cancel</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--POP-UP-DELIVERY-->
 <div id="pop-up-delivery" class="modal-general" style="display: none;">
   <div class="modal-general-absolute">
@@ -176,7 +193,7 @@
         <div class="verification-main-input-div">
           <p class="verification-main-text">Account ID</p>
           <input id="delivery-account-id" class="verification-main-input" placeholder="type account id" autocomplete="off" maxlength="24">
-          <div class="error-delivery"> some error </div>
+          <div class="error-delivery" style="display: none;"> some error </div>
         </div>
 
         <div class="verification-main-input-div">
@@ -240,7 +257,7 @@
 
         <div class="verification-main-input-div">
           <p class="verification-main-text">Add a photo with your item (optional)</p>
-          <div class="row-of-id-photos">
+          <div id="delivery-popup-row-of-photos-id" class="row-of-id-photos">
             <div class="two1 two2" id="addImgLabel1">
               <label for="addImg1" class="input-label inputLabelCss">
                 <div class="photosvg">
@@ -255,9 +272,9 @@
                 accept=".png, .jpg, .jpeg" style="display:none" multiple="">
             </div>
 
-            <div class="id-document id-document-2">
+            <!-- <div class="id-document id-document-2">
               <div class="id-document-close"></div>
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -340,8 +357,6 @@
             <div id="order-refunded-id" class="all-order-status-divss refunded-disputed-refused" style="display:none">R<span>efunded</span></div>                 
           </div>
         </div>
-
-
 
         <!-- UNCOMMENT DELIVERED ITEM DIV -->
         <!-- <div class="verification-main-input-div">
@@ -513,12 +528,12 @@
 
         <div class="verification-main-input-div">
           <p class="verification-main-text">Item price (EU):</p>
-          <div id="game-price-order-id" class="all-text-info-order">45 EU</div>
+          <div id="game-price-order-id" class="all-text-info-order"></div>
         </div>
 
         <div class="verification-main-input-div">
           <p class="verification-main-text">Quantity:</p>
-          <div id="game-quantity-order-id" class="all-text-info-order">3</div>
+          <div id="game-quantity-order-id" class="all-text-info-order"></div>
         </div>
 
         <div class="verification-main-input-div">
@@ -545,11 +560,29 @@
       </div>
       <div class="footer-logo"></div>
       <div class="usefull-footer-links">
-        <div class="usefull-footer-text">Support</div>
-        <div class="usefull-footer-text">How to buy</div>
-        <div class="usefull-footer-text">Reviews</div>
-        <div class="usefull-footer-text">About Us</div>
-        <div class="usefull-footer-text">Guaranty</div>
+        <div class="usefull-footer-text">
+          <a href="footer(contact).html">
+            <div>Contact</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(about-us).html">
+            <div>About Us</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(terms).html">
+            <div>Terms</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(privacy).html">
+            <div>Privacy</div>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -565,6 +598,8 @@
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
 
   <script>
     // Your web app's Firebase configuration
@@ -583,9 +618,9 @@
     firebase.analytics();
   </script>
 
-  <script src="./static/global.js"></script>
+  <!-- <script src="./static/global.js"></script> -->
   <script src="./static/order.js"></script>
-  <script src="./static/auth.js"></script>
+  <!-- <script src="./static/auth.js"></script> -->
   <script src="./static/darktheme.js"></script>
 
 </body>

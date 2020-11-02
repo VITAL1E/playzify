@@ -12,12 +12,12 @@
 </head>
 
 <!--Modalu unde confirmi ca ai facut withdraw la tranzactiile pending-->
-<div class="modal-general" style="display: none;">
+<div id="popup-add-slide-id" class="modal-general" style="display: none;">
     <div class="modal-general-absolute">
         <div class="admin-main-div-pop-up">
 
             <div class="main-intro-to-verification">
-                Add category
+                Add slide
             </div>
 
             <div class="verification-main-input-div">
@@ -49,8 +49,8 @@
             </div>
 
             <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
-                <div class="all-order-action-buttons">Done</div>
-                <div class="all-order-action-buttons">Cancel</div>
+                <div id="done-button-id" class="all-order-action-buttons">Done</div>
+                <div id="cancel-button-id" class="all-order-action-buttons">Cancel</div>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@
                 <div class="logo"></div>
             </div>
             <div class="admin-admins-main">
-                <div class="name-admin">adminname</div>
+                <div class="name-admin"></div>
                 <div class="icon-admin"></div>
             </div>
         </div>
@@ -81,23 +81,24 @@
             <div id="users-button" class="general-navigation">Users</div>
             <div id="add-category-button" class="general-navigation">Add category</div>
             <div id="add-slide-button" class="general-navigation general-navigation-selected">Add slide</div>
+            <div id="history" class="general-navigation">History</div>
         </div>
 
             <div class="admin-content-nav">
                 <div class="main-admins-div">
                     <div class="intro-to-real-transaction" style="margin-top: 0 ;">
                         <div class="intro-to-real-transaction-1">Slides:</div>
-                        <div class="admin-button-add" style="margin-right: 0px;">add</div>
+                        <div id="add-button-id" class="admin-button-add" style="margin-right: 0px;">add</div>
                     </div>
 
-                    <div class="main-slides-div-admn">
-                        <div class="sllidess-admin">
+                    <div id="slides-main-list-id" class="main-slides-div-admn">
+                        <!-- <div class="sllidess-admin">
                             <div class="sllidess-admin-1">
                                 <div class="sllidess-admin-2">2</div>
                                 <div class="sllidess-admin-3"></div>
                             </div>
                         </div>
-                        <div class="sllidess-admin"></div>
+                        <div class="sllidess-admin"></div> -->
                     </div>
                 </div>
             </div>

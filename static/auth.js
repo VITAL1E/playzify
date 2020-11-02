@@ -66,7 +66,6 @@ function signUp() {
     // errors.error = errors;
     console.log(errors);
 
-  let token;
   let userId;
   firebase
     .firestore()
@@ -88,19 +87,6 @@ function signUp() {
         displayName: usernameValue,
       });
     })
-    // .then((idToken) => {
-    //   token = idToken;
-    //   const userCredentials = {
-    //     username: usernameValue,
-    //     email: emailValue,
-    //     securityQuestion: securityQuestionTypeValue,
-    //     securityAnswer: securityQuestionAnswerValue,
-    //     createdAt: new Date().toISOString(),
-    //     userId,
-    //   };
-    //   console.log("reached return of firebase");
-    //   return firebase.firestore().doc(`/users/${usernameValue}`).set(userCredentials);
-    // })
     .then(() => {
       const userCredentials = {
         username: usernameValue,
@@ -108,6 +94,11 @@ function signUp() {
         securityQuestion: securityQuestionTypeValue,
         securityAnswer: securityQuestionAnswerValue,
         createdAt: new Date().toISOString(),
+        favorites: [],
+        followers: [],
+        description: "",
+        profilePicture: null,
+        verified: false,
         userId,
       };
       console.log("reached return of firebase");
@@ -119,7 +110,7 @@ function signUp() {
     .then(() => {
       // Have to WAIT a bit until `user` is added to `users` collection
       setTimeout(() => {
-        window.location.href = "index-logged-in.html";
+        window.location.href = "homepage.html";
       }, 500);
     })
     .catch((error) => {
@@ -186,7 +177,7 @@ function signIn() {
                 .catch((err) => {
                   console.log(err);
                 });
-              window.location.href = "index-logged-in.html";
+              window.location.href = "homepage.html";
             }
           })
           .catch((err) => {
@@ -279,7 +270,7 @@ function signUpWithGoogle() {
         }, 5000);
       } else {
         console.log("Login ");
-        window.location.href = "index-logged-in.html";
+        window.location.href = "homepage.html";
 
         // firebase
         //   .auth()
@@ -352,7 +343,7 @@ function signGoogle(username, userCredentials) {
   // });
   firebase.firestore().doc(`/users/${username}`).set(userCredentials);
 
-  window.location.href = "index-logged-in.html";
+  window.location.href = "homepage.html";
   console.log("You successfully signed up");
   console.log("Work method");
 }

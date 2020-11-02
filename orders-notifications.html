@@ -31,7 +31,7 @@
     </div>
       <div class="first-header-div-child-2">
         <a href="support.html"><div class="balance-button">S<div class="balance-support-550px">upport</div> </div></a>
-        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>45 USD</span></span></div></div>
+        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>0 USD</span></span></div></div>
         <div class="user-logged-out-header-placeholder">
             <div class="user-icon-2"></div>
             <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
@@ -106,7 +106,7 @@
           <div class="user-logged-in-main-icons">
             <div class="comun-main-user-icons-header favorites-icon"> </div>
             <div class="comun-main-user-icons-header bell-icon">
-              <div class="notification-point">3</div>
+              <div id="number-of-notifications-id" class="notification-point"></div>
             </div>
             <div class="comun-main-user-icons-header chat-icon"> </div>
           </div>
@@ -127,20 +127,74 @@
     </div>
 
       <div class="two-rows-notifications">
-        <div class="row-first-notification">
+        <!-- <div class="row-first-notification">
           <div class="filter-by-intro">Filter by</div>
           <div class="filter-div-with-filters">
             <div id="delivered-real-notifications-filters" class="real-notifications-filters switch-1-selected">Delivered</div>
+            <div id="accepted-real-notifications-filters" class="real-notifications-filters">Accepted</div>
             <div id="paid-real-notifications-filters" class="real-notifications-filters">Paid</div>
-            <div id="pending-real-notifications-filters" class="real-notifications-filters">Pending</div>
+            <div id="sold-real-notifications-filters" class="real-notifications-filters">Sold</div>
+            <div id="refunded-real-notifications-filters" class="real-notifications-filters">Refunded</div>
+            <div id="rejected-real-notifications-filters" class="real-notifications-filters">Rejected</div>
           </div>
-        </div>
+        </div> -->
         <div id="row-second-notification-id" class="row-second-notification">
 
-          <!-- <div class="real-notification-main-div real-notification-main-div-seen">
-            <div class="seller-round-image" style="margin: 0;">
-              <div class="seller-is-online">online</div>
+          <!-- NOTIFICARE CU FOLLOW DE LA GENERAL -->
+          <!-- <div class="real-notification-main-div">
+            <div class="seller-round-image seller-round-image-for-mini" style="margin: 0;">
+              <div class="seller-is-online"></div>
             </div>
+            <div class="main-div-name-price-notification main-div-name-price-notification-mini">
+              <div class="main-div-name-price-notification-real main-div-name-price-notification-real-mini">
+                <div class="name-notttfication name-notttfication-mini"><span class="mini-user-name">user</span> followed you <span class="mini-time">23m ago</span></div>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- NOTIFICARE CU REVIEW DE LA GENERAL -->
+          <!-- <div class="real-notification-main-div">
+            <div class="seller-round-image seller-round-image-for-mini" style="margin: 0;">
+              <div class="seller-is-online"></div>
+            </div>
+            <div class="main-div-name-price-notification main-div-name-price-notification-mini">
+              <div class="main-div-name-price-notification-real main-div-name-price-notification-real-mini">
+                <div class="name-notttfication name-notttfication-mini"><span class="mini-user-name">user</span> added this review <span class="review-mini">"good seller"</span> <span class="mini-time">23m ago</span></div>
+              </div>
+            </div>
+          </div> -->
+
+
+
+          <!-- NOTIFICARE CU REVIEW DE LA GENERAL -->
+          <!-- <div class="real-notification-main-div">
+            <div class="seller-round-image seller-round-image-for-mini" style="margin: 0;">
+              <div class="seller-is-online"></div>
+            </div>
+            <div class="main-div-name-price-notification main-div-name-price-notification-mini">
+              <div class="main-div-name-price-notification-real main-div-name-price-notification-real-mini">
+                <div class="name-notttfication name-notttfication-mini"><span class="mini-user-name">user</span> favorite your item <span class="mini-time">23m ago</span></div>
+              </div>
+            </div>
+          </div> -->
+
+
+
+          <!-- NOTIFICARE CU VERIFIED DE LA GENERAL -->
+          <!-- <div class="real-notification-main-div">
+            <div class="seller-round-image seller-round-image-for-mini seller-round-image-for-mini-zify" style="margin: 0;">
+            </div>
+            <div class="main-div-name-price-notification main-div-name-price-notification-mini">
+              <div class="main-div-name-price-notification-real main-div-name-price-notification-real-mini">
+                <div class="name-notttfication name-notttfication-mini">Congratulation, your seller account is verified, now you can post items to sell. <span class="mini-time">23m ago</span></div>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- <div class="real-notification-main-div real-notification-main-div-seen">
+            <div class="seller-round-image" style="margin: 0;"> -->
+              <!-- <div class="seller-is-online">online</div> -->
+            <!-- </div>
             <div class="general-someone-did-something">
               <p class="someone-did-something"><span>username</span> add to favorites your post</p>
             </div>
@@ -186,11 +240,29 @@
       </div>
       <div class="footer-logo"></div>
       <div class="usefull-footer-links">
-        <div class="usefull-footer-text">Support</div>
-        <div class="usefull-footer-text">How to buy</div>
-        <div class="usefull-footer-text">Reviews</div>
-        <div class="usefull-footer-text">About Us</div>
-        <div class="usefull-footer-text">Guaranty</div>
+        <div class="usefull-footer-text">
+          <a href="footer(contact).html">
+            <div>Contact</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(about-us).html">
+            <div>About Us</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(terms).html">
+            <div>Terms</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(privacy).html">
+            <div>Privacy</div>
+          </a>
+        </div>
       </div>
 
     </div>

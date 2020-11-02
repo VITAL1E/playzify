@@ -1,5 +1,4 @@
-const accountDetails = document.querySelector("#user-signed-in-username");
-const productsCount = document.querySelector(".products-count-home");
+let productsCount = document.getElementById("products-count-home-id");
 let filterButton = document.getElementsByClassName("filter-icon");
 let filterPopup = document.getElementById("filter-modal-id");
 let showMoreButton = document.querySelector(".show-more"); // ???
@@ -7,36 +6,32 @@ let cancelButton = document.getElementById("cancel-id");
 let applyButton = document.getElementById("apply-id");
 let removeFilter = document.getElementById("remove-filter-id");
 let searchBar = document.getElementById("search-bar-id");
+
 // Array containing all displayed games
 let postsArray = [];
 
-searchBar.addEventListener("keyup", (e) => {
-  let searchString = e.target.value.toLowerCase();
-  let filteredGames = postsArray.filter(game => {
-    return (
-      game.title.toLowerCase().includes(searchString) || 
-      game.description.toLowerCase().includes(searchString)
-    );
-  });
-  console.log(filteredGames);
+removeFilter.addEventListener("click", function () {
   removePosts();
-  filteredGames.forEach((post) => {
-    createPost(post);
-  });
+  getPostsCount();
+  getPosts();
 });
 
-// Display icon according to type
-function getProductType(type) {
-  switch (type) {
-    case "GameCoins":
-      return divProductDescriptionMiniSignGameCoins;
-    case "Items":
-      return divProductDescriptionMiniSignItems;
-    case "Boosting":
-      return divProductDescriptionMiniSignBoosting;
-    case "Accounts":
-      return divProductDescriptionMiniSignAccounts;
-  }
+if (searchBar) {
+  searchBar.addEventListener("keyup", (e) => {
+    let searchString = e.target.value.toLowerCase();
+    let filteredGames = postsArray.filter(game => {
+      return (
+        game.title.toLowerCase().includes(searchString) || 
+        game.description.toLowerCase().includes(searchString)
+      );
+    });
+    console.log(filteredGames);
+    removePosts();
+    productsCount.textContent = "Items: " + filteredGames.length;
+    filteredGames.forEach((post) => {
+      createPost(post);
+    });
+  });
 }
 
 Array.from(filterButton).forEach((e) =>
@@ -64,48 +59,6 @@ Array.from(filterButton).forEach((e) =>
 //   }
 // }
 
-// const setupUI = user => {
-//   if (user) {
-//     const contentEmail = document.createTextNode(`Hi ${user.email}`);
-//     accountDetails.appendChild(contentEmail);
-//   } else {
-//     accountDetails.innerHTML = 'Hi, Sign in';
-//   }
-// }
-
-// document.addEventListener('DOMContentLoaded', function() {
-
-//   var modals = document.querySelectorAll('.modal');
-//   M.Modal.init(modals);
-
-//   document.getElementsByClassName("content-sign-in").style.display="block";
-// });
-
-// const gameList = document.querySelector(".guides");
-
-// const setupGames = (data) => {
-//   // If there is some data in app
-//   if (data.length) {
-//     let html = "";
-//     data.forEach((doc) => {
-//       const game = doc.data();
-//       const li = `
-//       <li>
-//         <div>Code for each post ${game.title}</div>
-//         <div>Post content ${game.content}</div>
-//       </li>
-//     `;
-//       html += li;
-//     });
-
-//     gameList.innerHTML = html;
-//   } else {
-//     gameList.innerHTML = '<h5>Login to view guides</h5>'
-//   }
-// }
-
-//const db = firebase.firestore();
-
 let gameCollection = document.querySelector(".product-list-home");
 
 function createPost(post) {
@@ -115,8 +68,13 @@ function createPost(post) {
   let divSellerRoundImage = document.createElement("div");
   divSellerRoundImage.setAttribute("class", "seller-round-image");
 
-  let divSellerRoundImageIsOnline = document.createElement("div");
-  divSellerRoundImageIsOnline.setAttribute("class", "seller-is-online");
+  let image = document.createElement("img");
+  image.setAttribute("src", post.sellerPhoto);
+
+  divSellerRoundImage.appendChild(image);
+
+  // let divSellerRoundImageIsOnline = document.createElement("div");
+  // divSellerRoundImageIsOnline.setAttribute("class", "seller-is-online");
 
   let divSellerName = document.createElement("div");
   divSellerName.setAttribute("class", "seller-name");
@@ -127,31 +85,20 @@ function createPost(post) {
   let divProductDescription = document.createElement("div");
   divProductDescription.setAttribute("class", "product-description");
 
+  let divProductDescriptionMiniSign = document.createElement("div");
+
   //////// icon
-  let divProductDescriptionMiniSignAccounts = document.createElement("div");
-  divProductDescriptionMiniSignAccounts.setAttribute(
-    "class",
-    "category-product-listed-mini-sign category-product-listed-mini-sign"
-  );
-
-  let divProductDescriptionMiniSignItems = document.createElement("div");
-  divProductDescriptionMiniSignItems.setAttribute(
-    "class",
-    "category-product-listed-mini-sign category-product-listed-mini-sign-2"
-  );
-
-  let divProductDescriptionMiniSignGameCoins = document.createElement("div");
-  divProductDescriptionMiniSignGameCoins.setAttribute(
-    "class",
-    "category-product-listed-mini-sign category-product-listed-mini-sign-3"
-  );
-
-  let divProductDescriptionMiniSignBoosting = document.createElement("div");
-  divProductDescriptionMiniSignBoosting.setAttribute(
-    "class",
-    "category-product-listed-mini-sign category-product-listed-mini-sign-4"
-  );
-  /////////
+  if (post.category === "Accounts") {
+    divProductDescriptionMiniSign.setAttribute("class", "category-product-listed-mini-sign category-product-listed-mini-sign");
+  } else if (post.category === "Items") {
+    divProductDescriptionMiniSign.setAttribute("class", "category-product-listed-mini-sign category-product-listed-mini-sign-2");
+  } else if (post.category === "GameCoins") {
+    divProductDescriptionMiniSign.setAttribute("class", "category-product-listed-mini-sign category-product-listed-mini-sign-3");
+  } else if (post.category === "Boosting") {
+    divProductDescriptionMiniSign.setAttribute("class", "category-product-listed-mini-sign category-product-listed-mini-sign-4");
+  } else {
+    console.log("Problem with catogry icon");
+  }
 
   let divProductName = document.createElement("div");
   divProductName.setAttribute("class", "listed-game-name");
@@ -185,19 +132,18 @@ function createPost(post) {
   );
   divProductPricePolyline.setAttributeNS(null, "points", "9 18 15 12 9 6");
 
-  divSellerName.textContent = "seller name from db";
+  divSellerName.textContent = post.seller;
   divProductDescription.textContent = post.description;
   divProductName.textContent = post.title;
   divProductPrice.textContent = post.price + " EUR";
-  divSellerRoundImageIsOnline.textContent = "on";
+  // divSellerRoundImageIsOnline.textContent = "on";
 
-  divSellerRoundImage.appendChild(divSellerRoundImageIsOnline);
+  // divSellerRoundImage.appendChild(divSellerRoundImageIsOnline);
 
   divSellerName.appendChild(divVerified);
 
   ////// Get specific Icon
-  divProductDescription.appendChild(divProductDescriptionMiniSignBoosting);
-  //divProductDescription.appendChild(getProductType(onSelectChangeCategoryType));
+  divProductDescription.appendChild(divProductDescriptionMiniSign);
 
   divProductPriceSVG.appendChild(divProductPricePolyline);
   divProductPriceArrow.appendChild(divProductPriceSVG);
@@ -334,7 +280,8 @@ const removePosts = () => {
 
 applyButton.addEventListener("click", async () => {
   removePosts();
-  let docs, postsSize;
+  let docs;
+  let postsSize;
   let lastVisible;
   let productTypeOption = onSelectChangeProductTypeFilter();
   let gameTypeOption = onSelectChangeGameTypeFilter();
@@ -364,6 +311,7 @@ applyButton.addEventListener("click", async () => {
     console.log("last", lastVisible);
     ///////////
 
+    productsCount.textContent = "Items: " + querySnapshot.docs.length;
     querySnapshot.forEach(function (doc) {
       // doc.data() is never undefined for query doc snapshots
       console.log(doc.id, " => ", doc.data());
@@ -423,9 +371,9 @@ function getPostsCount() {
     .collection("games")
     .get()
     .then((snap) => {
-      size = snap.size;
+      let size = snap.size;
 
-      productsCount.innerHTML += size;
+      productsCount.textContent = "Items: " + size;
     });
 }
 
@@ -542,6 +490,59 @@ function getPostsCount() {
 // });
 // }
 
+
+let i = 0;
+let images = [];
+
+images[0] = "./static/71577e1cf59d802.jpg";
+images[1] = "./static/0ba3d60362c7e6d256cfc1f37156bad9.jpg";
+images[2] = "./static/Blue-Pixel-Call-To-Action-Banner-Background.jpg";
+
+let image1 = document.getElementById("image-1");
+let image2 = document.getElementById("image-2");
+let image3 = document.getElementById("image-3");
+
+// firebase
+// .firestore()
+// .collection("banner")
+// .get()
+// .then((snapshot) => {
+//   snapshot.docs.forEach((doc) => {
+//     console.log(doc.data().image);
+//     images.push(doc.data().image);
+//   });
+//   console.log(images);
+// });
+
+function changeBannerImages() {
+  if (images[i] !== undefined) {
+    let banner = document.getElementById("banner-id");
+    if (banner) {
+      if (images[i] === 0) {
+        image1.classList.add("selected-banner");
+        image2.classList.remove("selected-banner");
+        image3.classList.remove("selected-banner");
+      } else if (images[i] === 1) {
+        image2.classList.add("selected-banner");
+        image1.classList.remove("selected-banner");
+        image3.classList.remove("selected-banner");
+      } else if (images[i] === 2) {
+        image3.classList.add("selected-banner");
+        image1.classList.remove("selected-banner");
+        image2.classList.remove("selected-banner");
+      }
+      banner.setAttribute("style", `background-image:url(${images[i]})`);
+    }
+  }
+
+  if (i < images.length - 1) {
+    i++;
+  } else {
+    i = 0;
+  }
+  setTimeout("changeBannerImages();", 3000);
+}
+window.addEventListener("load", changeBannerImages);
+
 getPosts();
 getPostsCount();
-// arePostsFiltered(false);

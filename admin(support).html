@@ -12,34 +12,34 @@
 </head>
 
 <!--Modalu unde adminii verifica cerelele de la vinzatori -->
-<div class="modal-general" style="display: none;">
+<div id="admin-support-popup-id" class="modal-general" style="display: none;">
     <div class="modal-general-absolute">
         <div class="admin-main-div-pop-up">
 
             <div class="intro-to-admins-access" style="padding-bottom: 25px;
             border-bottom: 1px solid #d8d8d88c;">
-                <div class="intro-to-admins-access-1"></div>
-                <div class="intro-to-admins-access-2">userName</div>
+                <div id="popup-user-photo-id" class="intro-to-admins-access-1"></div>
+                <div id="popup-username-id" class="intro-to-admins-access-2"></div>
             </div>
 
             <div class="verification-main-input-div" style="margin: 0;">
                 <p class="verification-main-text">User email:</p>
-                <div class="all-text-info-order">descrierea problemei aici</div>
+                <div id="popup-email-id" class="all-text-info-order"></div>
             </div>
 
             <div class="verification-main-input-div">
                 <p class="verification-main-text">Time:</p>
-                <div class="all-text-info-order">10h ago</div>
+                <div id="popup-timeago-id" class="all-text-info-order"></div>
             </div>
 
             <div class="verification-main-input-div">
                 <p class="verification-main-text">Problem description:</p>
-                <div class="all-text-info-order">descrierea problemei aici</div>
+                <div id="popup-description-id" class="all-text-info-order"></div>
             </div>
 
             <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
-                <div class="all-order-action-buttons">Solved</div>
-                <div class="all-order-action-buttons">Cancel</div>
+                <div id="popup-solved-button" class="all-order-action-buttons">Solved</div>
+                <div id="popup-cancel-button" class="all-order-action-buttons">Cancel</div>
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@
                 <div class="logo"></div>
             </div>
             <div class="admin-admins-main">
-                <div class="name-admin">adminname</div>
+                <div class="name-admin"></div>
                 <div class="icon-admin"></div>
             </div>
         </div>
@@ -70,6 +70,7 @@
             <div id="users-button" class="general-navigation">Users</div>
             <div id="add-category-button" class="general-navigation">Add category</div>
             <div id="add-slide-button" class="general-navigation">Add slide</div>
+            <div id="history" class="general-navigation">History</div>
         </div>
 
             <div class="admin-content-nav">
@@ -77,23 +78,22 @@
                     <div class="intro-to-real-transaction" style="margin-top: 0 ;">
                         <div class="intro-to-real-transaction-1">Support:</div>
                         <div class="space-admin">
-                            <div class="admin-button-add">add</div>
                             <div class="drop-dawn-add-game-list transaction-edit-1">
                                 <div class="arrow-drop-down-games-main">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-drop-down"><polyline points="9 18 15 12 9 6"></polyline></svg>
                                 </div>
-                                <select name="Transactions" class="drop-dawn-add-game-select">
-                                    <option value="Pending">Active</option>
+                                <select id="select-support-id" name="Transactions" class="drop-dawn-add-game-select" onchange="getOnSelectSupportStatusChange();">
+                                    <option value="Pending">Unresolved</option>
                                     <option value="Done">Resolved</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="transactions-admin-mm-div">
+                    <div id="admin-support-problems-main-div-id" class="transactions-admin-mm-div">
 
                         <!--Problemele de support unresolved-->
-                        <div class="request-support-admin-main-div">
+                        <!-- <div class="request-support-admin-main-div">
                             <div class="request-support-user-photo-name-main-div">
                                 <div class="request-support-user-photo-name-main-div-1"></div>
                                 <div class="request-support-user-photo-name-main-div-2">username</div>
@@ -118,10 +118,10 @@
                                         </div>
                                     </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!--Problemele de support unresolved-->
-                        <div class="request-support-admin-main-div">
+                        <!-- <div class="request-support-admin-main-div">
                             <div class="request-support-user-photo-name-main-div">
                                 <div class="request-support-user-photo-name-main-div-1"></div>
                                 <div class="request-support-user-photo-name-main-div-2">username</div>
@@ -146,7 +146,7 @@
                                         </div>
                                     </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

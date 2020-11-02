@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="verification-main-input-div" style="margin-top: 0;">
+      <div class="verification-main-input-div">
         <p class="verification-main-text">By game type</p>
 
         <div class="drop-dawn-add-game-list">
@@ -111,7 +111,7 @@
       </div>
           <div class="first-header-div-child-2">
             <a href="support.html"><div class="balance-button">S<div class="balance-support-550px">upport</div> </div></a>
-            <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>45 USD</span></span></div></div>
+            <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>0 USD</span></span></div></div>
             <div class="user-logged-out-header-placeholder">
                 <div class="user-icon-2"></div>
                 <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
@@ -199,27 +199,27 @@
 <body>
   <div class="container">
 
-    <div class="banner">
+    <div id="banner-id" class="banner">
       <div class="link-button">Learn More</div>
       <div class="banner-selector-main-div">
-        <div class="selected-banner">
+        <div id="image-1">
           <span></span>
         </div>
-        <div>
+        <div id="image-2">
           <span></span>
         </div>
-        <div>
+        <div id="image-3">
           <span></span>
         </div>
-        <div>
+        <!-- <div id="image-4">
           <span></span>
-        </div>
+        </div> -->
       </div>
     </div>
 
     <div class="product-list-home-placeholder">
       <div class="intro-to-product-list">
-        <div id="products-count-logged-in-id" class="products-count-home">Items: </div>
+        <div id="products-count-home-id" class="products-count-home">Items: </div>
         <div id="filter-icon-id" class="filter-icon">filter</div>
         <div id="remove-filter-id" class="remove-filter"></div>
       </div>
@@ -333,11 +333,29 @@
       </div>
       <div class="footer-logo"></div>
       <div class="usefull-footer-links">
-        <div class="usefull-footer-text">Support</div>
-        <div class="usefull-footer-text">How to buy</div>
-        <div class="usefull-footer-text">Reviews</div>
-        <div class="usefull-footer-text">About Us</div>
-        <div class="usefull-footer-text">Guaranty</div>
+        <div class="usefull-footer-text">
+          <a href="footer(contact).html">
+            <div>Contact</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(about-us).html">
+            <div>About Us</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(terms).html">
+            <div>Terms</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(privacy).html">
+            <div>Privacy</div>
+          </a>
+        </div>
       </div>
     </div>
   </footer>
@@ -368,12 +386,22 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (!user) {
+        console.log("Not logged in");
+        window.location.href = "index.html";
+      } else {
+        console.log("Logged in");
+      }
+    });
   </script>
 
   <script src="./static/global.js"></script>
   <script src="./static/index.js"></script>
   <script src="./static/darktheme.js"></script>
   <script src="./static/auth.js"></script>
+  <script src="./static/admin-add-category.js"></script>
 
 </body>
 

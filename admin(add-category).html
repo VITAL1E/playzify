@@ -12,7 +12,7 @@
 </head>
 
 <!--Modalu unde adminii verifica cerelele de la vinzatori -->
-<div class="modal-general" style="display: none;">
+<div id="popup-add-category-id" class="modal-general" style="display: none;">
     <div class="modal-general-absolute">
         <div class="admin-main-div-pop-up">
 
@@ -27,28 +27,28 @@
                     <div class="arrow-drop-down-games-main">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-drop-down"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
-                    <select name="cars" class="drop-dawn-add-game-select">
-                        <option value="Counter Strike">Accounts</option>
-                        <option value="Marioo">Items</option>
-                        <option value="PUBG">Game Coins</option>
-                        <option value="Fortnite">Boostings</option>
+                    <select id="select-category-id" name="cars" class="drop-dawn-add-game-select" onchange="getOnSelectCategoryAdminChange();">
+                        <option value="Accounts">Accounts</option>
+                        <option value="Items">Items</option>
+                        <option value="GameCoins">Game Coins</option>
+                        <option value="Boostings">Boostings</option>
                     </select>
                 </div>
             </div>
 
             <div class="verification-main-input-div">
                 <p class="verification-main-text">Game</p>
-                <input class="verification-main-input" placeholder="type game" autocomplete="off" maxlength="24">
+                <input id="game-type" class="verification-main-input" placeholder="type game" autocomplete="off" maxlength="24">
             </div>
 
             <div class="verification-main-input-div">
                 <p class="verification-main-text">Server</p>
-                <input class="verification-main-input" placeholder="type server" autocomplete="off" maxlength="24">
+                <input id="server-type" class="verification-main-input" placeholder="type server" autocomplete="off" maxlength="24">
             </div>
 
             <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
-                <div class="all-order-action-buttons">Add</div>
-                <div class="all-order-action-buttons">Cancel</div>
+                <div id="popup-add-button-id" class="all-order-action-buttons">Add</div>
+                <div id="popup-cancel-button-id" class="all-order-action-buttons">Cancel</div>
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
                 <div class="logo"></div>
             </div>
             <div class="admin-admins-main">
-                <div class="name-admin">adminname</div>
+                <div class="name-admin"></div>
                 <div class="icon-admin"></div>
             </div>
         </div>
@@ -79,6 +79,7 @@
             <div id="users-button" class="general-navigation">Users</div>
             <div id="add-category-button" class="general-navigation general-navigation-selected">Add category</div>
             <div id="add-slide-button" class="general-navigation">Add slide</div>
+            <div id="history" class="general-navigation">History</div>
         </div>
 
             <div class="admin-content-nav">
@@ -86,7 +87,7 @@
                     <div class="intro-to-real-transaction" style="margin-top: 0 ;">
                         <div class="intro-to-real-transaction-1">Categories:</div>
                         <div class="space-admin">
-                            <div class="admin-button-add">add</div>
+                            <div id="add-category-button-id" class="admin-button-add">add</div>
                             <div class="drop-dawn-add-game-list transaction-edit-1">
                                 <div class="arrow-drop-down-games-main">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right chevron-for-drop-down"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -101,7 +102,7 @@
                         </div>
                     </div>
 
-                    <div class="transactions-admin-mm-div">
+                    <div id="main-list-category-id" class="transactions-admin-mm-div">
 
                         <!--Tranzactia cand admin o refuzat verificare-->
                         <div class="transaction cc-cursor" style="cursor: inherit;">

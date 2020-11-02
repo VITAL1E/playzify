@@ -13,14 +13,14 @@
 </head>
 
 <!--MODAL FILTER-->
-<div class="modal-general" style="display: none;">
+<div id="filter-index-id" class="modal-general" style="display: none;">
   <div class="modal-general-absolute">
     <div class="history-order-main-div-pop-up">
       <div class="main-intro-to-verification" style="border: 0;;">
         Filter
       </div>
 
-      <div class="verification-main-input-div" style="margin-top: 0;">
+      <div class="verification-main-input-div">
         <p class="verification-main-text">By game type</p>
 
         <div class="drop-dawn-add-game-list">
@@ -31,7 +31,7 @@
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </div>
-          <select name="cars" class="drop-dawn-add-game-select">
+          <select id="select-by-game-type" name="cars" class="drop-dawn-add-game-select" onchange="onSelectChangeGameTypeFilter();">
             <option value="Counter Strike">Counter Strike</option>
             <option value="Marioo">Marioo</option>
             <option value="PUBG">PUBG</option>
@@ -51,9 +51,9 @@
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </div>
-          <select name="cars" class="drop-dawn-add-game-select">
-            <option value="Counter Strike">EU</option>
-            <option value="Marioo">USA</option>
+          <select id="select-by-game-server" name="cars" class="drop-dawn-add-game-select"  onchange="onSelectChangeGameServerFilter();">
+            <option value="EU">EU</option>
+            <option value="USA">USA</option>
           </select>
         </div>
       </div>
@@ -69,17 +69,17 @@
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </div>
-          <select name="cars" class="drop-dawn-add-game-select">
-            <option value="Counter Strike">High</option>
-            <option value="Marioo">Low</option>
+          <select id="select-by-price" name="cars" class="drop-dawn-add-game-select" onchange="onSelectChangeGamePriceFilter();">
+            <option value="High">High</option>
+            <option value="Low">Low</option>
           </select>
         </div>
       </div>
 
 
       <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
-        <div class="all-order-action-buttons">Apply</div>
-        <div class="all-order-action-buttons">Cancel</div>
+        <div id="apply-index-id" class="all-order-action-buttons">Apply</div>
+        <div id="cancel-index-id" class="all-order-action-buttons">Cancel</div>
       </div>
     </div>
   </div>
@@ -163,7 +163,7 @@
                         <!--<div class="categories-arrow"></div>-->
                     </div>
                     <div class="search-bar">
-                        <input class="search-bar-input" placeholder="Search" autocomplete="off" maxlength="24">
+                        <input id="search-bar-index-id" class="search-bar-input" placeholder="Search" autocomplete="off" maxlength="24">
                         <div class="search-icon"></div>
                     </div>
                 </div>
@@ -183,21 +183,21 @@
 
   <div class="container">
 
-    <div class="banner">
+    <div id="banner-index-id" class="banner">
       <div class="link-button">Learn More</div>
       <div class="banner-selector-main-div">
-        <div class="selected-banner">
+        <div id="picture-1">
           <span></span>
         </div>
-        <div>
+        <div id="picture-2">
           <span></span>
         </div>
-        <div>
+        <div id="picture-3">
           <span></span>
         </div>
-        <div>
+        <!-- <div id="picture-4">
           <span></span>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -294,8 +294,6 @@
               <div class="game-offers-number-home gradient-2">126</div>
           </div>
 
-          <div class="show-more-games-home">Show More</div>
-
       </div><div class="categories-home-placeholder no-margin-game-card">
           <div class="category-sign category-sign-4"></div>
           <p class="category-sign-name">Boosting</p>
@@ -325,111 +323,29 @@
               <div class="game-offers-number-home gradient-4">2176</div>
           </div>
 
-          <div class="show-more-games-home">Show More</div>
-
       </div>
   </div>
 
-
     <div class="product-list-home-placeholder">
       <div class="intro-to-product-list">
-        <div class="products-count-home">Products placed: 87k</div>
+        <div id="count-of-items-index-id" class="products-count-home">Items: </div>
         <div class="filter-icon">filter</div>
         <div class="remove-filter"></div>
       </div>
 
-      <div class="product-list-home">
-        <div class="product-home-show" onclick="location.href='post.html'">
-          <div class="seller-round-image">
-            <div class="seller-is-online">on</div>
-          </div>
-          <div class="seller-name">sellername<div class="verified"></div>
-          </div>
+      <div id="product-list-home-index-id" class="product-list-home">
+        
 
-          <div class="product-description">
-            <span>Selling my Prestige 5 account with good rss and speed ups</span>
-            <div class="category-product-listed-mini-sign"></div>
-          </div>
 
-          <div class="listed-game-name">GTA 5 Online</div>
 
-          <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round"
-                class="feather feather-chevron-right chevron-for-payment">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg></span></div>
 
-        </div><div class="product-home-show">
-          <div class="seller-round-image">
-            <div class="seller-is-online">on</div>
-          </div>
-          <div class="seller-name">sellername<div class="verified"></div>
-          </div>
 
-          <div class="product-description">
-            <span>Selling my Prestige 5 account with good rss and speed ups</span>
-            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-2"></div>
-          </div>
-
-          <div class="listed-game-name">GTA 5 Online</div>
-
-          <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round"
-                class="feather feather-chevron-right chevron-for-payment">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg></span></div>
-
-        </div><div class="product-home-show">
-          <div class="seller-round-image">
-            <div class="seller-is-online main-seller-is-offline">off</div>
-          </div>
-          <div class="seller-name">sellername<div class="verified"></div>
-          </div>
-
-          <div class="product-description">
-            <span>Selling my Prestige 5 account with good rss and speed ups</span>
-            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-3"></div>
-          </div>
-
-          <div class="listed-game-name">GTA 5 Online</div>
-
-          <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round"
-                class="feather feather-chevron-right chevron-for-payment">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg></span></div>
-
-        </div><div class="product-home-show">
-          <div class="seller-round-image">
-            <div class="seller-is-online">on</div>
-          </div>
-          <div class="seller-name">sellername<div class="verified"></div>
-          </div>
-
-          <div class="product-description">
-            <span>Selling my Prestige 5 account with good rss and speed ups</span>
-            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-4"></div>
-          </div>
-
-          <div class="listed-game-name">GTA 5 Online</div>
-
-          <div class="price-game-listed">54 EUR <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round"
-                class="feather feather-chevron-right chevron-for-payment">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg></span></div>
-        </div>
       </div>
 
-      <div class="show-more">Show More</div>
-    </div>
 
+    </div>
   </div>
-  </div>
+</div>
 
   <footer>
     <div class="footer-placeholder">
@@ -442,11 +358,29 @@
       </div>
       <div class="footer-logo"></div>
       <div class="usefull-footer-links">
-        <div class="usefull-footer-text">Support</div>
-        <div class="usefull-footer-text">How to buy</div>
-        <div class="usefull-footer-text">Reviews</div>
-        <div class="usefull-footer-text">About Us</div>
-        <div class="usefull-footer-text">Guaranty</div>
+        <div class="usefull-footer-text">
+          <a href="footer(contact).html">
+            <div>Contact</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(about-us).html">
+            <div>About Us</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(terms).html">
+            <div>Terms</div>
+          </a>
+        </div>
+
+        <div class="usefull-footer-text">
+          <a href="footer(privacy).html">
+            <div>Privacy</div>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -482,20 +416,16 @@
     
     firebase.auth().onAuthStateChanged(function (user) {
       if (!user) {
-        
-        window.location.href = "index-logged-in.html";
-        document.body.addEventListener("click", function (e) {
-          // signup
-        });
+        console.log("Not logged in");
       } else {
-        window.location.href = "index-logged-in.html";
+        window.location.href = "homepage.html";
         console.log("Logged in");
       }
     });
   </script>
-  <!-- <script src="./static/global.js"></script> -->
+  <script src="./static/global.js"></script>
   <script src="./static/auth.js"></script>
-  <!-- <script src="./static/index.js"></script> -->
+  <script src="./static/main.js"></script>
   <script src="./static/darktheme.js"></script>
 </body>
 
