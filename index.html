@@ -9,7 +9,8 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./static/style.css">
   <link rel="stylesheet" href="./static/media-queries.css">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
 </head>
 
 <!--MODAL FILTER-->
@@ -31,7 +32,8 @@
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </div>
-          <select id="select-by-game-type" name="cars" class="drop-dawn-add-game-select" onchange="onSelectChangeGameTypeFilter();">
+          <select id="select-by-game-type" name="cars" class="drop-dawn-add-game-select"
+            onchange="onSelectChangeGameTypeFilter();">
             <option value="Counter Strike">Counter Strike</option>
             <option value="Marioo">Marioo</option>
             <option value="PUBG">PUBG</option>
@@ -51,7 +53,8 @@
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </div>
-          <select id="select-by-game-server" name="cars" class="drop-dawn-add-game-select"  onchange="onSelectChangeGameServerFilter();">
+          <select id="select-by-game-server" name="cars" class="drop-dawn-add-game-select"
+            onchange="onSelectChangeGameServerFilter();">
             <option value="EU">EU</option>
             <option value="USA">USA</option>
           </select>
@@ -69,7 +72,8 @@
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </div>
-          <select id="select-by-price" name="cars" class="drop-dawn-add-game-select" onchange="onSelectChangeGamePriceFilter();">
+          <select id="select-by-price" name="cars" class="drop-dawn-add-game-select"
+            onchange="onSelectChangeGamePriceFilter();">
             <option value="High">High</option>
             <option value="Low">Low</option>
           </select>
@@ -100,90 +104,146 @@
     <div class="first-header-div-container">
       <div class="first-header-div-child-1">
         <div class="logo"></div>
+        <div class="logo-dark"></div>
       </div>
-      <div class="first-header-div-child-3">
-        <div class="user-logged-out-header-placeholder">
-            <div class="user-icon"></div>
-            <div class="user-sign-in user-sign-in-450px">Hi, <span>Sign in</span></div>
-        </div>
-    </div>
-    </div>
-
-<div class="second-header-blacked">
-            <div class="second-header-div-container">
-
-                <div class="drop-down-main-category-banner" style="display: none;">
-                    <div class="category-drop-down-3-rows">
-                        <div class="main-drop-dawn-intros">
-                            <div class="category-drop-dawn-introo">Categories</div>
-                        </div>
-                        <div class="main-drop-dawn-categories">
-                            <div class="category-product-listed-mini-sign category-drop-dawn-sign"></div>
-                            <div class="category-drop-dawn-name">Accounts</div>
-                        </div>
-
-                        <div class="main-drop-dawn-categories selected-drop-dawn-category">
-                            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-2 category-drop-dawn-sign"></div>
-                            <div class="category-drop-dawn-name">Game Coins</div>
-                        </div>
-
-                        <div class="main-drop-dawn-categories">
-                            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-3 category-drop-dawn-sign"></div>
-                            <div class="category-drop-dawn-name">Items</div>
-                        </div>
-
-                        <div class="main-drop-dawn-categories">
-                            <div class="category-product-listed-mini-sign category-product-listed-mini-sign-4 category-drop-dawn-sign"></div>
-                            <div class="category-drop-dawn-name">Boosting</div>
-                        </div>
-                    </div>
-                    <div class="category-drop-down-3-rows">
-                        <div class="main-drop-dawn-intros">
-                            <div class="category-drop-dawn-introo">Games</div>
-                        </div>
-                        
-                        <div class="main-drop-dawn-categories">
-                            <div class="category-drop-dawn-name">Fortnite</div>
-                        </div>
-                    </div>
-                    <div class="category-drop-down-3-rows" style="border: 0;">
-                        <div class="main-drop-dawn-intros">
-                            <div class="category-drop-dawn-introo">Servers</div>
-                        </div>
-                        
-                        <div class="main-drop-dawn-categories">
-                            <div class="category-drop-dawn-name">Europe</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="second-header-div-child-1 change-for-index-sell-with-us-1">
-                    <div class="all-categories-main-button padding-in-right-buttons-general-0">
-                        All Categories
-                        <!--<div class="categories-arrow"></div>-->
-                    </div>
-                    <div class="search-bar">
-                        <input id="search-bar-index-id" class="search-bar-input" placeholder="Search" autocomplete="off" maxlength="24">
-                        <div class="search-icon"></div>
-                    </div>
-                </div>
-                <div class="second-header-div-child-2 change-for-index-sell-with-us-2">
-                    <div class="theme-main-selector-moon"></div>
-                    <div class="sell-with-us">Sell <span>with Play Zify</span></div>
-                </div>
+      <!-- <div class="first-header-div-child-3">
+            <div class="user-logged-out-header-placeholder">
+                <div class="user-icon"></div>
+                <div class="user-sign-in user-sign-in-450px">Hi, <span>Sign in</span></div>
             </div>
+         </div> -->
+
+      <div class="first-header-div-child-2">
+        <a href="sign-in.html">
+          <div class="balance-button">Log In</div>
+        </a>
+        <a href="sign-up.html">
+          <div class="balance-button" style="margin-right: 0;">Sign Up</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="second-header-blacked">
+      <div class="second-header-div-container">
+
+        <div class="drop-down-main-category-banner" style="display: none;">
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Categories</div>
+            </div>
+            <div class="main-drop-dawn-categories">
+              <div class="category-product-listed-mini-sign category-drop-dawn-sign"></div>
+              <div class="category-drop-dawn-name">Accounts</div>
+            </div>
+
+            <div class="main-drop-dawn-categories selected-drop-dawn-category">
+              <div
+                class="category-product-listed-mini-sign category-product-listed-mini-sign-2 category-drop-dawn-sign">
+              </div>
+              <div class="category-drop-dawn-name">Game Coins</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div
+                class="category-product-listed-mini-sign category-product-listed-mini-sign-3 category-drop-dawn-sign">
+              </div>
+              <div class="category-drop-dawn-name">Items</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div
+                class="category-product-listed-mini-sign category-product-listed-mini-sign-4 category-drop-dawn-sign">
+              </div>
+              <div class="category-drop-dawn-name">Boosting</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Games</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Fortnite</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows" style="border: 0;">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Servers</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Europe</div>
+            </div>
+          </div>
         </div>
 
+        <div class="second-header-div-child-1 change-for-index-sell-with-us-1">
+          <div class="all-categories-main-button padding-in-right-buttons-general-0">
+            All Categories
+            <!--<div class="categories-arrow"></div>-->
+          </div>
+          <div class="search-bar">
+            <input id="search-bar-index-id" class="search-bar-input" placeholder="Search" autocomplete="off"
+              maxlength="24">
+            <div class="search-icon"></div>
+          </div>
+        </div>
+        <div class="second-header-div-child-2 change-for-index-sell-with-us-2">
+          <button class="theme-main-selector-moon" id="dark-mode-toggle">
+            <div class="moon-dark"></div>
+            <div class="sun-white"></div>
+          </button>
+          <div class="sell-with-us">Sell <span>with Play Zify</span></div>
+        </div>
+      </div>
+    </div>
   </div>
-
 </header>
 
-
 <body>
-
   <div class="container">
 
-    <div id="banner-index-id" class="banner">
+<!-- SLIDER -->
+    <!-- <div class="slider-main-cointainer">
+      <div class="slider-container">
+        <div>
+          <div>
+            <div class="slider">
+              <div class="img-slider">
+                <img src="">
+              </div>
+              <div class="img-slider">
+                <img src="">
+              </div>
+              <div class="img-slider">
+                <img src="">
+              </div>
+              <div class="img-slider">
+                <img src="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <button class="btn" id="prev"><i class="fas fas-chevron-left"></i></button>
+      <button class="btn" id="next"><i class="fas fas-chevron-left"></i></button>
+
+      <ul>
+        <li class="option"></li>
+        <li class="option"></li>
+        <li class="option"></li>
+        <li class="option"></li>
+      </ul>
+    </div> -->
+    <!-- SLIDER -->
+
+
+
+
+    <!-- <div id="banner-index-id" class="banner">
       <div class="link-button">Learn More</div>
       <div class="banner-selector-main-div">
         <div id="picture-1">
@@ -195,136 +255,136 @@
         <div id="picture-3">
           <span></span>
         </div>
-        <!-- <div id="picture-4">
-          <span></span>
-        </div> -->
       </div>
-    </div>
+    </div> -->
 
     <div class="categories-home-intro">
       <div class="categories-home-placeholder">
 
-          <div class="category-sign"></div>
-          <p class="category-sign-name">Accounts</p>
+        <div class="category-sign"></div>
+        <p class="category-sign-name">Accounts</p>
 
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">PUBG Mobile</div>
-              <div class="game-offers-number-home">2759</div>
-          </div>
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">PUBG Mobile</div>
+          <div class="game-offers-number-home">2759</div>
+        </div>
 
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">League of Legends</div>
-              <div class="game-offers-number-home">6255</div>
-          </div>
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">League of Legends</div>
+          <div class="game-offers-number-home">6255</div>
+        </div>
 
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">World Of Warcraft (US)</div>
-              <div class="game-offers-number-home">557</div>
-          </div>
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">World Of Warcraft (US)</div>
+          <div class="game-offers-number-home">557</div>
+        </div>
 
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">Clash Of Clans (Global)</div>
-              <div class="game-offers-number-home">2150</div>
-          </div>
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">Clash Of Clans (Global)</div>
+          <div class="game-offers-number-home">2150</div>
+        </div>
 
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">World Of Warcraft (EU)</div>
-              <div class="game-offers-number-home">1251</div>
-          </div>
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">World Of Warcraft (EU)</div>
+          <div class="game-offers-number-home">1251</div>
+        </div>
 
-          <div class="show-more-games-home">Show More</div>
-
-      </div><div class="categories-home-placeholder">
-          <div class="category-sign category-sign-2"></div>
-          <p class="category-sign-name">Items</p>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">Path Of Exile (Global)</div>
-              <div class="game-offers-number-home gradient-3">18000</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">Fallout 76</div>
-              <div class="game-offers-number-home gradient-3">10852</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">Growtopia</div>
-              <div class="game-offers-number-home gradient-3">436</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">World Of Warcraft (US)</div>
-              <div class="game-offers-number-home gradient-3">85233</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">Escape from Tarkov</div>
-              <div class="game-offers-number-home gradient-3">1454</div>
-          </div>
-
-          <div class="show-more-games-home">Show More</div>
-
-      </div><div class="categories-home-placeholder no-margin-game-card-2">
-          <div class="category-sign category-sign-3"></div>
-          <p class="category-sign-name">Game Coins</p>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">World Of Warcraft (EU)</div>
-              <div class="game-offers-number-home gradient-2">10803</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">FIFA 20</div>
-              <div class="game-offers-number-home gradient-2">115</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">ArcheAge</div>
-              <div class="game-offers-number-home gradient-2">374</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">World Of Warcraft (US)</div>
-              <div class="game-offers-number-home gradient-2">11257</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">GTA 5 Online</div>
-              <div class="game-offers-number-home gradient-2">126</div>
-          </div>
-
-      </div><div class="categories-home-placeholder no-margin-game-card">
-          <div class="category-sign category-sign-4"></div>
-          <p class="category-sign-name">Boosting</p>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">World Of Warcraft (EU)</div>
-              <div class="game-offers-number-home gradient-4">10657</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">GTA 5 Online</div>
-              <div class="game-offers-number-home gradient-4">537</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">Final Fantasy XIV (ARR)</div>
-              <div class="game-offers-number-home gradient-4">724</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">World Of Warcraft (US)</div>
-              <div class="game-offers-number-home gradient-4">6286</div>
-          </div>
-
-          <div class="game-in-category-home-placeholder">
-              <div class="game-name-category-home">League of Legends</div>
-              <div class="game-offers-number-home gradient-4">2176</div>
-          </div>
+        <div class="show-more-games-home">Show More</div>
 
       </div>
-  </div>
+      <div class="categories-home-placeholder">
+        <div class="category-sign category-sign-2"></div>
+        <p class="category-sign-name">Items</p>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">Path Of Exile (Global)</div>
+          <div class="game-offers-number-home gradient-3">18000</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">Fallout 76</div>
+          <div class="game-offers-number-home gradient-3">10852</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">Growtopia</div>
+          <div class="game-offers-number-home gradient-3">436</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">World Of Warcraft (US)</div>
+          <div class="game-offers-number-home gradient-3">85233</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">Escape from Tarkov</div>
+          <div class="game-offers-number-home gradient-3">1454</div>
+        </div>
+
+        <div class="show-more-games-home">Show More</div>
+
+      </div>
+      <div class="categories-home-placeholder no-margin-game-card-2">
+        <div class="category-sign category-sign-3"></div>
+        <p class="category-sign-name">Game Coins</p>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">World Of Warcraft (EU)</div>
+          <div class="game-offers-number-home gradient-2">10803</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">FIFA 20</div>
+          <div class="game-offers-number-home gradient-2">115</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">ArcheAge</div>
+          <div class="game-offers-number-home gradient-2">374</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">World Of Warcraft (US)</div>
+          <div class="game-offers-number-home gradient-2">11257</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">GTA 5 Online</div>
+          <div class="game-offers-number-home gradient-2">126</div>
+        </div>
+
+      </div>
+      <div class="categories-home-placeholder no-margin-game-card">
+        <div class="category-sign category-sign-4"></div>
+        <p class="category-sign-name">Boosting</p>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">World Of Warcraft (EU)</div>
+          <div class="game-offers-number-home gradient-4">10657</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">GTA 5 Online</div>
+          <div class="game-offers-number-home gradient-4">537</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">Final Fantasy XIV (ARR)</div>
+          <div class="game-offers-number-home gradient-4">724</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">World Of Warcraft (US)</div>
+          <div class="game-offers-number-home gradient-4">6286</div>
+        </div>
+
+        <div class="game-in-category-home-placeholder">
+          <div class="game-name-category-home">League of Legends</div>
+          <div class="game-offers-number-home gradient-4">2176</div>
+        </div>
+
+      </div>
+    </div>
 
     <div class="product-list-home-placeholder">
       <div class="intro-to-product-list">
@@ -334,18 +394,13 @@
       </div>
 
       <div id="product-list-home-index-id" class="product-list-home">
-        
-
-
 
 
 
       </div>
-
-
     </div>
   </div>
-</div>
+  </div>
 
   <footer>
     <div class="footer-placeholder">
@@ -413,7 +468,7 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-    
+
     firebase.auth().onAuthStateChanged(function (user) {
       if (!user) {
         console.log("Not logged in");

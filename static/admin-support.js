@@ -7,22 +7,30 @@
 
   let divSelectSupportStatus = document.getElementById("select-support-id");
 
-  function getOnSelectSupportStatusChange() {
-    let divSelectSupportStatusOption = divSelectSupportStatus.options[divSelectSupportStatus.selectedIndex].value;
-    console.log(divSelectSupportStatusOption);
-    return divSelectSupportStatusOption;
-  }
+  // function getOnSelectSupportStatusChange() {
+  //   let divSelectSupportStatusOption = divSelectSupportStatus.options[divSelectSupportStatus.selectedIndex].value;
+  //   console.log(divSelectSupportStatusOption);
+  //   return divSelectSupportStatusOption;
+  // }
+
+  // IMAGE VIEW
+  let imageViewPopup = document.getElementById("admin-support-img-view-id");
+  let imageSrcPopup = document.getElementById("admin-support-img-src-id");
+  let closeImagePreview = document.getElementsByClassName("close-img");
 
   // POPUP
   let problemInformationPopup = document.getElementById(
     "admin-support-popup-id"
   );
+
   // POPUP INFORMATION
   let userPhotoPopup = document.getElementById("popup-user-photo-id");
   let usernamePopup = document.getElementById("popup-username-id");
   let emailPopup = document.getElementById("popup-email-id");
   let timeagoPopup = document.getElementById("popup-timeago-id");
   let descriptionPopup = document.getElementById("popup-description-id");
+  let imagePopup = document.getElementById("id-document-id");
+
   // POPUP BUTTONS
   let acceptButton = document.getElementById("popup-solved-button");
   let cancelButton = document.getElementById("popup-cancel-button");
@@ -64,16 +72,8 @@
   addSlideButton.addEventListener("click", function () {
     window.location.href = "admin(add-slide).html";
   });
-  historyButton.addEventListener("click", function() {
+  historyButton.addEventListener("click", function () {
     window.location.href = "admin(history).html";
-  });
-
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      //getProblems();
-    } else {
-      console.log("Not logged in and not admin");
-    }
   });
 
   let problemsArray = [];
@@ -84,16 +84,16 @@
 
     if (status === "Unresolved" || status === "" || status === undefined) {
       problemsReference = firebase
-      .firestore()
-      .collection("problems")
-      .where("status", "==", "Unresolved")
-      .orderBy("createdAt");
+        .firestore()
+        .collection("problems")
+        .where("status", "==", "Unresolved")
+        .orderBy("createdAt", "desc");
     } else {
       problemsReference = firebase
-      .firestore()
-      .collection("problems")
-      .where("status", "==", "Resolved")
-      .orderBy("createdAt");
+        .firestore()
+        .collection("problems")
+        .where("status", "==", "Resolved")
+        .orderBy("createdAt", "desc");
     }
 
     problemsArray = [];
@@ -101,19 +101,33 @@
       docs = snapshot;
       lastVisible = snapshot.docs[snapshot.docs.length - 1];
       console.log("last", lastVisible.data());
-    });
-    docs["docs"].forEach((doc) => {
-      problemsArray.push(doc.data());
-    });
-    problemsArray.forEach((post) => {
-      createProblem(post);
-    });
-    divSelectSupportStatus.addEventListener("change", function () {
+
+      docs["docs"].forEach((doc) => {
+        problemsArray.push(doc.data());
+      });
       removeProblems();
-      let selectFilter = getOnSelectSupportStatusChange();
-      getProblems(selectFilter);
+
+      problemsArray.forEach((post) => {
+        createProblem(post);
+      });
+
+      problemsArray = [];
     });
   };
+
+  divSelectSupportStatus.addEventListener("change", function () {
+    let selectFilter = `${divSelectSupportStatus.value}`;
+    console.log(divSelectSupportStatus.value);
+    getProblems(selectFilter);
+  });
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      getProblems("Unresolved");
+    } else {
+      console.log("Not logged in and not admin");
+    }
+  });
 
   function createProblem(problem) {
     let div = document.createElement("div");
@@ -130,16 +144,20 @@
       "class",
       "request-support-user-photo-name-main-div-1"
     );
-
     if (problem.userPhoto !== undefined || problem.userPhoto !== null) {
-      let image = document.createElement("img");
-      image.setAttribute(
-        "style",
-        "width: 29px; height: 29px; border-radius: 7px;"
-      );
-      image.setAttribute("src", problem.userPhoto);
+      divUserPhoto.setAttribute("style", `background-size: cover; background-image:url(${problem.userPhoto});`)
+    }
 
-      divUserPhoto.appendChild(image);
+    if (problem.image) {
+      if (problem.image.length > 0) {
+        imagePopup.style.display = "block";
+        imagePopup.setAttribute("style", `background-image:url(${problem.image[0]}); background-size: cover; margin-left: 25px; margin-top: 25px;`);
+  
+        imagePopup.addEventListener("click", function () {
+          imageViewPopup.style.display = "block";
+          imageSrcPopup.setAttribute("src", problem.image[0]);
+        });
+      }
     }
 
     let divUserPhotoUsername = document.createElement("div");
@@ -177,7 +195,10 @@
 
     let divStatusSpan = document.createElement("span");
     if (problem.status === "Resolved") {
-      divStatusSpan.setAttribute("class", "transaction-info-all-span greeen-support-admin-status");
+      divStatusSpan.setAttribute(
+        "class",
+        "transaction-info-all-span greeen-support-admin-status"
+      );
     } else {
       divStatusSpan.setAttribute(
         "class",
@@ -218,14 +239,9 @@
     div.addEventListener("click", function () {
       problemInformationPopup.style.display = "block";
 
-      let image = document.createElement("img");
-      image.setAttribute(
-        "style",
-        "width: 29px; height: 29px; border-radius: 7px;"
-      );
-      image.setAttribute("src", problem.userPhoto);
-      userPhotoPopup.appendChild(image);
-
+      if (problem.userPhoto !== undefined || problem.userPhoto !== null) {
+        userPhotoPopup.setAttribute("style", `background-size: cover; background-image:url(${problem.userPhoto});`)
+      }
       usernamePopup.textContent = problem.user;
       emailPopup.textContent = problem.userEmail;
       descriptionPopup.textContent = problem.description;
@@ -235,30 +251,67 @@
         let problemReference = firebase
           .firestore()
           .collection("problems")
-          .doc(problem.problemId)
+          .doc(problem.problemId);
 
-          problemReference.set({
-            status: "Resolved"
-          }, { merge: true });
+        problemReference.set(
+          {
+            status: "Resolved",
+          },
+          { merge: true }
+        )
+        .then(() => {
+          let user = firebase.auth().currentUser;
+          console.log(user);
+          console.log(user.displayName);
 
-          problemInformationPopup.style.display = "none";  
+          firebase
+          .firestore()
+          .collection("history")
+          .doc(user.displayName)
+          .collection("actions")
+          .add({
+            username: user.displayName,
+            action: `solved a support case at ${problem.name}`,
+            createdAt: new Date()
+          })
+          .then(() => {
+            console.log("Successfully added action");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        })
+        .then(() => {
+          problemInformationPopup.style.display = "none";
+          location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       });
 
       cancelButton.addEventListener("click", function () {
-        problemInformationPopup.style.display = "block";
+        problemInformationPopup.style.display = "none";
       });
     });
-
     divMainSupportList.appendChild(div);
   }
 
+  Array.from(closeImagePreview).forEach((button) => {
+    button.addEventListener("click", () => {
+      imageViewPopup.style.display = "none";
+    });
+  });
+
   const removeProblems = () => {
-    let elements = document.getElementsByClassName("request-support-admin-main-div");
+    let elements = document.getElementsByClassName(
+      "request-support-admin-main-div"
+    );
 
     while (elements[0]) {
       elements[0].parentNode.removeChild(elements[0]);
-    }  
-  }
+    }
+  };
 
   function getTimeSince(date) {
     let seconds = Math.floor((new Date() - date) / 1000);
@@ -287,5 +340,5 @@
     return Math.floor(seconds) + " seconds ago";
   }
 
-  getProblems();
+  //getProblems();
 })(window, document);

@@ -87,7 +87,7 @@
       let popupPhoto = document.getElementById("admin-main-popup-photo-id");
       popupPhoto.setAttribute(
         "style",
-        `background-size: cover; background-image:url(${user.profilePicture})`
+        `background-image:url(${user.profilePicture}); background-size: cover; `
       );
 
       let popupUsername = document.getElementById(
@@ -102,9 +102,9 @@
         .get()
         .then((snapshot) => {
           if (snapshot.exists) {
-            popupSold.textContent += `sold: ${snapshot.size}`;
+            popupSold.textContent = `sold: ${snapshot.size}`;
           } else {
-            popupSold.textContent += `sold: 0`;
+            popupSold.textContent = `sold: 0`;
           }
         });
 
@@ -135,7 +135,17 @@
         });
 
       saveButton.addEventListener("click", function () {
-        alert("Save to db");
+        let feeValue = document.getElementById("transfer-fee-id").value;
+        let transferValue = document.getElementById("transfer-money-id").value;
+
+        firebase
+        .firestore()
+        .collection("users")
+        .doc(user.username)
+        .set({
+          balance: transferValue
+        })
+        
       });
 
       cancelButton.addEventListener("click", function () {

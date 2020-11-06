@@ -66,66 +66,70 @@ let numberOfImages = 0;
 let imagesArray = [];
 
 function addImageToForm(e) {
-  let files = e.target.files;
-  if (numberOfImages + files.length > 4) {
-    alert("You can only upload at most 4 files!");
-    return;
-  }
-  numberOfImages += files.length;
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      let files = e.target.files;
+      if (numberOfImages + files.length > 4) {
+        alert("You can only upload at most 4 files!");
+        return;
+      }
+      numberOfImages += files.length;
 
-  for (let i = 0; i < files.length; i++) {
-    let file = files[i];
+      for (let i = 0; i < files.length; i++) {
+        let file = files[i];
 
-    if (file) {
-      const reader = new FileReader();
-      reader.addEventListener("load", function (e) {
-        console.log(this);
+        if (file) {
+          const reader = new FileReader();
+          reader.addEventListener("load", function (e) {
+            console.log(this);
 
-        let imageFile = e.target;
+            let imageFile = e.target;
 
-        //const reference = firebase.storage().ref("game_images/" + file.name);
+            //const reference = firebase.storage().ref("game_images/" + file.name);
 
-        let divDocument = document.createElement("div");
-        let divDocumentClose = document.createElement("div");
-        let image = document.createElement("img");
+            let divDocument = document.createElement("div");
+            let divDocumentClose = document.createElement("div");
+            let image = document.createElement("img");
 
-        divDocument.setAttribute("class", "id-document");
-        divDocumentClose.setAttribute("class", "id-document-close");
-        divDocumentClose.addEventListener("click", function () {
-          divDocument.style.display = "none";
-          numberOfImages--;
-          // it might not work because of username
-          const reference = firebase
-            .storage()
-            .ref(`${username}/game_images/` + file.name);
-          reference.delete();
-          //.then(snapshot => snapshot.ref.getDownloadURL());
-        });
-        image.setAttribute("class", "image-preview");
-        image.setAttribute(
-          "style",
-          "width: inherit; height: inherit; border-radius: 20px;"
-        );
-        image.setAttribute("src", imageFile.result);
+            divDocument.setAttribute("class", "id-document");
+            divDocumentClose.setAttribute("class", "id-document-close");
+            divDocumentClose.addEventListener("click", function () {
+              divDocument.style.display = "none";
+              numberOfImages--;
+              // it might not work because of username
+              const reference = firebase
+                .storage()
+                .ref(`${user.displayName}/game_images/` + file.name);
+              reference.delete();
+              //.then(snapshot => snapshot.ref.getDownloadURL());
+            });
+            image.setAttribute("class", "image-preview");
+            image.setAttribute(
+              "style",
+              "width: inherit; height: inherit; border-radius: 20px;"
+            );
+            image.setAttribute("src", imageFile.result);
 
-        divDocument.appendChild(divDocumentClose);
-        divDocument.appendChild(image);
-        rowOfPhotos.appendChild(divDocument);
-      });
-      const reference = firebase.storage().ref("game_images/" + file.name);
-      reference
-        .put(file)
-        .then((snapshot) => snapshot.ref.getDownloadURL())
-        .then((url) => {
-          //console.log(url);
-          imagesArray.push(url);
-          //window.alert(url);
-        });
-      reader.readAsDataURL(file);
+            divDocument.appendChild(divDocumentClose);
+            divDocument.appendChild(image);
+            rowOfPhotos.appendChild(divDocument);
+          });
+          const reference = firebase.storage().ref(`${user.displayName}/game_images/` + file.name);
+          reference
+            .put(file)
+            .then((snapshot) => snapshot.ref.getDownloadURL())
+            .then((url) => {
+              imagesArray.push(url);
+            });
+          reader.readAsDataURL(file);
+        } else {
+          image.style.display = null;
+        }
+      }
     } else {
-      image.style.display = null;
+      console.log("Not logged in");
     }
-  }
+  });
 }
 
 function getImageURLsFromArray(...imagesArray) {
@@ -138,8 +142,6 @@ function addItemValidation() {
     if (user) {
       let gameTitle = document.getElementById("create-listing-title").value;
       let gamePrice = document.getElementById("create-listing-price").value;
-      let gameQuantity = document.getElementById("create-listing-quantity")
-        .value;
       let gameDescription = document.getElementById(
         "create-listing-description"
       );
@@ -159,17 +161,16 @@ function addItemValidation() {
           gameDeliveryOption != "" ||
           gameTypeOption != "" ||
           gameTitle != "" ||
+          gamePrice != "" ||
           !isNaN(gamePrice) ||
           gamePrice > 0 ||
           gamePrice < 10000 ||
-          !isNaN(gameQuantity) ||
-          gameQuantity > 0 ||
-          gameQuantity < 100 ||
           gameDescriptionContent != "") &&
         userCreateListing.verified !== true
       ) {
         let gameData = {
           postId: "",
+          likes: 0,
           seller: user.displayName,
           sellerPhoto: user.photoURL,
           category: categoryTypeOption,
@@ -177,7 +178,6 @@ function addItemValidation() {
           title: gameTitle,
           price: gamePrice,
           images: getImageURLsFromArray(...imagesArray),
-          quantity: gameQuantity,
           description: gameDescriptionContent,
           server: gameServerOption,
           garanty: gameGarantyOption,

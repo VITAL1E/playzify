@@ -98,6 +98,8 @@
 
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
 
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-functions.js"></script>
+
   <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
@@ -113,6 +115,8 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
+
+    const functions = firebase.functions();
   </script>
 
   <script src="./static/global.js"></script>

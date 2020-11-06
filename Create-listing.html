@@ -106,7 +106,7 @@
           <div class="user-logged-in-main-icons">
             <div class="comun-main-user-icons-header favorites-icon"> </div>
             <div class="comun-main-user-icons-header bell-icon">
-              <div class="notification-point">3</div>
+              <div class="notification-point" style="display: none;"></div>
             </div>
             <div class="comun-main-user-icons-header chat-icon"> </div>
           </div>
@@ -170,24 +170,24 @@
         <div class="verification-main-input-div">
           <p class="verification-main-text">Post title</p>
           <input id="create-listing-title" class="verification-main-input" placeholder="type post title"
-            autocomplete="off" maxlength="24">
+          autocomplete="off" maxlength="100">
         </div>
 
         <div class="verification-main-input-div">
           <p class="verification-main-text">Item price (EU)</p>
-          <input id="create-listing-price" class="verification-main-input" placeholder="type item price"
-            autocomplete="off" maxlength="24">
+          <input id="create-listing-price" min="0" class="verification-main-input" placeholder="type item price"
+            autocomplete="off" maxlength="4" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
         </div>
 
-        <div class="verification-main-input-div">
+        <!-- <div class="verification-main-input-div">
           <p class="verification-main-text">Quantity</p>
           <input id="create-listing-quantity" contenteditable="true" class="verification-main-input" placeholder="type item quantity" autocomplete="off" maxlength="24">
-        </div>
+        </div> -->
 
         <div class="verification-main-input-div">
           <p class="verification-main-text">Describe item</p>
           <p id="create-listing-description" contenteditable="true" class="describe-your-item-contentible"
-            placeholder="describe your item" spellcheck="false"></p>
+          placeholder="describe your item" spellcheck="false" maxlength="1000"></p>
         </div>
 
         <div class="verification-main-input-div">
@@ -206,13 +206,6 @@
               </label> <!-- ngIf: images.length<maxImagesForProduct -->
               <input id="addImg1" type="file" accept=".png, .jpg, .jpeg" style="display:none" multiple="">
             </div>
-
-            <!-- MARIO IMAGE -->
-            <!-- <div id="id-document-id" class="id-document">
-              <div id="id-document-close-id" class="id-document-close"></div>
-              <img id="image-preview-id" class="image-preview" src=""
-                style="width: inherit; height: inherit; display: none; border-radius: 20px;">
-            </div> -->
 
           </div>
         </div>

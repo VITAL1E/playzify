@@ -1,4 +1,5 @@
 let nickname = document.getElementById("user-nickname-id");
+let verified = document.getElementById("verified-span-id");
 let followers = document.getElementById("followers-id");
 
 let sellingButton = document.getElementById("selling-button-id");
@@ -32,6 +33,8 @@ let userId = url.searchParams.get("id");
 
 async function getUserDetails() {
   firebase.auth().onAuthStateChanged(async function (user) {
+    console.log(user);
+
     let postsReference = firebase
       .firestore()
       .collection("games")
@@ -76,49 +79,59 @@ async function getUserDetails() {
         .collection("reviews")
         .get()
         .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            let review = doc.data();
+          if (snapshot.exists) {
+            snapshot.forEach((doc) => {
+              let review = doc.data();
+  
+              let divMainReview = document.createElement("div");
+              divMainReview.setAttribute(
+                "class",
+                "allordderaction reviews-changes"
+              );
+  
+              let divUsername = document.createElement("div");
+              divUsername.setAttribute("class", "history-order-nickname");
+              divUsername.textContent = review.username;
+  
+              let divDescription = document.createElement("div");
+              divDescription.setAttribute(
+                "class",
+                "history-order-nickname mn-change"
+              );
+              divDescription.textContent = review.description;
+  
+              let timeagoSpan = document.createElement("span");
+              timeagoSpan.textContent = getTimeSince(
+                review.createdAt.seconds * 1000
+              );
+  
+              let divReviewIcon = document.createElement("div");
+              if (review.status === "Positive") {
+                divReviewIcon.setAttribute("class", "positive-review");
+              } else {
+                divReviewIcon.setAttribute("class", "negative-review");
+              }
+  
+              divDescription.appendChild(timeagoSpan);
+              divMainReview.appendChild(divUsername);
+              divMainReview.appendChild(divDescription);
+              divMainReview.appendChild(divReviewIcon);
+  
+              divReviews.appendChild(divMainReview);
+            });
+          } else {
 
-            let divMainReview = document.createElement("div");
-            divMainReview.setAttribute(
-              "class",
-              "allordderaction reviews-changes"
-            );
+            let div = document.createElement("div");
+            div.setAttribute("class", "no-something");
+            div.textContent = "there are no reviews";
 
-            let divUsername = document.createElement("div");
-            divUsername.setAttribute("class", "history-order-nickname");
-            divUsername.textContent = review.username;
-
-            let divDescription = document.createElement("div");
-            divDescription.setAttribute(
-              "class",
-              "history-order-nickname mn-change"
-            );
-            divDescription.textContent = review.description;
-
-            let timeagoSpan = document.createElement("span");
-            timeagoSpan.textContent = getTimeSince(
-              review.createdAt.seconds * 1000
-            );
-
-            let divReviewIcon = document.createElement("div");
-            if (review.status === "Positive") {
-              divReviewIcon.setAttribute("class", "positive-review");
-            } else {
-              divReviewIcon.setAttribute("class", "negative-review");
-            }
-
-            divDescription.appendChild(timeagoSpan);
-            divMainReview.appendChild(divUsername);
-            divMainReview.appendChild(divDescription);
-            divMainReview.appendChild(divReviewIcon);
-
-            divReviews.appendChild(divMainReview);
-          });
+            divReviews.appendChild(div);
+          }
         });
 
       closeModalReviews.addEventListener("click", function () {
         popupReviews.style.display = "none";
+        removeEmptySpace();
         removeReviews();
       });
     });
@@ -290,6 +303,7 @@ async function getUserDetails() {
         .doc(userId)
         .get()
         .then(function (snapshot) {
+          console.log(snapshot.data());
           let image = document.createElement("img");
           image.setAttribute("src", `${snapshot.data().profilePicture}`);
           profilePicture.appendChild(image);
@@ -406,6 +420,13 @@ async function getUserDetails() {
           });
 
           nickname.textContent = snapshot.data().username;
+
+          if (snapshot.data().verified === true) {
+            let div = document.createElement("span");
+            div.setAttribute("class", "verified-user");
+            
+            nickname.appendChild(div);
+          } 
         });
     } else {
       firebase
@@ -434,6 +455,14 @@ const removeFollowers = () => {
 
 const removeReviews = () => {
   let elements = document.getElementsByClassName("allordderaction reviews-changes");
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+};
+
+const removeEmptySpace = () => {
+  let elements = document.getElementsByClassName("no-something");
 
   while (elements[0]) {
     elements[0].parentNode.removeChild(elements[0]);
@@ -482,11 +511,16 @@ function createPost(post) {
 
   let divSellerRoundImage = document.createElement("div");
   divSellerRoundImage.setAttribute("class", "seller-round-image");
+  divSellerRoundImage.setAttribute("style", "background-size: cover;");
 
-  let image = document.createElement("img");
-  image.setAttribute("src", post.sellerPhoto);
+  if (post.sellerPhoto !== null) {
+    divSellerRoundImage.setAttribute("style", `background:url(${post.sellerPhoto}); background-size: cover;`);
+  }
 
-  divSellerRoundImage.appendChild(image);
+  // let image = document.createElement("img");
+  // image.setAttribute("src", post.sellerPhoto);
+
+  // divSellerRoundImage.appendChild(image);
 
   // let divSellerRoundImageIsOnline = document.createElement("div");
   // divSellerRoundImageIsOnline.setAttribute("class", "seller-is-online");
@@ -644,7 +678,7 @@ aboutButton.addEventListener("click", () => {
     .get()
     .then(function (snapshot) {
       console.log(snapshot.data());
-      if (snapshot.data().description !== undefined || snapshot.data().description !== null) {
+      if (snapshot.data().description !== undefined || snapshot.data().description !== "") {
         textAbout.innerText = snapshot.data().description;
       } else {
         textAbout.innerText = "There is not description";

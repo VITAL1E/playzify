@@ -105,7 +105,7 @@
           <div class="user-logged-in-main-icons">
             <div class="comun-main-user-icons-header favorites-icon"> </div>
             <div class="comun-main-user-icons-header bell-icon">
-              <div class="notification-point">3</div>
+              <div class="notification-point" style="display: none;"></div>
             </div>
             <div class="comun-main-user-icons-header chat-icon"> </div>
           </div>
@@ -136,9 +136,9 @@
         <div class="verification-main-input-div">
           <p class="verification-main-text">Birth Date</p>
           <div class="special-birth-date-input-div">
-            <input id="seller-verification-month-id" class="verification-main-input month-date" placeholder="MM" autocomplete="off" maxlength="24">
-            <input id="seller-verification-day-id" class="verification-main-input month-date" placeholder="DD" autocomplete="off" maxlength="24">
-            <input id="seller-verification-year-id" class="verification-main-input year-date" placeholder="YYYY" autocomplete="off" maxlength="24">
+            <input type="number" min="1" max="12" id="seller-verification-month-id" class="verification-main-input month-date" placeholder="MM" autocomplete="off" maxlength="2">
+            <input type="number" min="1" max="31" id="seller-verification-day-id" class="verification-main-input month-date" placeholder="DD" autocomplete="off" maxlength="2">
+            <input type="number" min="1900" max="2005" id="seller-verification-year-id" class="verification-main-input year-date" placeholder="YYYY" autocomplete="off" maxlength="4">
           </div>
         </div>
 

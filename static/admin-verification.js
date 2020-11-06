@@ -1,6 +1,13 @@
 (function (window, document, undefined) {
   "use strict";
 
+  // POPUP
+  let imageViewPopup = document.getElementById(
+    "admin-verification-img-view-id"
+  );
+  let imageSrcPopup = document.getElementById("admin-verification-img-src-id");
+  let closeImagePreview = document.getElementsByClassName("close-img");
+
   let generalButton = document.getElementById("general-button");
   let adminsButton = document.getElementById("admins-button");
   let supportButton = document.getElementById("support-button");
@@ -50,7 +57,7 @@
   addSlideButton.addEventListener("click", function () {
     window.location.href = "admin(add-slide).html";
   });
-  historyButton.addEventListener("click", function() {
+  historyButton.addEventListener("click", function () {
     window.location.href = "admin(history).html";
   });
 
@@ -68,9 +75,19 @@
   let sellerUsername = document.getElementById("seller-name-id");
   let sellerPicture = document.getElementById("seller-picture-id");
 
+  let divSelectVerifications = document.getElementById(
+    "select-verifications-id"
+  );
+
   let divVerifications = document.getElementById("verifications-array-id");
 
   function createVerificationRequest(verification) {
+    let userNotificationsReference = firebase
+      .firestore()
+      .collection("notifications")
+      .doc(verification.username)
+      .collection("notifications");
+
     let verificationRequestsDivsPopup = document.getElementById(
       "modal-general-popup-id"
     );
@@ -86,7 +103,7 @@
         "class",
         "transaction-sign transaction-sign-minus"
       );
-    } else if (verification.status === "Accepted") {
+    } else if (verification.status === "Verified") {
       transactionSign.setAttribute(
         "class",
         "transaction-sign transaction-sign-check"
@@ -138,7 +155,7 @@
     let transactionInfoTimeSpan = document.createElement("span");
     transactionInfoTimeSpan.setAttribute("class", "transaction-info-all-span");
     transactionInfoTimeSpan.textContent = getTimeSince(
-      verification.createdAt.toDate()
+      verification.createdAt.seconds * 1000
     );
 
     transactionStatus.appendChild(transactionProgressSpan);
@@ -188,10 +205,15 @@
           image.setAttribute("src", verification.images[i]);
 
           divDocument.appendChild(image);
+
+          divDocument.addEventListener("click", function () {
+            imageViewPopup.style.display = "block";
+            imageSrcPopup.setAttribute("src", verification.images[i]);
+          });
+
           rowOfIdDocuments.appendChild(divDocument);
         }
       }
-
       let cancelButton = document.getElementById("cancel-button-id");
       cancelButton.addEventListener("click", function () {
         verificationRequestsDivsPopup.style.display = "none";
@@ -199,14 +221,11 @@
       });
 
       let refuseButton = document.getElementById("refuse-button-id");
-      console.log(verification.verificationId);
       refuseButton.addEventListener("click", refuseVerificationRequest, false);
 
       let verifyButton = document.getElementById("verify-button-id");
-      console.log(verification.verificationId);
       verifyButton.addEventListener("click", acceptVerificationRequest, false);
     });
-
     divVerifications.appendChild(div);
 
     function acceptVerificationRequest() {
@@ -215,39 +234,98 @@
         .doc(`/verifications/${verification.verificationId}`)
         .set(
           {
-            status: "Accepted",
+            status: "Verified",
             verified: true,
           },
           { merge: true }
-        );
-        firebase
-        .firestore()
-        .collection("notifications")
-        .doc(userId)
-        .collection("notifications")
-        .add({
-          typeOfNotification: "Verified",
-          action: "Congratulation, your seller account is verified, now you can post items to sell.",
-          createdAt: new Date(),
+        )
+        .then(() => {
+          userNotificationsReference.add({
+            typeOfNotification: "Verified",
+            action:
+              "Congratulation, your seller account is verified, now you can post items to sell.",
+            createdAt: new Date(),
+          });
+        })
+        .then(() => {
+          verificationRequestsDivsPopup.style.display = "none";
+          location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
         });
-
-        verificationRequestsDivsPopup.style.display = "none";
     }
 
     function refuseVerificationRequest() {
       firebase
         .firestore()
-        .doc(`/verifications/${verification.verificationId}`)
+        .doc(`/verifications/${verification.username}`)
         .set(
           {
             status: "Refused",
             verified: false,
           },
           { merge: true }
-        );
-        verificationRequestsDivsPopup.style.display = "none";
+        )
+        .then(() => {
+          userNotificationsReference.add({
+            typeOfNotification: "Verified",
+            action:
+              "Unfortunately, your seller account is refused, contact support for more information.",
+            createdAt: new Date(),
+          });
+        })
+        .then(() => {
+          verificationRequestsDivsPopup.style.display = "none";
+          location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
+
+  let verificationsArray = [];
+  const getVerifications = async (status) => {
+    let docs;
+    let lastVisible;
+    let verificationsReference = firebase
+      .firestore()
+      .collection("verifications")
+      .where("status", "==", status)
+      .orderBy("createdAt", "desc");
+
+    verificationsArray = [];
+    await verificationsReference.get().then((snapshot) => {
+      if (!snapshot.exists) {
+        removeVerifications();
+      }
+      docs = snapshot;
+      lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      console.log("last", lastVisible.data());
+
+      docs["docs"].forEach((doc) => {
+        verificationsArray.push(doc.data());
+      });
+      removeVerifications();
+
+      verificationsArray.forEach((verification) => {
+        createVerificationRequest(verification);
+      });
+      verificationsArray = [];
+    });
+  };
+
+  divSelectVerifications.addEventListener("change", function () {
+    let selectFilter = `${divSelectVerifications.value}`;
+    getVerifications(selectFilter);
+  });
+
+  Array.from(closeImagePreview).forEach((button) => {
+    button.addEventListener("click", () => {
+      imageViewPopup.style.display = "none";
+    });
+  });
 
   const removeDocuments = () => {
     let elements = document.getElementsByClassName("id-document id-document-2");
@@ -263,57 +341,6 @@
     while (elements[0]) {
       elements[0].parentNode.removeChild(elements[0]);
     }
-  };
-
-  const getVerifications = async () => {
-    let verificationsArray = [];
-    let lastVisible;
-    let docs;
-
-    let verificationsReference = firebase
-      .firestore()
-      .collection("verifications")
-      .orderBy("createdAt", "desc");
-
-    await verificationsReference.get().then((snapshot) => {
-      console.log(snapshot.size);
-      docs = snapshot;
-      lastVisible = snapshot.docs[snapshot.docs.length - 1];
-      // strange behavior
-      console.log("last", lastVisible.data());
-    });
-    docs["docs"].forEach((doc) => {
-      verificationsArray.push(doc.data());
-    });
-
-    //removeVerifications();
-
-    // verificationsReference.onSnapshot((snapshot) => {
-    //   let changes = snapshot.docChanges();
-    //   changes.forEach((change) => {
-    //     if (change.type === "modified") {
-    //       console.log("Modified");
-
-    //       removeVerifications();
-    //       getVerifications();
-
-    //     } else if (change.type === "added") {
-    //       console.log("Added");
-
-    //       removeVerifications();
-    //       getVerifications();
-    //     } else {
-    //       console.log(change.doc.data());
-    //       console.log("Nothing changes");
-    //     }
-    //   });
-    // });
-
-    verificationsArray.forEach((verification) => {
-      createVerificationRequest(verification);
-      console.log(verification);
-    });
-    verificationsArray = [];
   };
 
   function getTimeSince(date) {
@@ -345,13 +372,10 @@
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      // User is signed in.
       console.log("User signed");
-      getVerifications();
+      getVerifications("Pending");
     } else {
-      // No user is signed in.
       console.log("Not logged in");
     }
   });
-
 })(window, document);

@@ -102,7 +102,7 @@
           <div class="user-logged-in-main-icons">
             <div class="comun-main-user-icons-header favorites-icon"> </div>
             <div class="comun-main-user-icons-header bell-icon">
-              <div class="notification-point">3</div>
+              <div class="notification-point" style="display: none;"></div>
             </div>
             <div class="comun-main-user-icons-header chat-icon"> </div>
           </div>
@@ -113,12 +113,23 @@
 
 </header>
 
+<!--POP-UP-img-view-->
+<div id="post-img-view-id" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="img-view">
+      <div class="close-img"></div>
+      <img id="post-img-src-id" class="img-view-2"
+        src="https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-15/fr/e15/s1080x1080/103939052_258375325421544_4676289371263885247_n.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&_nc_cat=100&_nc_ohc=jYU-fA0lFb0AX9WiNY5&oh=02ce6b362606153a07631e90cf56dece&oe=5F1DC5A7">
+    </div>
+  </div>
+</div>
+
 <body>
   <div class="container">
     <div class="main-post-div">
       <div class="part-1-post-div">
         <div id="seller-info-id" class="seller-info-pp">
-          <div id="post-seller-photo-id" class="seller-round-image" style="margin: 0;">
+          <div id="post-seller-photo-id" class="seller-round-image" style="margin: 0; background-size: cover;">
             <!-- <div class="seller-is-online">on</div> -->
           </div>
           <div id="post-seller-nickname-id" class="post-nickname-seller">
@@ -193,7 +204,7 @@
         <div class="payment-post">
           <div class="payyy">Payment</div>
           <div class="price-game-listed">
-            <div id="price-to-post-id">54 EUR</div>
+            <div id="price-to-post-id">EUR</div>
             <span class="arrow-right-price"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round" class="feather feather-chevron-right chevron-for-payment">

@@ -6,7 +6,6 @@ let showMoreButtonIndex = document.querySelector(".show-more"); // ???
 let cancelButtonIndex = document.getElementById("cancel-index-id");
 let applyButtonIndex = document.getElementById("apply-index-id");
 let removeFilterIndex = document.getElementById("remove-filter-id");
-
 let postsArrayIndex = [];
 
 if (searchBarIndex) {
@@ -42,6 +41,7 @@ function createPostIndex(post) {
 
   let divSellerRoundImage = document.createElement("div");
   divSellerRoundImage.setAttribute("class", "seller-round-image");
+  divSellerRoundImage.setAttribute("style", "background-size: cover;");
 
   let image = document.createElement("img");
   image.setAttribute("src", post.sellerPhoto);

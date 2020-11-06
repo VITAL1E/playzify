@@ -67,11 +67,11 @@ function createPost(post) {
 
   let divSellerRoundImage = document.createElement("div");
   divSellerRoundImage.setAttribute("class", "seller-round-image");
+  divSellerRoundImage.setAttribute("style", "background-size: cover;");
 
-  let image = document.createElement("img");
-  image.setAttribute("src", post.sellerPhoto);
-
-  divSellerRoundImage.appendChild(image);
+  if (post.sellerPhoto !== null) {
+    divSellerRoundImage.setAttribute("style", `background-image:url(${post.sellerPhoto}); background-size: cover;`);
+  }
 
   // let divSellerRoundImageIsOnline = document.createElement("div");
   // divSellerRoundImageIsOnline.setAttribute("class", "seller-is-online");

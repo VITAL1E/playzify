@@ -4,6 +4,10 @@ let balanceButton = document.getElementsByClassName("balance-button");
 let notificationsButton = document.getElementsByClassName(
   "comun-main-user-icons-header bell-icon"
 );
+let newNotificationsIcon = document.getElementsByClassName(
+  "notification-point"
+);
+
 let chatButton = document.getElementsByClassName(
   "comun-main-user-icons-header chat-icon"
 );
@@ -63,10 +67,15 @@ firebase.auth().onAuthStateChanged(function (user) {
       console.log("No notifications read");
     }
     Array.from(profileImages).forEach((profileImage) => {
+      if (user.photoURL !== null) {
+        profileImage.setAttribute(
+          "style",
+          `background-image:url(${user.photoURL}); background-size: cover;`
+        );
+      }
       // !== null !== undefined
 
       // not all image
-      profileImage.setAttribute("style", `background-size: cover; background-image:url(${user.photoURL})`);
       // let image = document.createElement("img");
       // image.setAttribute("src", user.photoURL);
       // p.appendChild(image);
@@ -98,36 +107,76 @@ Array.from(favoritesButton).forEach((e) =>
 
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
+    let currentUserReference = firebase
+      .firestore()
+      .collection("users")
+      .doc(user.displayName);
+
+    let notificationsReference = firebase
+      .firestore()
+      .collection("notifications")
+      .doc(user.displayName)
+      .collection("notifications");
+
     Array.from(userAccountButton).forEach((e) =>
       e.addEventListener("click", function () {
         window.location.href = `user.html?id=${user.displayName}`;
       })
     );
+
+    Array.from(sellButton).forEach((e) => {
+      e.addEventListener("click", function () {
+        currentUserReference
+          .get()
+          .then((snapshot) => {
+            if (snapshot.data().verified) {
+              window.location.href = "Create-listing.html";
+            } else {
+              window.location.href = "seller-verification.html";
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    });
+
+    notificationsReference.get().then((snapshot) => {
+      if (snapshot.size > 0) {
+        Array.from(newNotificationsIcon).forEach(
+          (n) => {
+            n.style.display = "block";
+            newNotificationsIcon.textContent = snapshot.size;
+          } 
+        );
+      } else {
+        console.log("no notifications");
+      }
+    });
   } else {
     Array.from(userAccountButton).forEach((e) =>
-    e.addEventListener("click", function () {
-      window.location.href = "sign-in.html";
-    })
-  );
+      e.addEventListener("click", function () {
+        window.location.href = "sign-in.html";
+      })
+    );
   }
 });
 
 Array.from(sellWithUsButton).forEach((e) =>
   e.addEventListener("click", function () {
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         window.location.href = "seller-verification.html";
       } else {
         window.location.href = "sign-in.html";
       }
     });
-    
   })
 );
 
 Array.from(logoButtonLight).forEach((e) =>
   e.addEventListener("click", function () {
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         window.location.href = "homepage.html";
       } else {
@@ -139,7 +188,7 @@ Array.from(logoButtonLight).forEach((e) =>
 
 Array.from(logoButtonDark).forEach((e) =>
   e.addEventListener("click", function () {
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         window.location.href = "homepage.html";
       } else {
@@ -152,12 +201,6 @@ Array.from(logoButtonDark).forEach((e) =>
 Array.from(balanceButton).forEach((e) =>
   e.addEventListener("click", function () {
     window.location.href = "balance.html";
-  })
-);
-
-Array.from(sellButton).forEach((e) =>
-  e.addEventListener("click", function () {
-    window.location.href = "Create-listing.html";
   })
 );
 
@@ -191,5 +234,3 @@ Array.from(chatButton).forEach((e) =>
 
 // User auth state listener
 // REDIRECT users to main page
-
-

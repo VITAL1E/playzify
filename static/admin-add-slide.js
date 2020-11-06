@@ -48,19 +48,140 @@
 
   let divSlides = document.getElementById("slides-main-list-id");
 
+  let rowOfPhotos = document.getElementById("row-of-photos-id");
+
+  let inputFile = document.getElementById("addImg1");
+
+  let imageSlideURL;
+  function addImageToForm(e) {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        let files = e.target.files;
+
+        for (let i = 0; i < files.length; i++) {
+          let file = files[i];
+
+          if (file) {
+            const reader = new FileReader();
+            reader.addEventListener("load", function (e) {
+              console.log(this);
+
+              let imageFile = e.target;
+
+              //const reference = firebase.storage().ref("game_images/" + file.name);
+
+              let divDocument = document.createElement("div");
+              let divDocumentClose = document.createElement("div");
+              let image = document.createElement("img");
+
+              divDocument.setAttribute("class", "id-document");
+              divDocumentClose.setAttribute("class", "id-document-close");
+              divDocumentClose.addEventListener("click", function () {
+                divDocument.style.display = "none";
+                const reference = firebase
+                  .storage()
+                  .ref(`${user.displayName}/slide_images/` + file.name);
+                reference.delete();
+                //.then(snapshot => snapshot.ref.getDownloadURL());
+              });
+              image.setAttribute("class", "image-preview");
+              image.setAttribute(
+                "style",
+                "width: 87px; height: 75px; border-radius: 20px;"
+              );
+              image.setAttribute("src", imageFile.result);
+
+              divDocument.appendChild(divDocumentClose);
+              divDocument.appendChild(image);
+              rowOfPhotos.appendChild(divDocument);
+            });
+            const reference = firebase
+              .storage()
+              .ref(`${user.displayName}/slide_images/` + file.name);
+            reference
+              .put(file)
+              .then((snapshot) => snapshot.ref.getDownloadURL())
+              .then((url) => {
+                imageSlideURL = url;
+              });
+            reader.readAsDataURL(file);
+          } else {
+            image.style.display = null;
+          }
+        }
+      } else {
+        console.log("Not logged in");
+      }
+    });
+  }
+
   addButton.addEventListener("click", function () {
     popupAddSlide.style.display = "block";
 
+    let popupText = document.getElementById("productDescriptionInput");
+
     let doneButton = document.getElementById("done-button-id");
     doneButton.addEventListener("click", function () {
-      alert("Added slide to DB");
-      popupAddSlide.style.display = "none";
+      let imageIndex = 0;
+      let slideReference = firebase.firestore().collection("banner");
+
+      slideReference
+        .get()
+        .then((snapshot) => {
+          imageIndex = snapshot.size + 1;
+          console.log(snapshot.size);
+          console.log(imageIndex);
+        })
+        .then(() => {
+          let newSlideAdded = slideReference.doc();
+          newSlideAdded
+            .set({
+              slideId: newSlideAdded.id,
+              text: popupText.textContent,
+              image: imageSlideURL,
+              index: imageIndex,
+            })
+            .then(() => {
+              let user = firebase.auth().currentUser;
+              console.log(user);
+              console.log(user.displayName);
+
+              firebase
+                .firestore()
+                .collection("history")
+                .doc(user.displayName)
+                .collection("actions")
+                .add({
+                  username: user.displayName,
+                  action: `added slide ${imageIndex}`,
+                  createdAt: new Date(),
+                })
+                .then(() => {
+                  console.log("Successfully added action");
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+            .then(() => {
+              popupAddSlide.style.display = "none";
+              location.reload();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
 
     let cancelButton = document.getElementById("cancel-button-id");
     cancelButton.addEventListener("click", function () {
       popupAddSlide.style.display = "none";
     });
+
+    inputFile.addEventListener("change", addImageToForm, false); // false, inner div first then outter handled
   });
 
   function createSlide(slide) {
@@ -85,13 +206,13 @@
         .doc(slide.slideId)
         .delete()
         .then(() => {
-          alert("Successfully deleted, refresh the page");
-          console.log("Successfully delted");
+          console.log("Successfully deleted");
+          location.reload();
         })
         .catch((error) => {
           console.log(error);
         });
-      });
+    });
 
     divBannerSlide.appendChild(divBannerSlideIndex);
     divBannerSlide.appendChild(divBannerSlideClose);
@@ -106,7 +227,7 @@
     let lastVisible;
     let docs;
 
-    let slides = firebase.firestore().collection("banner");
+    let slides = firebase.firestore().collection("banner").orderBy("index");
 
     await slides.get().then((snapshot) => {
       docs = snapshot;

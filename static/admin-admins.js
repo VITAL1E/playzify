@@ -51,7 +51,10 @@
 
     let divImage = document.createElement("div");
     divImage.setAttribute("class", "admins-admin-1");
-    divImage.setAttribute("style", `background-image:url(${admin.userPhoto})`);
+
+    if (admin.userPhoto !== "" || admin.userPhoto !== undefined || admin.userPhoto !== null) {
+      divImage.setAttribute("style", `background-image:url(${admin.userPhoto})`);
+    }
 
     let divUsername = document.createElement("div");
     divUsername.setAttribute("class", "admins-admin-2");
@@ -61,6 +64,33 @@
     div.appendChild(divUsername);
 
     div.addEventListener("click", function () {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+
+          // firebase.firestore().collection("admins").add({
+          //   username: "Yoooo",
+          //   userPhoto: "photo123"
+          // })
+          // .then((reference) => {
+          //   console.log(reference);
+          // })
+          // .catch((error) => {
+          //   console.log(error);
+          // });
+          // User is signed in.
+          // ADD ADMIN CLAIM
+
+          const adminEmail = user.email;
+          const addSuperAdminRole = functions.httpsCallable('addSuperAdminRole');
+          addSuperAdminRole({ email: adminEmail }).then(result => {
+            console.log(result);
+          });
+        } else {
+          // No user is signed in.
+        }
+      });
+
+
       popupAdmins.style.display = "block";
 
       let accessAdmins = false;
@@ -75,7 +105,10 @@
       username.textContent = admin.username;
 
       let photo = document.getElementById("popup-photo-id");
-      photo.setAttribute("style", `background-image:url(${admin.userPhoto})`);
+
+      if (admin.userPhoto !== "" || admin.userPhoto !== undefined || admin.userPhoto !== null) {
+        photo.setAttribute("style", `background-image:url(${admin.userPhoto})`);
+      }
 
       // BUTTONS
       let admins = document.getElementById("popup-admins-id");
@@ -228,8 +261,18 @@
             accessUsers,
             accessVerifications,
             accessWithdraws
-          }, { merge: true });
-          popupAdmins.style.display = "none";
+          }, { merge: true }
+          )
+          .then(() => {
+            console.log("Successfully added permissions");
+          })
+          .then(() => {
+            popupAdmins.style.display = "none";
+            location.reload();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
 
       // CANCEL BUTTON
@@ -238,7 +281,6 @@
         popupAdmins.style.display = "none";
       });
     });
-
     divAdmins.appendChild(div);
   }
 
@@ -268,12 +310,31 @@
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      // User is signed in.
-      console.log("User signed");
-      getAdmins();
+      user.getIdTokenResult().then(idTokenResult => {
+        console.log("Admin? " + idTokenResult.claims.admin);
+        console.log("Superadmin? " + idTokenResult.claims.superadmin);
+
+        user.admin = idTokenResult.claims.admin;
+        user.superadmin = idTokenResult.claims.superadmin;
+
+        console.log("user.admin? " + user.admin);
+        console.log("user.superadmin? " + user.superadmin);
+
+        if (idTokenResult.claims.admin !== true) {
+          window.location.href = "admin.html";
+        } else {
+          getAdmins();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      // user.getIdTokenResult().then(idTokenResult => {
+      //   console.log(idTokenResult.claims.admin);
+      // });
     } else {
-      // No user is signed in.
-      console.log("Not logged in");
+      console.log("Not signed");
+      window.location.href = "index.html";
     }
   });
 })(window, document);

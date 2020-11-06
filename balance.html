@@ -105,7 +105,7 @@
           <div class="user-logged-in-main-icons">
             <div class="comun-main-user-icons-header favorites-icon"> </div>
             <div class="comun-main-user-icons-header bell-icon">
-              <div class="notification-point"></div>
+              <div class="notification-point" style="display: none;"></div>
             </div>
             <div class="comun-main-user-icons-header chat-icon"> </div>
           </div>
@@ -129,7 +129,7 @@
 
           <div class="verification-main-input-div">
             <p class="verification-main-text">Amount</p>
-            <input id="withdraw-amount-id" class="verification-main-input" placeholder="type amount" autocomplete="off" maxlength="24">
+            <input id="withdraw-amount-id" class="verification-main-input" placeholder="type amount" min="0" contenteditable="true" autocomplete="off" maxlength="4" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </div>
 
           <div class="verification-main-input-div">

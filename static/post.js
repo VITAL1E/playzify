@@ -15,6 +15,10 @@ let likeIconRed = document.getElementById("like-icon-red-id");
 
 let postSellerInfo = document.getElementById("seller-info-id");
 
+let postImagePreview = document.getElementById("post-img-view-id");
+let postImageSrcPreview = document.getElementById("post-img-src-id");
+let closeImagePreview = document.getElementsByClassName("close-img");
+
 let postLikeCount;
 
 let postObjectToFetch = {};
@@ -55,6 +59,12 @@ function getPostDetails() {
             let width = window.outerWidth;
             let height = window.outerHeight;
             imageBackground.setAttribute("src", `${postSelected.images[i]}`);
+
+            imagePreview.addEventListener("click", function () {
+              postImagePreview.style.display = "block";
+              postImageSrcPreview.setAttribute("src", postSelected.images[i]);
+            });
+
             imagePreview.appendChild(imageBackground);
             postImages.appendChild(imagePreview);
             //postImagesMobile.appendChild(imagePreview);
@@ -74,11 +84,13 @@ function getPostDetails() {
         postSellerNickname.innerText = postSelected.seller;
         postSellerNickname.appendChild(verified);
 
-        let image = document.createElement("img");
-        image.setAttribute("src", postSelected.sellerPhoto);
-
-        postSellerPhoto.appendChild(image);
-        //postImages.innerText = `${postSelected.images}`;
+        if (postSelected.sellerPhoto !== null) {
+          let image = document.createElement("img");
+          image.setAttribute("src", postSelected.sellerPhoto);
+  
+          postSellerPhoto.appendChild(image);
+          //postImages.innerText = `${postSelected.images}`;
+        }
 
         postSellerInfo.addEventListener("click", function () {
           window.location.href = `user.html?id=${postSelected.seller}`;
@@ -101,16 +113,14 @@ function getPostDetails() {
 
         likesReference.get().then((snapshot) => {
           console.log(snapshot.data().likes);
-          console.log(snapshot.data().likes.length);
           if (user) {
-            if (snapshot.data().likes.includes(user.displayName)) {
-              likeIcon.style.display = "none";
-              likeIconRed.style.display = "block";
-              //likeCount.textContent = postSelected.likes.length;
-            } else {
-              likeIcon.style.display = "block";
-              likeIconRed.style.display = "none";
-            }
+              if (snapshot.data().likes.includes(user.displayName)) {
+                likeIcon.style.display = "none";
+                likeIconRed.style.display = "block";
+              } else {
+                likeIcon.style.display = "block";
+                likeIconRed.style.display = "none";
+              }
           }
           likeCount.textContent = snapshot.data().likes.length;
         });
@@ -125,16 +135,20 @@ function getPostDetails() {
             likeIcon.style.display = "block";
             likeIconRed.style.display = "none";
             //likeCount.textContent = postSelected.likes.length - 1;
-            likeCount.textContent = likeCountNumberUpdate;
+            likeCount.textContent = likeCountNumberUpdate - 1;
 
             likesReference.update({
               likes: firebase.firestore.FieldValue.arrayRemove(
                 user.displayName
               ),
-            });
-
-            userReference.update({
-              favorites: firebase.firestore.FieldValue.arrayRemove(postId),
+            })
+            .then(() => {
+              userReference.update({
+                favorites: firebase.firestore.FieldValue.arrayRemove(postId),
+              });
+            })
+            .catch((error) => {
+              console.log(error);
             });
 
           } else {
@@ -144,13 +158,14 @@ function getPostDetails() {
 
             likesReference.update({
               likes: firebase.firestore.FieldValue.arrayUnion(user.displayName),
-            });
-
-            userReference.update({
-              favorites: firebase.firestore.FieldValue.arrayUnion(postId),
-            });
-
-            firebase
+            })
+            .then(() => {
+              userReference.update({
+                favorites: firebase.firestore.FieldValue.arrayUnion(postId),
+              });
+            })
+            .then(() => {
+              firebase
               .firestore()
               .collection("notifications")
               .doc(postSelected.seller)
@@ -161,7 +176,17 @@ function getPostDetails() {
                 userPhoto: user.photoURL,
                 from: user.displayName,
                 createdAt: new Date(),
+              })
+              .then((reference) => {
+                console.log("Successfully updated " + reference);
+              })
+              .catch((error) => {
+                console.log(error);
               });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           }
         }
       })
@@ -175,6 +200,12 @@ function getPostDetails() {
     }
   });
 }
+
+Array.from(closeImagePreview).forEach((button) => {
+  button.addEventListener("click", () => {
+    postImagePreview.style.display = "none";
+  });
+});
 
 postPrice.addEventListener("click", function () {
   // const url = new URL(window.location.href);

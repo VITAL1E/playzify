@@ -41,11 +41,13 @@
   addSlideButton.addEventListener("click", function () {
     window.location.href = "admin(add-slide).html";
   });
-  historyButton.addEventListener("click", function() {
+  historyButton.addEventListener("click", function () {
     window.location.href = "admin(history).html";
   });
 
-  let popupUsername = document.getElementById("popup-username-id");
+  //let popupUsername = document.getElementById("popup-username-id");
+
+  let divListHistory = document.getElementById("order-history-popup-id");
 
   function createAdmin(admin) {
     let div = document.createElement("div");
@@ -53,7 +55,8 @@
 
     let divImage = document.createElement("div");
     divImage.setAttribute("class", "admins-admin-1");
-    divImage.setAttribute("style", `background-image:url(${admin.userPhoto})`);
+    divImage.setAttribute("style", `background:url(${admin.userPhoto}); background-size: cover;`);
+  
 
     let divUsername = document.createElement("div");
     divUsername.setAttribute("class", "admins-admin-2");
@@ -65,12 +68,46 @@
     div.addEventListener("click", function () {
       popupAdmins.style.display = "block";
 
-      popupUsername.textContent = admin.username;
+      //popupUsername.textContent = admin.username;
 
-      let span = document.createElement("span");
-      span.textContent = "ADMIN";
+      firebase
+        .firestore()
+        .collection("history")
+        .doc(admin.username)
+        .collection("actions")
+        .get()
+        .then((snapshot) => {
+          snapshot.docs.forEach((action) => {
+            let div = document.createElement("div");
+            div.setAttribute("class", "allordderaction");
 
-      popupUsername.appendChild(span);
+            let divUsername = document.createElement("div");
+            divUsername.setAttribute("class", "history-order-nickname");
+            divUsername.textContent = action.data().username;
+
+            let divUsernameSpan = document.createElement("span");
+            divUsernameSpan.textContent = "ADMIN";
+
+            let divAction = document.createElement("div");
+            divAction.setAttribute("class", "history-order-nickname mn-change");
+            divAction.textContent = action.data().action;
+
+            let divActionSpan = document.createElement("span");
+            divActionSpan.textContent = getTimeSince(action.data().createdAt.seconds * 1000);
+
+            divUsername.appendChild(divUsernameSpan);
+            divAction.appendChild(divActionSpan);
+            div.appendChild(divUsername);
+            div.appendChild(divAction);
+
+            divListHistory.appendChild(div);
+          });
+        });
+
+      // let span = document.createElement("span");
+      // span.textContent = "ADMIN";
+
+      // popupUsername.appendChild(span);
 
       let cancelButton = document.getElementById("popup-cancel-button");
       cancelButton.addEventListener("click", function () {
@@ -104,6 +141,33 @@
     });
     adminsArray = [];
   };
+
+  function getTimeSince(date) {
+    let seconds = Math.floor((new Date() - date) / 1000);
+
+    let interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return Math.floor(interval) + " years ago";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " months ago";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " days ago";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " hours ago";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " minutes ago";
+    }
+    return Math.floor(seconds) + " seconds ago";
+  }
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {

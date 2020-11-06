@@ -35,8 +35,14 @@
 
               <div class="fees-change">
                 <p class="fees-change-1">Fee</p>
-                <input class="fees-change-2" placeholder="change fees" autocomplete="off" maxlength="24">
+                <input id="transfer-fee-id" class="fees-change-2" min="0" placeholder="change fees" autocomplete="off" maxlength="24">
                 <div class="fees-change-3"> 4.5% Fee </div>
+              </div>
+
+              <div class="fees-change">
+                <p class="fees-change-1">Transfer money to balance</p>
+                <input id="transfer-money-id" class="fees-change-2" min="0" placeholder="Transfer" autocomplete="off" maxlength="4" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                <div class="fees-change-3"></div>
               </div>
 
             <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">

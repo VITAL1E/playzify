@@ -1,13 +1,26 @@
 let rowOfNotification = document.getElementById("row-second-notification-id");
 
-let notificationGeneral = document.getElementById("general-selectors-top-notification-bar-id");
-let notificationPurchased = document.getElementById("purchased-selectors-top-notification-bar-id");
-let notificationSold = document.getElementById("sold-selectors-top-notification-bar-id");
+let notificationGeneral = document.getElementById(
+  "general-selectors-top-notification-bar-id"
+);
+let notificationPurchased = document.getElementById(
+  "purchased-selectors-top-notification-bar-id"
+);
+let notificationSold = document.getElementById(
+  "sold-selectors-top-notification-bar-id"
+);
+
+let thereAreNoNotifications = document.getElementById(
+  "there-are-no-items-notifications-id"
+);
 
 notificationGeneral.addEventListener("click", () => {
   notificationPurchased.classList.remove("switch-1-selected");
   notificationSold.classList.remove("switch-1-selected");
   notificationGeneral.classList.add("switch-1-selected");
+
+  // Change
+  thereAreNoNotifications.style.display = "none";
   // Filter
   getNotifications("General");
 });
@@ -16,6 +29,9 @@ notificationPurchased.addEventListener("click", () => {
   notificationPurchased.classList.add("switch-1-selected");
   notificationSold.classList.remove("switch-1-selected");
   notificationGeneral.classList.remove("switch-1-selected");
+
+  // Change
+  thereAreNoNotifications.style.display = "block";
   // Filter
   removeNotifications();
   // Change
@@ -26,6 +42,9 @@ notificationSold.addEventListener("click", () => {
   notificationSold.classList.add("switch-1-selected");
   notificationGeneral.classList.remove("switch-1-selected");
   notificationPurchased.classList.remove("switch-1-selected");
+
+  // Change
+  thereAreNoNotifications.style.display = "block";
   // Filter
   removeNotifications();
   // Change
@@ -38,8 +57,7 @@ const removeNotifications = () => {
   while (elements[0]) {
     elements[0].parentNode.removeChild(elements[0]);
   }
-}
-
+};
 
 function createNotification(notification) {
   if (notification.typeOfNotification === "General") {
@@ -47,25 +65,41 @@ function createNotification(notification) {
     div.setAttribute("class", "real-notification-main-div");
 
     let divImage = document.createElement("div");
-    divImage.setAttribute("class", "seller-round-image seller-round-image-for-mini");
-    divImage.setAttribute("style", `margin: 0; background-size: cover; background-image:url(${notification.userPhoto});`);
+    divImage.setAttribute(
+      "class",
+      "seller-round-image seller-round-image-for-mini"
+    );
+
+    //if (notification.userPhoto !== null) {
+    divImage.setAttribute(
+      "style",
+      `margin: 0; background-image:url(${notification.userPhoto}); background-size: cover;`
+    );
+    //}
 
     let divMainAction = document.createElement("div");
-    divMainAction.setAttribute("class", "main-div-name-price-notification main-div-name-price-notification-mini");
+    divMainAction.setAttribute(
+      "class",
+      "main-div-name-price-notification main-div-name-price-notification-mini"
+    );
 
     let divAction = document.createElement("div");
-    divAction.setAttribute("class", "main-div-name-price-notification-real main-div-name-price-notification-real-mini");
+    divAction.setAttribute(
+      "class",
+      "main-div-name-price-notification-real main-div-name-price-notification-real-mini"
+    );
 
     let action = document.createElement("div");
     action.setAttribute("class", "name-notttfication name-notttfication-mini");
 
     let usernameSpan = document.createElement("span");
     usernameSpan.setAttribute("class", "mini-user-name");
-    usernameSpan.textContent = `${notification.from} ${notification.action}`; 
+    usernameSpan.textContent = `${notification.from} ${notification.action}`;
 
     let timeSpan = document.createElement("span");
     timeSpan.setAttribute("class", "mini-time");
-    timeSpan.textContent = " " + getTimeSince(notification.createdAt.seconds * 1000);
+    timeSpan.textContent =
+      " " + getTimeSince(notification.createdAt.seconds * 1000);
 
     action.appendChild(usernameSpan);
     action.appendChild(timeSpan);
@@ -82,20 +116,26 @@ function createNotification(notification) {
   } else if (notification.typeOfNotification === "Verified") {
     let div = document.createElement("div");
     div.setAttribute("class", "real-notification-main-div");
-  
+
     let sellerImage = document.createElement("div");
-    sellerImage.setAttribute("class", "seller-round-image seller-round-image-for-mini seller-round-image-for-mini-zify");
+    sellerImage.setAttribute(
+      "class",
+      "seller-round-image seller-round-image-for-mini seller-round-image-for-mini-zify"
+    );
     sellerImage.setAttribute("style", "margin: 0;");
-  
+
     let sellerIsOnline = document.createElement("div");
-    sellerIsOnline.setAttribute("class", "main-div-name-price-notification main-div-name-price-notification-mini");
-  
+    sellerIsOnline.setAttribute(
+      "class",
+      "main-div-name-price-notification main-div-name-price-notification-mini"
+    );
+
     let divNamePriceNotification = document.createElement("div");
     divNamePriceNotification.setAttribute(
       "class",
       "main-div-name-price-notification-real main-div-name-price-notification-real-mini"
     );
-  
+
     let divNamePriceNotificationReal = document.createElement("div");
     divNamePriceNotificationReal.setAttribute(
       "class",
@@ -105,7 +145,8 @@ function createNotification(notification) {
 
     let timeSpan = document.createElement("span");
     timeSpan.setAttribute("class", "mini-time");
-    timeSpan.textContent = " " + getTimeSince(notification.createdAt.seconds * 1000);
+    timeSpan.textContent =
+      " " + getTimeSince(notification.createdAt.seconds * 1000);
 
     divNamePriceNotificationReal.appendChild(timeSpan);
     divNamePriceNotification.appendChild(divNamePriceNotificationReal);
@@ -114,42 +155,39 @@ function createNotification(notification) {
     div.appendChild(sellerImage);
     div.appendChild(sellerIsOnline);
 
-
     rowOfNotification.appendChild(div);
-
-
 
     // ORDER NOTIFICATION
     // dateNotification.innerText = `${notification.createdAt.toDate().toDateString()}`;
     // console.log(notification.createdAt.toDate().toDateString());
-  
+
     // let divOrderStatusNotification = document.createElement("div");
     // divOrderStatusNotification.setAttribute(
     //   "class",
     //   "main-div-order-status-notification-real"
     // );
-  
+
     // let orderStatus = document.createElement("div");
     // orderStatus.setAttribute("class", "order-statuss");
-  
+
     // let orderStatusReal = document.createElement("div");
     // orderStatusReal.setAttribute("class", "order-status-real");
-  
+
     // orderStatusReal.innerText = `${notification.orderStatus}`;
     // console.log(notification.orderStatus);
-  
+
     // let divOrderStatusNotificationReal = document.createElement("div");
     // divOrderStatusNotificationReal.setAttribute(
     //   "class",
     //   "main-div-order-status-notification-real category-mini-change"
     // );
-  
+
     // let categoryProductListedMiniSign = document.createElement("div");
     // categoryProductListedMiniSign.setAttribute(
     //   "class",
     //   "category-product-listed-mini-sign mini-sign-notification"
     // );
-  
+
     // sellerImage.appendChild(sellerIsOnline);
     // divNamePriceNotificationReal.appendChild(nameNotification);
     // divNamePriceNotificationReal.appendChild(priceNotification);
@@ -162,38 +200,49 @@ function createNotification(notification) {
     // divNamePriceNotification.appendChild(divOrderStatusNotificationReal);
     // div.appendChild(sellerImage);
     // div.appendChild(divNamePriceNotification);
-  
+
     // rowOfNotification.appendChild(div);
-  
+
     // div.addEventListener("click", function () {
     //   window.location.href = `order.html?id=${notification.orderId}`;
     // });
-
   } else if (notification.typeOfNotification === "Review") {
-
     let div = document.createElement("div");
     div.setAttribute("class", "real-notification-main-div");
 
     let divImage = document.createElement("div");
-    divImage.setAttribute("class", "seller-round-image seller-round-image-for-mini");
-    divImage.setAttribute("style", `margin: 0; background-size: cover; background-image:url(${notification.userPhoto});`);
+    divImage.setAttribute(
+      "class",
+      "seller-round-image seller-round-image-for-mini"
+    );
+    divImage.setAttribute(
+      "style",
+      `margin: 0; background-size: cover; background-image:url(${notification.userPhoto});`
+    );
 
     let divMainAction = document.createElement("div");
-    divMainAction.setAttribute("class", "main-div-name-price-notification main-div-name-price-notification-mini");
+    divMainAction.setAttribute(
+      "class",
+      "main-div-name-price-notification main-div-name-price-notification-mini"
+    );
 
     let divAction = document.createElement("div");
-    divAction.setAttribute("class", "main-div-name-price-notification-real main-div-name-price-notification-real-mini");
+    divAction.setAttribute(
+      "class",
+      "main-div-name-price-notification-real main-div-name-price-notification-real-mini"
+    );
 
     let action = document.createElement("div");
     action.setAttribute("class", "name-notttfication name-notttfication-mini");
 
     let usernameSpan = document.createElement("span");
     usernameSpan.setAttribute("class", "mini-user-name");
-    usernameSpan.textContent = `${notification.from} ${notification.action} "${notification.review}"`; 
+    usernameSpan.textContent = `${notification.from} ${notification.action} "${notification.review}"`;
 
     let timeSpan = document.createElement("span");
     timeSpan.setAttribute("class", "mini-time");
-    timeSpan.textContent = " " + getTimeSince(notification.createdAt.seconds * 1000);
+    timeSpan.textContent =
+      " " + getTimeSince(notification.createdAt.seconds * 1000);
 
     action.appendChild(usernameSpan);
     action.appendChild(timeSpan);
@@ -203,53 +252,62 @@ function createNotification(notification) {
     div.appendChild(divMainAction);
 
     rowOfNotification.appendChild(div);
-
   }
 }
 
 const getNotifications = async (orderStatus) => {
-  firebase.auth().onAuthStateChanged(function(user) {
+  firebase.auth().onAuthStateChanged(function (user) {
     let notificationsReference;
     if (user) {
-      if (orderStatus === undefined || orderStatus === "" || orderStatus === "General") {
+      if (
+        orderStatus === undefined ||
+        orderStatus === "" ||
+        orderStatus === "Verified" ||
+        orderStatus === "General"
+      ) {
         notificationsReference = firebase
-        .firestore()
-        .collection("notifications")
-        .doc(user.displayName)
-        .collection("notifications")  
-        .orderBy("createdAt", "desc");
+          .firestore()
+          .collection("notifications")
+          .doc(user.displayName)
+          .collection("notifications")
+          .orderBy("createdAt", "desc");
       } else if (orderStatus === "Purchased") {
         notificationsReference = firebase
-        .firestore()
-        .collection("notifications")
-        .doc(user.displayName)
-        .collection("notifications")
-        .where("buyer", "==", user.displayName)
-        .where("orderStatus", "==", orderStatus)
-        .orderBy("createdAt", "desc");        
+          .firestore()
+          .collection("notifications")
+          .doc(user.displayName)
+          .collection("notifications")
+          .where("buyer", "==", user.displayName)
+          .where("orderStatus", "==", orderStatus)
+          .orderBy("createdAt", "desc");
       } else if (orderStatus === "Sold") {
         notificationsReference = firebase
-        .firestore()
-        .collection("notifications")
-        .where("seller", "==", user.displayName)
-        .doc(user.displayName)
-        .collection("notifications")    
-        .orderBy("createdAt", "desc");            
+          .firestore()
+          .collection("notifications")
+          .where("seller", "==", user.displayName)
+          .doc(user.displayName)
+          .collection("notifications")
+          .orderBy("createdAt", "desc");
       } else {
         console.log("Fuck off");
       }
       notificationsReference
-      .get()
-      .then(querySnapshot => {
-        console.log(querySnapshot);
-        querySnapshot.forEach((doc) => {
-          createNotification(doc.data());
-          console.log(doc.id, " => ", doc.data());
+        .get()
+        .then((querySnapshot) => {
+          console.log(querySnapshot.size);
+          if (querySnapshot.size === 0) {
+            thereAreNoNotifications.style.display = "block";
+            return;
+          }
+          console.log(querySnapshot);
+          querySnapshot.forEach((doc) => {
+            createNotification(doc.data());
+            console.log(doc.id, " => ", doc.data());
+          });
         })
-      })
-      .catch(error => {
-        console.log(error);
-      })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       console.log("Not logged in");
     }

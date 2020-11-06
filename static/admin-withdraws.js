@@ -7,6 +7,8 @@
 
   let divSelectWithdraws = document.getElementById("select-withdraws-id");
 
+  let cancelButton = document.getElementById("popup-cancel-button-id");
+
   let generalButton = document.getElementById("general-button");
   let adminsButton = document.getElementById("admins-button");
   let supportButton = document.getElementById("support-button");
@@ -44,7 +46,7 @@
   addSlideButton.addEventListener("click", function () {
     window.location.href = "admin(add-slide).html";
   });
-  historyButton.addEventListener("click", function() {
+  historyButton.addEventListener("click", function () {
     window.location.href = "admin(history).html";
   });
 
@@ -139,7 +141,7 @@
       let popupImage = document.getElementById("popup-image-id");
       popupImage.setAttribute(
         "style",
-        `background-image:url(${withdraw.userPhoto})`
+        `background-image:url(${withdraw.userPhoto}); background-size: cover;`
       );
 
       let popupUsername = document.getElementById("popup-username-id");
@@ -150,26 +152,54 @@
 
       let doneButton = document.getElementById("popup-done-button-id");
       doneButton.addEventListener("click", function () {
-        firebase.firestore().doc(`/withdraws/${withdraw.withdrawId}`).set(
-          {
-            status: "Done",
-          },
-          { merge: true }
-        );
-        popupWithdraw.style.display = "none";
+        firebase
+          .firestore()
+          .doc(`/withdraws/${withdraw.withdrawId}`)
+          .set(
+            {
+              status: "Done",
+            },
+            { merge: true }
+          )
+          .then(() => {
+            let user = firebase.auth().currentUser;
+            console.log(user);
+            console.log(user.displayName);
+
+            firebase
+              .firestore()
+              .collection("history")
+              .doc(user.displayName)
+              .collection("actions")
+              .add({
+                username: user.displayName,
+                action: `transfered money to ${withdraw.user}`,
+                createdAt: new Date()
+              })
+              .then(() => {
+                console.log("Successfully added action");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .then(() => {
+            popupWithdraw.style.display = "none";
+            location.reload();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
 
-      let cancelButton = document.getElementById("popup-cancel-button-id");
       cancelButton.addEventListener("click", function () {
         popupWithdraw.style.display = "none";
       });
     });
-
     divWithdraws.appendChild(div);
   }
 
   let withdrawsArray = [];
-
   const getWithdraws = async (status) => {
     let docs;
     let lastVisible;
@@ -180,32 +210,28 @@
       .orderBy("createdAt", "desc");
 
     withdrawsArray = [];
-
     await withdrawsReference.get().then((snapshot) => {
-        docs = snapshot;
-        lastVisible = snapshot.docs[snapshot.docs.length - 1];
-        console.log("last", lastVisible.data());
-
-        docs["docs"].forEach((doc) => {
-          withdrawsArray.push(doc.data());
-        });
+      if (!snapshot.exists) {
         removeWithdraws();
+      }
+      docs = snapshot;
+      lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      console.log("last", lastVisible.data());
 
-        withdrawsArray.forEach((withdraw) => {
-          createWithdrawRequest(withdraw);
-        });
+      docs["docs"].forEach((doc) => {
+        withdrawsArray.push(doc.data());
+      });
+      removeWithdraws();
 
-        withdrawsArray = [];
+      withdrawsArray.forEach((withdraw) => {
+        createWithdrawRequest(withdraw);
+      });
+      withdrawsArray = [];
     });
   };
 
   divSelectWithdraws.addEventListener("change", function () {
     let selectFilter = `${divSelectWithdraws.value}`;
-    if (typeof selectFilter === "string" || selectFilter instanceof String) {
-      console.log("String");
-    } else {
-      console.log("Not string");
-    }
     getWithdraws(selectFilter);
   });
 
@@ -216,15 +242,6 @@
       elements[0].parentNode.removeChild(elements[0]);
     }
   };
-
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      console.log("User signed");
-      getWithdraws("Pending");
-    } else {
-      console.log("Not logged in");
-    }
-  });
 
   function getTimeSince(date) {
     let seconds = Math.floor((new Date() - date) / 1000);
@@ -252,4 +269,13 @@
     }
     return Math.floor(seconds) + " seconds ago";
   }
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      console.log("User signed");
+      getWithdraws("Pending");
+    } else {
+      console.log("Not logged in");
+    }
+  });
 })(window, document);

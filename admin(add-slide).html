@@ -22,7 +22,7 @@
 
             <div class="verification-main-input-div">
                 <p class="verification-main-text">Add slide photo</p>
-                <div class="row-of-id-photos">
+                <div id="row-of-photos-id" class="row-of-id-photos">
                     <div class="two1 two2" id="addImgLabel1">
                         <label for="addImg1" class="input-label inputLabelCss">
                             <div class="photosvg">
@@ -32,15 +32,10 @@
                         </label> <!-- ngIf: images.length<maxImagesForProduct --><input id="addImg1" type="file" accept=".png, .jpg, .jpeg" style="display:none" multiple="">
                     </div>
 
-                    <div class="id-document id-document-2">
+                    <!-- <div class="id-document id-document-2">
                         <div class="id-document-close"></div>
-                    </div>
+                    </div> -->
                 </div>
-            </div>
-
-            <div class="verification-main-input-div">
-                <p class="verification-main-text">Page Name ( optional )</p>
-                <input class="verification-main-input" placeholder="type page name" autocomplete="off" maxlength="24">
             </div>
 
             <div class="verification-main-input-div">
@@ -116,6 +111,8 @@
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
 
   <script>
     // Your web app's Firebase configuration
