@@ -4,6 +4,7 @@ let inputFile = document.getElementById("addImgProfile");
 let profilePicture = document.getElementById("user-icon-2-id");
 let storeDescription = document.getElementById("productDescriptionInput");
 let addItemButton = document.getElementById("create-listing-add-item-id");
+let logoutButton = document.getElementById("logout-button-id");
 
 let photoPictureURL;
 
@@ -27,12 +28,26 @@ firebase.auth().onAuthStateChanged(function(user) {
     }
   } else {
     console.log("Not signed");
+    window.location.href = "index.hmtl";
   }
+});
+
+logoutButton.addEventListener("click", function () {
+  firebase.auth().signOut().then(function () {
+    console.log("Logged out");
+    window.location.href = "index.html";
+  }).catch(function (error) {
+    console.log(error);
+  });
 });
 
 settingsChangeButton.addEventListener("click", function() {
   let user = firebase.auth().currentUser;
   console.log(user);
+
+  // SET PHOTO to users collection
+  // SET PHOTO to games seller photo collection 
+  // etc
 
   user.updateProfile({
     photoURL: photoPictureURL,

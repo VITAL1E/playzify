@@ -70,8 +70,13 @@ function createPost(post) {
   divSellerRoundImage.setAttribute("style", "background-size: cover;");
 
   if (post.sellerPhoto !== null) {
-    divSellerRoundImage.setAttribute("style", `background-image:url(${post.sellerPhoto}); background-size: cover;`);
+    divSellerRoundImage.setAttribute("style", `background:url(${post.sellerPhoto})`);
   }
+
+  // let image = document.createElement("img");
+  // image.setAttribute("src", post.sellerPhoto);
+
+  // divSellerRoundImage.appendChild(image);
 
   // let divSellerRoundImageIsOnline = document.createElement("div");
   // divSellerRoundImageIsOnline.setAttribute("class", "seller-is-online");
@@ -89,13 +94,25 @@ function createPost(post) {
 
   //////// icon
   if (post.category === "Accounts") {
-    divProductDescriptionMiniSign.setAttribute("class", "category-product-listed-mini-sign category-product-listed-mini-sign");
+    divProductDescriptionMiniSign.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign"
+    );
   } else if (post.category === "Items") {
-    divProductDescriptionMiniSign.setAttribute("class", "category-product-listed-mini-sign category-product-listed-mini-sign-2");
+    divProductDescriptionMiniSign.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-2"
+    );
   } else if (post.category === "GameCoins") {
-    divProductDescriptionMiniSign.setAttribute("class", "category-product-listed-mini-sign category-product-listed-mini-sign-3");
+    divProductDescriptionMiniSign.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-3"
+    );
   } else if (post.category === "Boosting") {
-    divProductDescriptionMiniSign.setAttribute("class", "category-product-listed-mini-sign category-product-listed-mini-sign-4");
+    divProductDescriptionMiniSign.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-4"
+    );
   } else {
     console.log("Problem with catogry icon");
   }
@@ -136,13 +153,8 @@ function createPost(post) {
   divProductDescription.textContent = post.description;
   divProductName.textContent = post.title;
   divProductPrice.textContent = post.price + " EUR";
-  // divSellerRoundImageIsOnline.textContent = "on";
-
-  // divSellerRoundImage.appendChild(divSellerRoundImageIsOnline);
 
   divSellerName.appendChild(divVerified);
-
-  ////// Get specific Icon
   divProductDescription.appendChild(divProductDescriptionMiniSign);
 
   divProductPriceSVG.appendChild(divProductPricePolyline);

@@ -53,6 +53,7 @@ async function getUserDetails() {
         console.log(snapshot.data().description);
         userFollowers = snapshot.data().followers;
         numberOfFollowers = snapshot.data().followers.length;
+        nickname.textContent = snapshot.data().username;
       });
 
     let userReference = await firebase
@@ -60,17 +61,11 @@ async function getUserDetails() {
       .collection("users")
       .doc(userId);
 
-    // userReference
-    //   .get()
-    //   .then(function (snapshot) {
-    //     textAbout.textContent = snapshot.data().description;
-    //   })
-    //   .catch(function () {
-    //     console.log("Could not read description of the store");
-    //   });
 
+    // REVIEWS
     reviews.addEventListener("click", function () {
       popupReviews.style.display = "block";
+
 
       firebase
         .firestore()
@@ -79,6 +74,7 @@ async function getUserDetails() {
         .collection("reviews")
         .get()
         .then((snapshot) => {
+          console.log(snapshot.forEach((doc) => console.log(doc.data())));
           if (snapshot.exists) {
             snapshot.forEach((doc) => {
               let review = doc.data();
@@ -156,10 +152,11 @@ async function getUserDetails() {
         // If different user and logged
         if (userFollowers.includes(user.displayName)) {
           // If follower and logged
-          console.log("yes");
+          console.log("yes following");
 
           settings.style.display = "none";
           message.style.display = "block";
+
           message.addEventListener("click", function () {
             if (!user) {
               window.location.href = "sign-in.html";
@@ -173,35 +170,55 @@ async function getUserDetails() {
               .get()
               .then((snapshot) => {
                 PROFILE_PHOTO = snapshot.data().profilePicture;
-              });
+              })
+              .then(() => {
+                userChatReference = firebase
+                  .firestore()
+                  .collection("chats")
+                  .doc(user.displayName)
+                  .collection("chats")
+                  .doc(userId);
 
-            userChatReference = firebase
-              .firestore()
-              .collection("chats")
-              .doc(user.displayName)
-              .collection("chats")
-              .doc(userId);
-
-            userChatReference.get().then((doc) => {
-              if (doc.exists) {
-                console.log("Doc exists");
-                userChatReference.set(
-                  {
-                    lastUpdated: new Date(),
-                  },
-                  { merge: true }
-                );
-              } else {
-                console.log("Doc not exists");
-                userChatReference.set({
-                  lastUpdated: new Date(),
-                  lastMessage: "",
-                  profilePhoto: PROFILE_PHOTO,
-                  username: userId,
+                userChatReference.get().then((doc) => {
+                  if (doc.exists) {
+                    console.log("Doc exists");
+                    userChatReference
+                      .set(
+                        {
+                          lastUpdated: new Date(),
+                        },
+                        { merge: true }
+                      )
+                      .then(() => {
+                        console.log("Updated the chat timestamp");
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  } else {
+                    console.log("Doc not exists");
+                    userChatReference
+                      .set({
+                        lastUpdated: new Date(),
+                        lastMessage: "",
+                        profilePhoto: PROFILE_PHOTO,
+                        username: userId,
+                      })
+                      .then((reference) => {
+                        console.log("Initiated chat " + reference);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  }
                 });
-              }
-            });
-            window.location.href = `chat.html?id=${userId}`;
+              })
+              .then(() => {
+                window.location.href = `chat.html?id=${userId}`;
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           });
 
           unfollowButton.style.display = "inline-block";
@@ -219,10 +236,11 @@ async function getUserDetails() {
                 ),
               })
               .then(() => {
-                setTimeout(getUserDetails, 10);
+                getUserDetails();
+                //setTimeout(getUserDetails, 10);
               })
               .then(() => {
-                //removeFollowers();
+                removeFollowers();
               })
               .catch((error) => {
                 console.log(error);
@@ -230,10 +248,11 @@ async function getUserDetails() {
           });
         } else {
           // If not follower and logged
-          console.log("no");
+          console.log("no following");
 
           settings.style.display = "none";
           message.style.display = "block";
+
           message.addEventListener("click", function () {
             let PROFILE_PHOTO;
 
@@ -255,29 +274,48 @@ async function getUserDetails() {
               .collection("chats")
               .doc(user.displayName)
               .collection("chats")
-              ////////////
               .doc(userId);
 
-            userChatReference.get().then((doc) => {
-              if (doc.exists) {
-                console.log("Doc exists");
-                userChatReference.set(
-                  {
-                    lastUpdated: new Date(),
-                  },
-                  { merge: true }
-                );
-              } else {
-                console.log("Doc not exists");
-                userChatReference.set({
-                  lastUpdated: new Date(),
-                  lastMessage: "",
-                  profilePhoto: PROFILE_PHOTO,
-                  username: userId,
-                });
-              }
-            });
-            window.location.href = `chat.html?id=${userId}`;
+            userChatReference
+              .get()
+              .then((doc) => {
+                if (doc.exists) {
+                  console.log("Doc exists");
+                  userChatReference
+                    .set(
+                      {
+                        lastUpdated: new Date(),
+                      },
+                      { merge: true }
+                    )
+                    .then(() => {
+                      console.log("Updated the chat");
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                } else {
+                  console.log("Doc not exists");
+                  userChatReference
+                    .set({
+                      lastUpdated: new Date(),
+                      lastMessage: "",
+                      profilePhoto: PROFILE_PHOTO,
+                      username: userId,
+                    })
+                    .then((reference) => {
+                      console.log(
+                        "Successfully initiated the chat " + reference
+                      );
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                }
+              })
+              .then(() => {
+                window.location.href = `chat.html?id=${userId}`;
+              });
           });
 
           followButton.style.display = "inline-block";
@@ -295,6 +333,7 @@ async function getUserDetails() {
                 ),
               })
               .then(() => {
+                getUserDetails();
                 //setTimeout(getUserDetails, 10);
               })
               .then(() => {
@@ -315,6 +354,12 @@ async function getUserDetails() {
                 userPhoto: user.photoURL,
                 from: user.displayName,
                 createdAt: new Date(),
+              })
+              .then((reference) => {
+                console.log("Successfuly added notification " + reference);
+              })
+              .catch((error) => {
+                console.log(error);
               });
           });
         }
@@ -356,11 +401,11 @@ async function getUserDetails() {
 
             if (followersOfUser.length === 0) {
               removeFollowers();
-              let div = document.createElement("div");
-              div.setAttribute("class", "no-something");
-              div.textContent = "there are no followers";
-              divMainFollowersList.appendChild(div);
-              return;
+              // let div = document.createElement("div");
+              // div.setAttribute("class", "no-something");
+              // div.textContent = "there are no followers";
+              // divMainFollowersList.appendChild(div);
+              // return;
             }
 
             followersOfUser.forEach((follower) => {
@@ -368,6 +413,7 @@ async function getUserDetails() {
               let following = false;
 
               console.log(follower);
+
               userReference
                 .doc(follower)
                 .get()
@@ -458,8 +504,7 @@ async function getUserDetails() {
                 });
             });
           });
-
-          nickname.textContent = snapshot.data().username;
+          // nickname.textContent = snapshot.data().username;
 
           if (snapshot.data().verified === true) {
             let div = document.createElement("span");
@@ -489,6 +534,83 @@ async function getUserDetails() {
     }
   });
 }
+
+// // REVIEWS
+// reviews.addEventListener("click", async function () {
+//   popupReviews.style.display = "block";
+
+
+//   console.log("Clicked reviews");
+  
+//   firebase
+//     .firestore()
+//     .collection("reviews")
+//     .doc(userId)
+//     .collection("reviews")
+//     .get()
+//     .then((snapshot) => {
+//       console.log(snapshot.data());
+//       if (!snapshot.exists) {
+//         // let div = document.createElement("div");
+//         // div.setAttribute("class", "no-something");
+//         // div.textContent = "there are no reviews";
+//         // divReviews.appendChild(div);
+
+//       } else {
+//         snapshot.forEach((doc) => {
+//           let review = doc.data();
+
+//           let divMainReview = document.createElement("div");
+//           divMainReview.setAttribute(
+//             "class",
+//             "allordderaction reviews-changes"
+//           );
+
+//           let divUsername = document.createElement("div");
+//           divUsername.setAttribute("class", "history-order-nickname");
+//           divUsername.textContent = review.username;
+
+//           let divDescription = document.createElement("div");
+//           divDescription.setAttribute(
+//             "class",
+//             "history-order-nickname mn-change"
+//           );
+//           divDescription.textContent = review.description;
+
+//           let timeagoSpan = document.createElement("span");
+//           timeagoSpan.textContent = getTimeSince(
+//             review.createdAt.seconds * 1000
+//           );
+
+//           let divReviewIcon = document.createElement("div");
+//           if (review.status === "Positive") {
+//             divReviewIcon.setAttribute("class", "positive-review");
+//           } else {
+//             divReviewIcon.setAttribute("class", "negative-review");
+//           }
+
+//           divDescription.appendChild(timeagoSpan);
+//           divMainReview.appendChild(divUsername);
+//           divMainReview.appendChild(divDescription);
+//           divMainReview.appendChild(divReviewIcon);
+
+//           divReviews.appendChild(divMainReview);
+//         });
+//       }
+//     })
+//     .then(() => {
+//       console.log("Successfully displayed reviewers");
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//     });
+
+//   closeModalReviews.addEventListener("click", function () {
+//     popupReviews.style.display = "none";
+//     removeEmptySpace();
+//     removeReviews();
+//   });
+// });
 
 const removeFollowers = () => {
   let elements = document.getElementsByClassName("main-followers-list-2");
@@ -575,14 +697,6 @@ function createPost(post) {
     );
   }
 
-  // let image = document.createElement("img");
-  // image.setAttribute("src", post.sellerPhoto);
-
-  // divSellerRoundImage.appendChild(image);
-
-  // let divSellerRoundImageIsOnline = document.createElement("div");
-  // divSellerRoundImageIsOnline.setAttribute("class", "seller-is-online");
-
   let divSellerName = document.createElement("div");
   divSellerName.setAttribute("class", "seller-name");
 
@@ -592,7 +706,6 @@ function createPost(post) {
   let divProductDescription = document.createElement("div");
   divProductDescription.setAttribute("class", "product-description");
 
-  //////// icon
   let divProductDescriptionMiniSign = document.createElement("div");
 
   if (post.category === "Accounts") {
@@ -618,31 +731,6 @@ function createPost(post) {
   } else {
     console.log("Problem with catogry icon");
   }
-
-  // let divProductDescriptionMiniSignAccounts = document.createElement("div");
-  // divProductDescriptionMiniSignAccounts.setAttribute(
-  //   "class",
-  //   "category-product-listed-mini-sign category-product-listed-mini-sign"
-  // );
-
-  // let divProductDescriptionMiniSignItems = document.createElement("div");
-  // divProductDescriptionMiniSignItems.setAttribute(
-  //   "class",
-  //   "category-product-listed-mini-sign category-product-listed-mini-sign-2"
-  // );
-
-  // let divProductDescriptionMiniSignGameCoins = document.createElement("div");
-  // divProductDescriptionMiniSignGameCoins.setAttribute(
-  //   "class",
-  //   "category-product-listed-mini-sign category-product-listed-mini-sign-3"
-  // );
-
-  // let divProductDescriptionMiniSignBoosting = document.createElement("div");
-  // divProductDescriptionMiniSignBoosting.setAttribute(
-  //   "class",
-  //   "category-product-listed-mini-sign category-product-listed-mini-sign-4"
-  // );
-  /////////
 
   let divProductName = document.createElement("div");
   divProductName.setAttribute("class", "listed-game-name");
@@ -680,15 +768,8 @@ function createPost(post) {
   divProductDescription.textContent = post.description;
   divProductName.textContent = post.title;
   divProductPrice.textContent = `${post.price} EUR`;
-  // divSellerRoundImageIsOnline.textContent = "on";
-
-  // divSellerRoundImage.appendChild(divSellerRoundImageIsOnline);
-
   divSellerName.appendChild(divVerified);
-
-  ////// Get specific Icon
   divProductDescription.appendChild(divProductDescriptionMiniSign);
-
   divProductPriceSVG.appendChild(divProductPricePolyline);
   divProductPriceArrow.appendChild(divProductPriceSVG);
   divProductPrice.appendChild(divProductPriceArrow);

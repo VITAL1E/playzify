@@ -1,9 +1,10 @@
 const auth = firebase.auth();
 //const db = firebase.firestore();
-const signForm = document.querySelector(".content-sign-in");
+const signForm = document.querySelectorAll(".content-sign-in");
 
-let everyHeaderUsername = document.getElementsByClassName("user-header-username");
-
+let everyHeaderUsername = document.getElementsByClassName(
+  "user-header-username"
+);
 
 // firebase.auth().onAuthStateChanged(function(user) {
 //   if (user) {
@@ -27,7 +28,9 @@ let everyHeaderUsername = document.getElementsByClassName("user-header-username"
 // }
 
 function onSelectChangeSecurityQuestionType() {
-  let securityQuestionType = document.getElementById("sign-up-security-question-type");
+  let securityQuestionType = document.getElementById(
+    "sign-up-security-question-type"
+  );
   let securityQuestionTypeOption =
     securityQuestionType.options[securityQuestionType.selectedIndex].value;
   console.log(securityQuestionTypeOption);
@@ -37,10 +40,13 @@ function onSelectChangeSecurityQuestionType() {
 function signUp() {
   let usernameValue = document.getElementById("sign-up-username").value;
   let passwordValue = document.getElementById("sign-up-password").value;
-  let confirmPasswordValue = document.getElementById("sign-up-confirm-password").value;
+  let confirmPasswordValue = document.getElementById("sign-up-confirm-password")
+    .value;
   let emailValue = document.getElementById("sign-up-email").value;
   let securityQuestionTypeValue = onSelectChangeSecurityQuestionType();
-  let securityQuestionAnswerValue = document.getElementById("sign-up-security-question-answer").value;
+  let securityQuestionAnswerValue = document.getElementById(
+    "sign-up-security-question-answer"
+  ).value;
 
   console.log(usernameValue);
   console.log(passwordValue);
@@ -57,16 +63,23 @@ function signUp() {
     errors.email = "Must be valid";
   }
 
-  if (isEmpty(passwordValue)) errors.password = "Must not be empty";
-  if (passwordValue !== confirmPasswordValue)
+  if (isEmpty(passwordValue)) {
+    errors.password = "Must not be empty";
+  }
+  if (passwordValue !== confirmPasswordValue) {
     errors.confirmPassword = "Passwords must match";
-  if (isEmpty(usernameValue)) errors.username = "Must not be empty";
+  }
+  if (isEmpty(usernameValue)) {
+    errors.username = "Must not be empty";
+  }
 
-  if (Object.keys(errors).length > 0)
+  if (Object.keys(errors).length > 0) {
     // errors.error = errors;
     console.log(errors);
+  }
 
   let userId;
+
   firebase
     .firestore()
     .doc(`/users/${usernameValue}`)
@@ -93,7 +106,7 @@ function signUp() {
         email: emailValue,
         securityQuestion: securityQuestionTypeValue,
         securityAnswer: securityQuestionAnswerValue,
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(),
         favorites: [],
         followers: [],
         description: "",
@@ -240,34 +253,39 @@ function signUpWithGoogle() {
       if (isUserNew) {
         window.location.href = "sign-up-google.html";
 
-        setTimeout(() => {
-          let username = document.getElementById("sign-google-username-id").value;
-          let securityQuestion = onSelectChangeSecurityQuestion();
-          let securityAnswer = document.getElementById("sign-google-answer-id")
-            .value;
-          let signGoogleButton = document.getElementById(
-            "sign-in-google-button-id"
-          );
-  
-          console.log("Username " + username);
-          console.log("Question " + securityQuestion);
-          console.log("Security answer " + securityAnswer);
-  
-          const userCredentials = {
-            userId,
-            email,
-            username,
-            securityQuestion,
-            securityAnswer,
-            verified: false,
-            createdAt: new Date().toISOString(),
-          };
-  
-          // ADD EVENT LISTENER GOOGLE BUTTON SIGN IN
-          signGoogleButton.addEventListener("click", () => {
-            signGoogle(username, userCredentials);
-          });
-        }, 5000);
+        let username = document.getElementById("sign-google-username-id").value;
+        let securityQuestion = onSelectChangeSecurityQuestion();
+        let securityAnswer = document.getElementById("sign-google-answer-id")
+          .value;
+        let signGoogleButton = document.getElementById(
+          "sign-in-google-button-id"
+        );
+
+        console.log("Username " + username);
+        console.log("Question " + securityQuestion);
+        console.log("Security answer " + securityAnswer);
+
+        const userCredentials = {
+          userId,
+          email,
+          username,
+          securityQuestion,
+          securityAnswer,
+          verified: false,
+          createdAt: new Date(),
+        };
+
+        // ADD EVENT LISTENER GOOGLE BUTTON SIGN IN
+        signGoogleButton.addEventListener("click", () => {
+          //signGoogle(username, userCredentials);
+          firebase
+          .firestore()
+          .collection("users")
+          .add(userCredentials)
+          .then((reference) => console.log(reference))
+          .then(() => window.location.href = "homepage.html")
+          .catch((error) => console.log(error));
+        });
       } else {
         console.log("Login ");
         window.location.href = "homepage.html";
@@ -348,10 +366,9 @@ function signGoogle(username, userCredentials) {
   console.log("Work method");
 }
 
-
 auth.onAuthStateChanged((user) => {
-      // ALSO redirect ???
-      // LOOP redirect
+  // ALSO redirect ???
+  // LOOP redirect
   //window.location.href = "index-logged-in.html";
 
   if (user) {
