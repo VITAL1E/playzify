@@ -252,6 +252,16 @@
 }
 
 @media screen and (max-width: 650px) {
+
+	.content{
+		height: 270px;
+	}
+
+	.fking-slider{
+		height: 270px;
+	}
+
+
 	.main-seller-img{
 		height: 100px;
     width: 100px;
@@ -498,6 +508,15 @@
 }
 
 @media screen and (max-width: 450px) {
+
+	.content{
+		height: 230px;
+	}
+
+	.fking-slider{
+		height: 230px;
+	}
+	
 	.main-seller-img{
 		height: 70px;
     width: 70px;
