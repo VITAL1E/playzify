@@ -308,6 +308,7 @@ applyButton.addEventListener("click", async () => {
     .where("type", "==", gameTypeOption)
     .where("server", "==", gameServerOption)
     .limit(8);
+    
   if (gamePriceOption == "high") {
     filterQuery = filterQuery.orderBy("price", "desc");
   } else {

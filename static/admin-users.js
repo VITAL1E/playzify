@@ -162,6 +162,9 @@
             alert("Deleted user from collection, also delete from DB entirely");
             console.log("User successfully deleted from collection");
           })
+          .then(() => {
+            alert("Delete user from Firebase Auth");
+          })
           .catch((error) => {
             console.log(error);
           });

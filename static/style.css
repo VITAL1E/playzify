@@ -3757,6 +3757,14 @@ footer{
   margin-bottom: 25px;
 }
 
+.register-verification{
+  line-height: 27px;
+  color: #1eb740;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
 .no-something{
   width: 100%;
   margin-top: 3vw;

@@ -1,6 +1,6 @@
 const auth = firebase.auth();
 //const db = firebase.firestore();
-const signForm = document.querySelectorAll(".content-sign-in");
+const signForm = document.querySelector(".content-sign-in");
 
 let everyHeaderUsername = document.getElementsByClassName(
   "user-header-username"
@@ -38,6 +38,15 @@ function onSelectChangeSecurityQuestionType() {
 }
 
 function signUp() {
+  let user = getCurrentUser();
+
+  if (user !== null && user !== undefined) {
+    if (user.emailVerified) {
+      window.location.href = "homepage.html";
+      return;
+    }
+  }
+
   let usernameValue = document.getElementById("sign-up-username").value;
   let passwordValue = document.getElementById("sign-up-password").value;
   let confirmPasswordValue = document.getElementById("sign-up-confirm-password")
@@ -66,15 +75,18 @@ function signUp() {
   if (isEmpty(passwordValue)) {
     errors.password = "Must not be empty";
   }
+
   if (passwordValue !== confirmPasswordValue) {
     errors.confirmPassword = "Passwords must match";
   }
+
   if (isEmpty(usernameValue)) {
     errors.username = "Must not be empty";
   }
 
   if (Object.keys(errors).length > 0) {
-    // errors.error = errors;
+    // comment below line
+    errors.error = errors;
     console.log(errors);
   }
 
@@ -86,7 +98,8 @@ function signUp() {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        // errors.username = "This username is already taken";
+        // comment below line
+        errors.username = "This username is already taken";
         console.log("This username is already taken");
       } else {
         return firebase
@@ -115,16 +128,33 @@ function signUp() {
         userId,
       };
       console.log("reached return of firebase");
+
       return firebase
         .firestore()
         .doc(`/users/${usernameValue}`)
-        .set(userCredentials);
-    })
-    .then(() => {
-      // Have to WAIT a bit until `user` is added to `users` collection
-      setTimeout(() => {
-        window.location.href = "homepage.html";
-      }, 500);
+        .set(userCredentials)
+        .then(() => {
+          signForm.querySelector(".register-verification").innerHTML =
+          "Please check your email for verification";
+          signForm.querySelector(".register-error").innerHTML = "";
+        })
+        .then(() => {
+          let user = getCurrentUser();
+          
+          if (user !== null && user !== undefined) {
+            user
+            .sendEmailVerification()
+            .then(() => {
+              console.log("Email sent");            
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     })
     .catch((error) => {
       let errorCode = error.code;
@@ -133,8 +163,14 @@ function signUp() {
       console.log(errorCode);
       console.log(errorMessage);
 
+      signForm.querySelector(".register-verification").innerHTML = "";
       signForm.querySelector(".register-error").innerHTML = errorMessage;
     });
+}
+
+function getCurrentUser() {
+  let user = firebase.auth().currentUser;
+  return user;
 }
 
 const isEmail = (email) => {
@@ -174,6 +210,7 @@ function signIn() {
     .then((doc) => {
       if (doc.exists) {
         email = doc.data().email;
+        console.log(email);
         return firebase
           .auth()
           .signInWithEmailAndPassword(email, passwordValue)
@@ -279,12 +316,12 @@ function signUpWithGoogle() {
         signGoogleButton.addEventListener("click", () => {
           //signGoogle(username, userCredentials);
           firebase
-          .firestore()
-          .collection("users")
-          .add(userCredentials)
-          .then((reference) => console.log(reference))
-          .then(() => window.location.href = "homepage.html")
-          .catch((error) => console.log(error));
+            .firestore()
+            .collection("users")
+            .add(userCredentials)
+            .then((reference) => console.log(reference))
+            .then(() => (window.location.href = "homepage.html"))
+            .catch((error) => console.log(error));
         });
       } else {
         console.log("Login ");
@@ -366,39 +403,11 @@ function signGoogle(username, userCredentials) {
   console.log("Work method");
 }
 
-auth.onAuthStateChanged((user) => {
-  // ALSO redirect ???
-  // LOOP redirect
-  //window.location.href = "index-logged-in.html";
-
+firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    for (let i = 0; i < everyHeaderUsername.length; ++i) {
-      everyHeaderUsername[i].textContent = `${user.displayName}`;
-    }
-    //auth.signOut();
+    console.log("Logged in as " + JSON.stringify(user));
   } else {
-    for (let i = 0; i < everyHeaderUsername.length; ++i) {
-      everyHeaderUsername[i].textContent = "Sign in";
-    }
     console.log("Not logged in");
   }
 });
 
-let user = auth.currentUser;
-
-// if (user) {
-//   console.log("Logged");
-//   for (let i = 0; i < everyHeaderUsername.length; ++i) {
-//     everyHeaderUsername[i].textContent = `${user.displayName}`;
-//   }
-// } else {
-//   console.log("Not logged");
-//   for (let i = 0; i < everyHeaderUsername.length; ++i) {
-//     everyHeaderUsername[i].textContent = "Sign in";
-//   }
-//   window.location.href = "index.html";
-// }
-
-// if (!user) {
-//   window.location.href = "index.html";
-// }

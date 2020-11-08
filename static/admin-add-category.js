@@ -102,11 +102,11 @@
 
         let optionGame = document.createElement("option");
         optionGame.value = inputGameType;
-        indexGameType.add(optionGame);
+        //indexGameType.add(optionGame);
 
         let optionServer = document.createElement("option");
         optionServer.value = inputServerType;
-        indexGameServer.add(optionServer);
+        //indexGameServer.add(optionServer);
 
         firebase.firestore().collection("categories").add({
           category: getOnSelectCategoryAdminChange(),
