@@ -106,11 +106,12 @@ function createChatUser(userChats) {
     let chatProfileImageUserPart1 = document.createElement("div");
     chatProfileImageUserPart1.setAttribute("class", "chat-profile-1");
 
-    // Find in Storage URL for his profile picture
-    let chatProfileImage = document.createElement("img");
-    chatProfileImage.setAttribute("src", userChats.profilePhoto);
-
-    chatProfileImageUserPart1.appendChild(chatProfileImage);
+    if (userChats.profilePhoto !== null) {
+      chatProfileImageUserPart1.setAttribute(
+        "style",
+        `background:url(${userChats.profilePhoto}); background-size:cover;`
+      );
+    }
 
     // let chatSellerOnline = document.createElement("div");
     // chatSellerOnline.setAttribute("class", "seller-is-online-for-chat");
@@ -160,10 +161,13 @@ function createChatUser(userChats) {
       );
 
       chatMessagesUsernamePart2.textContent = `${userChats.username}`;
-      chatMessagesProfilePicturePart2.setAttribute(
-        "style",
-        `background-size: cover; background-image:url(${userChats.profilePhoto})`
-      );
+
+      if (userChats.profilePhoto !== null) {
+        chatMessagesProfilePicturePart2.setAttribute(
+          "style",
+          `background-size: cover; background-image:url(${userChats.profilePhoto})`
+        );
+      }
 
       // Messages only appended
       //chatMessagesPart2Header.appendChild();
@@ -245,7 +249,6 @@ async function getMainChat() {
         .get()
         .then(async (snapshot) => {
           if (snapshot.exists) {
-
             let chatMessagesProfilePicturePart2 = document.getElementById(
               "chat-messages-user-photo-id"
             );
@@ -324,10 +327,96 @@ async function getMainChat() {
   });
 }
 
+// function createMessagesFromOther(...arrayMessages) {
+//   let div = document.createElement("div");
+//   div.setAttribute("class", "first-message-div");
+
+//   for (let i = 0; i < arrayMessages.length; i++) {
+//     let innerDiv = document.createElement("div");
+//     innerDiv.setAttribute("class", "firstmessages--main-div");
+
+//     let innerInnerDiv = document.createElement("div");
+
+//     if (arrayMessages[i].type === "image") {
+//       innerInnerDiv.setAttribute("class", "chat-image-sent");
+//       innerInnerDiv.setAttribute(
+//         "style",
+//         `background:url(${arrayMessages[i].message}); background-size:cover;`
+//       );
+//       innerInnerDiv.addEventListener("click", function () {
+//         chatImageView.style.display = "block";
+//         chatImageViewSrc.setAttribute("src", arrayMessages[i].message);
+//       });
+//     }
+
+//     if (arrayMessages[i].type === "text") {
+//       innerInnerDiv.setAttribute("class", "messagee");
+//       innerInnerDiv.textContent = arrayMessages[i].message;
+//     }
+
+//     innerDiv.appendChild(innerInnerDiv);
+//     div.appendChild(innerDiv);
+//   }
+//   chatSellerMessagesConversation.appendChild(div);
+// }
+
+// function createMessagesFromMe(...arrayMessages) {
+//   let div = document.createElement("div");
+//   div.setAttribute("class", "first-message-right");
+
+//   for (let i = 0; i < arrayMessages.length; i++) {
+//     let innerDiv = document.createElement("div");
+//     innerDiv.setAttribute("class", "firstmessages--main-div");
+
+//     let innerInnerDiv = document.createElement("div");
+
+//     if (arrayMessages[i].type === "image") {
+//       innerInnerDiv.setAttribute(
+//         "class",
+//         "messagee messagee-right chat-image-sent"
+//       );
+//       innerInnerDiv.setAttribute(
+//         "style",
+//         `background:url(${arrayMessages[i].message}); background-size:cover;`
+//       );
+//       innerInnerDiv.addEventListener("click", function () {
+//         chatImageView.style.display = "block";
+//         chatImageViewSrc.setAttribute("src", arrayMessages[i].message);
+//       });
+//     }
+
+//     if (arrayMessages[i].type === "text") {
+//       innerInnerDiv.setAttribute(
+//         "class",
+//         "messagee messagee-right"
+//       );
+//       innerInnerDiv.textContent = arrayMessages[i].message;
+//     }
+
+//     innerDiv.appendChild(innerInnerDiv);
+//     div.appendChild(innerDiv);
+//   }
+//   chatSellerMessagesConversation.appendChild(div);
+// }
+
 // LOAD MESSAGES
 async function loadMessages(userId) {
   firebase.auth().onAuthStateChanged(async function (user) {
     if (user) {
+      let otherUserProfilePhoto = null;
+
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .get()
+        .then((snapshot) => {
+          otherUserProfilePhoto = snapshot.data().profilePicture;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
       let messagesReference = firebase
         .firestore()
         .collection("chats")
@@ -338,25 +427,114 @@ async function loadMessages(userId) {
         .orderBy("createdAt")
         .get()
         .then((snapshot) => {
-          snapshot.docs.forEach((message) => {
-            console.log(message.data());
-            let div = document.createElement("div");
+          //let div = document.createElement("div");
+          snapshot.docs.forEach((message, index) => {
+            // let seenOtherUser = document.createElement("div");
+            // seenOtherUser.setAttribute("class", "seen");
+            // let seenMe = document.createElement("div");
+            // seenMe.setAttribute("class", "seen seen-right");
 
-            // if other user sent us message
+            let div = document.createElement("div");
+            let innerDiv = document.createElement("div");
+            let innerInnerDiv = document.createElement("div");
+
+            //// WORKING
+            //if other user sent us message
             if (
               message.data().from === userId ||
               message.data().to === user.displayName
             ) {
               console.log("From him");
-              div.setAttribute("class", "messagee");
-              div.textContent = message.data().message;
-              // if we sent the message
-            } else {
-              console.log("From me");
-              div.setAttribute("class", "messagee messagee-right");
-              div.textContent = message.data().message;
+
+              // First element in 'first-message-div' class
+              let profilePicture = document.createElement("div");
+              profilePicture.setAttribute("class", "profileimgchat");
+
+              if (otherUserProfilePhoto !== null) {
+                profilePicture.setAttribute(
+                  "style",
+                  `background:url(${otherUserProfilePhoto}); background-size:cover;`
+                );
+              }
+
+              // let image = document.createElement("img");
+              // image.setAttribute("src", userChats.profilePhoto);
+
+              innerDiv.setAttribute("class", "first-message-div");
+              innerInnerDiv.setAttribute("class", "firstmessages--main-div");
+
+              if (message.data().type === "image") {
+                div.setAttribute("class", "chat-image-sent");
+                div.setAttribute(
+                  "style",
+                  `background:url(${
+                    message.data().message
+                  }); background-size:cover;`
+                );
+                div.addEventListener("click", function () {
+                  chatImageView.style.display = "block";
+                  chatImageViewSrc.setAttribute("src", message.data().message);
+                });
+              }
+
+              if (message.data().type === "text") {
+                div.setAttribute("class", "messagee");
+                div.textContent = message.data().message;
+              }
+              //profilePicture.appendChild(image);
+              innerDiv.appendChild(profilePicture);
+              innerInnerDiv.appendChild(div);
+              innerDiv.appendChild(innerInnerDiv);
             }
-            chatSellerMessagesConversation.appendChild(div);
+
+            // if we sent the message
+            if (
+              message.data().from === user.displayName ||
+              message.data().to === userId
+            ) {
+              console.log("From me");
+
+              innerDiv.setAttribute("class", "first-message-right");
+              innerInnerDiv.setAttribute("class", "firstmessages--main-div");
+
+              if (message.data().type === "image") {
+                div.setAttribute(
+                  "class",
+                  "messagee messagee-right chat-image-sent"
+                );
+                div.setAttribute(
+                  "style",
+                  `background:url(${
+                    message.data().message
+                  }); background-size:cover;`
+                );
+                div.addEventListener("click", function () {
+                  chatImageView.style.display = "block";
+                  chatImageViewSrc.setAttribute("src", message.data().message);
+                });
+              }
+
+              if (message.data().type === "text") {
+                div.setAttribute("class", "messagee messagee-right");
+                div.textContent = message.data().message;
+              }
+              innerInnerDiv.appendChild(div);
+              innerDiv.appendChild(innerInnerDiv);
+            }
+            // WORKING
+
+            if (
+              index > 0 &&
+              snapshot.docs[index - 1].data().from == message.data().from
+            ) {
+              chatSellerMessagesConversation.lastChild.appendChild(
+                innerInnerDiv
+              );
+            } else {
+              chatSellerMessagesConversation.appendChild(innerDiv);
+            }
+
+            //chatSellerMessagesConversation.appendChild(innerDiv);
           });
         })
         .catch((error) => {
@@ -421,14 +599,14 @@ const getChatRooms = async () => {
         chatsCollectionSize = snapshot.size;
         lastVisible = snapshot.docs[snapshot.docs.length - 1];
         console.log("last", lastVisible.data());
-      })
+      });
       docs["docs"].forEach((doc) => {
         console.log(doc.data());
         chatsArray.push(doc.data());
       });
       chatsArray.forEach((chat) => {
         createChatUser(chat);
-      })
+      });
     } else {
       console.log("Not logged in");
     }
@@ -460,9 +638,8 @@ firebase.auth().onAuthStateChanged(function (user) {
       async function (e) {
         firebase.auth().onAuthStateChanged(async function (user) {
           if (user) {
-            if (e.keyCode === 13) {
+            if (e.keyCode === 13 && !e.shiftKey) {
               if (!chatMessageText.textContent.trim()) {
-                window.alert("type message");
                 return;
               }
               const chatReference = await firebase
@@ -471,6 +648,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                   `/chats/${user.displayName}/chats/${chatWithObject.username}/messages`
                 )
                 .add({
+                  type: "text",
                   message: chatMessageText.textContent,
                   from: user.displayName,
                   to: chatWithObject.username,
@@ -490,18 +668,57 @@ firebase.auth().onAuthStateChanged(function (user) {
                   { merge: true }
                 )
                 .then(() => {
-                  console.log("Added message");
+                  firebase
+                    .firestore()
+                    .collection(
+                      `/chats/${chatWithObject.username}/chats/${user.displayName}/messages`
+                    )
+                    .add({
+                      type: "text",
+                      message: chatMessageText.textContent,
+                      from: chatWithObject.username,
+                      to: user.displayName,
+                      createdAt: new Date(),
+                    })
+                    .then((reference) => {
+                      console.log(reference);
+
+                      firebase
+                        .firestore()
+                        .doc(
+                          `/chats/${chatWithObject.username}/chats/${user.displayName}`
+                        )
+                        .set(
+                          {
+                            lastMessage: chatMessageText.textContent,
+                            lastUpdated: new Date(),
+                          },
+                          { merge: true }
+                        );
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
                 })
                 .catch((error) => {
                   console.log(error);
                 });
 
               chatReference.onSnapshot(function (change) {
+                let innerDiv = document.createElement("div");
+                innerDiv.setAttribute("class", "first-message-right");
+      
+                let innerInnerDiv = document.createElement("div");
+                innerInnerDiv.setAttribute("class", "firstmessages--main-div");
+
                 let div = document.createElement("div");
                 div.setAttribute("class", "messagee messagee-right");
                 div.textContent = change.data().message;
 
-                chatSellerMessagesConversation.appendChild(div);
+                innerInnerDiv.appendChild(div);
+                innerDiv.appendChild(innerInnerDiv);
+
+                chatSellerMessagesConversation.appendChild(innerDiv);
 
                 console.log(change.data());
               });
@@ -528,7 +745,6 @@ firebase.auth().onAuthStateChanged(function (user) {
       "click",
       async function () {
         if (!chatMessageText.textContent.trim()) {
-          window.alert("type message");
           return;
         }
         const chatReference = await firebase
@@ -537,6 +753,7 @@ firebase.auth().onAuthStateChanged(function (user) {
             `/chats/${user.displayName}/chats/${chatWithObject.username}/messages`
           )
           .add({
+            type: "text",
             message: chatMessageText.textContent,
             to: chatWithObject.username,
             from: user.displayName,
@@ -554,18 +771,57 @@ firebase.auth().onAuthStateChanged(function (user) {
             { merge: true }
           )
           .then(() => {
-            console.log("Added message");
+            firebase
+              .firestore()
+              .collection(
+                `/chats/${chatWithObject.username}/chats/${user.displayName}/messages`
+              )
+              .add({
+                type: "text",
+                message: chatMessageText.textContent,
+                from: chatWithObject.username,
+                to: user.displayName,
+                createdAt: new Date(),
+              })
+              .then((reference) => {
+                console.log(reference);
+
+                firebase
+                  .firestore()
+                  .doc(
+                    `/chats/${chatWithObject.username}/chats/${user.displayName}`
+                  )
+                  .set(
+                    {
+                      lastMessage: chatMessageText.textContent,
+                      lastUpdated: new Date(),
+                    },
+                    { merge: true }
+                  );
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           })
           .catch((error) => {
             console.log(error);
           });
 
         chatReference.onSnapshot(function (change) {
+          let innerDiv = document.createElement("div");
+          innerDiv.setAttribute("class", "first-message-right");
+
+          let innerInnerDiv = document.createElement("div");
+          innerInnerDiv.setAttribute("class", "firstmessages--main-div");
+
           let div = document.createElement("div");
           div.setAttribute("class", "messagee messagee-right");
           div.textContent = change.data().message;
 
-          chatSellerMessagesConversation.appendChild(div);
+          innerInnerDiv.appendChild(div);
+          innerDiv.appendChild(innerInnerDiv);
+
+          chatSellerMessagesConversation.appendChild(innerDiv);
 
           console.log(change.data());
         });
@@ -598,68 +854,71 @@ function addImageToForm(e) {
           const reader = new FileReader();
           reader.addEventListener("load", function (e) {
             let imageFile = e.target;
-
-            // let image = document.createElement("img");
-            // image.setAttribute("class", "image-preview");
-            // // image.setAttribute("style", "width: inherit; height: inherit; border-radius: 20px;");
-            // image.setAttribute("src", imageFile.result);
+            let imageSentURL;
 
             const reference = firebase
               .storage()
               .ref(`${user.displayName}/chat_images/` + file.name);
+
             reference
               .put(file)
               .then((snapshot) => {
-                snapshot.ref.getDownloadURL();
-                console.log(snapshot.ref.getDownloadURL());
+                return snapshot.ref.getDownloadURL();
               })
               .then((url) => {
-                // image.setAttribute("src", url);
                 imageSentURL = url;
                 console.log(url);
               })
-              // .then(() => {
-              //   firebase
-              //     .firestore()
-              //     .collection(
-              //       `/chats/${user.displayName}/chats/${chatWithObject.username}/messages`
-              //     )
-              //     .add({
-              //       type: "image",
-              //       // message: imageSentURL,
-              //       from: user.displayName,
-              //       to: chatWithObject.username,
-              //       createdAt: new Date(),
-              //     })
-              //     .then((reference) => {
-              //       console.log(chatWithObject.username);
-              //       console.log("Added message " + reference);
-              //     })
-              //     .catch((error) => {
-              //       console.log(error);
-              //     });
-              // })
+              .then(() => {
+                firebase
+                  .firestore()
+                  .collection(
+                    `/chats/${user.displayName}/chats/${chatWithObject.username}/messages`
+                  )
+                  .add({
+                    type: "image",
+                    message: imageSentURL,
+                    from: user.displayName,
+                    to: chatWithObject.username,
+                    createdAt: new Date(),
+                  })
+                  .then((reference) => {
+                    console.log(chatWithObject.username);
+                    console.log("Added message " + reference);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              })
+              .then(() => {
+                let div = document.createElement("div");
+                div.setAttribute("class", "first-message-right");
+
+                let innerDiv = document.createElement("div");
+                innerDiv.setAttribute("class", "firstmessages--main-div");
+
+                let divDocument = document.createElement("div");
+                divDocument.setAttribute(
+                  "class",
+                  "messagee messagee-right chat-image-sent"
+                );
+
+                innerDiv.appendChild(divDocument);
+                div.appendChild(innerDiv);
+                chatSellerMessagesConversation.appendChild(div);
+
+                divDocument.addEventListener("click", function () {
+                  chatImageView.style.display = "block";
+                  chatImageViewSrc.setAttribute("src", imageSentURL);
+                });
+                divDocument.setAttribute(
+                  "style",
+                  `background-image:url(${imageFile.result}); background-size: cover;`
+                );
+              })
               .catch((error) => {
                 console.log(error);
               });
-
-            let divDocument = document.createElement("div");
-            divDocument.setAttribute(
-              "class",
-              "messagee messagee-right chat-image-sent"
-            );
-
-            // divDocument.appendChild(image);
-            chatSellerMessagesConversation.appendChild(divDocument);
-
-            divDocument.addEventListener("click", function () {
-              chatImageView.style.display = "block";
-              chatImageViewSrc.style.src = imageFile.result;
-            });
-            divDocument.setAttribute(
-              "style",
-              `background-image:url(${imageFile.result}); background-size: cover;`
-            );
           });
 
           reader.readAsDataURL(file);
@@ -681,6 +940,50 @@ window.onload = function () {
     window.location.reload();
   }
 };
+
+// await firebase
+// .firestore()
+// .collection("chats")
+// .doc(user.displayName)
+// .collection("chats")
+// .doc(userId)
+// .collection("messages")
+// .get()
+// .then((snapshot) => {
+//   if (snapshot.exists) {
+//     console.log("There are messages");
+//     loadMessages(userId);
+//   } else {
+//     console.log("No messages");
+//   }
+// })
+// .catch((error) => {
+//   console.log(error);
+// });
+
+if (userId) {
+  loadMessages(userId);
+} else {
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      firebase
+        .firestore()
+        .collection("chats")
+        .doc(user.displayName)
+        .collection("chats")
+        .orderBy("lastUpdated", "desc")
+        .limit(1)
+        .get()
+        .then((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            console.log(doc.data());
+
+            loadMessages(doc.data().username);
+          });
+        });
+    }
+  });
+}
 
 getChatRooms();
 getMainChat();

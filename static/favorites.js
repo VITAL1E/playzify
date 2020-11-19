@@ -1,7 +1,7 @@
 (function (window, document, undefined) {
   "use strict";
 
-  let gameCollection = document.querySelector(".container");
+  let gameCollection = document.getElementById("favorites-collection-id");
 
   let thereAreNoItems = document.getElementById("there-are-no-items-id");
 
@@ -97,7 +97,7 @@
     div.appendChild(divProductDescription);
     div.appendChild(divProductName);
     div.appendChild(divProductPrice);
-  
+
     gameCollection.appendChild(div);
   
     div.addEventListener("click", function () {

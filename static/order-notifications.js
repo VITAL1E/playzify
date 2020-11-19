@@ -14,13 +14,23 @@ let thereAreNoNotifications = document.getElementById(
   "there-are-no-items-notifications-id"
 );
 
+let thereAreNoSoldOrders = document.getElementById(
+  "there-are-no-sold-notifications-id"
+);
+
+let thereAreNoPurchasedOrders = document.getElementById(
+  "there-are-no-purchased-notifications-id"
+);
+
 notificationGeneral.addEventListener("click", () => {
   notificationPurchased.classList.remove("switch-1-selected");
   notificationSold.classList.remove("switch-1-selected");
   notificationGeneral.classList.add("switch-1-selected");
 
   // Change
-  thereAreNoNotifications.style.display = "none";
+  thereAreNoSoldOrders.style.display = "none";
+  thereAreNoNotifications.style.display = "block";
+  thereAreNoPurchasedOrders.style.display = "none";
   // Filter
   getNotifications("General");
 });
@@ -31,7 +41,9 @@ notificationPurchased.addEventListener("click", () => {
   notificationGeneral.classList.remove("switch-1-selected");
 
   // Change
-  thereAreNoNotifications.style.display = "block";
+  thereAreNoSoldOrders.style.display = "none";
+  thereAreNoNotifications.style.display = "none";
+  thereAreNoPurchasedOrders.style.display = "block";
   // Filter
   removeNotifications();
   // Change
@@ -44,7 +56,9 @@ notificationSold.addEventListener("click", () => {
   notificationPurchased.classList.remove("switch-1-selected");
 
   // Change
-  thereAreNoNotifications.style.display = "block";
+  thereAreNoSoldOrders.style.display = "block";
+  thereAreNoNotifications.style.display = "none";
+  thereAreNoPurchasedOrders.style.display = "none";
   // Filter
   removeNotifications();
   // Change
@@ -70,12 +84,16 @@ function createNotification(notification) {
       "seller-round-image seller-round-image-for-mini"
     );
 
-    //if (notification.userPhoto !== null) {
+    // if (notification.userPhoto !== null) {
     divImage.setAttribute(
       "style",
       `margin: 0; background-image:url(${notification.userPhoto}); background-size: cover;`
     );
-    //}
+    // }
+
+    divImage.addEventListener("click", function () {
+      window.location.href = `user.html?id=${notification.from}`;
+    });
 
     let divMainAction = document.createElement("div");
     divMainAction.setAttribute(

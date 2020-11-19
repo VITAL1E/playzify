@@ -239,13 +239,17 @@
     div.addEventListener("click", function () {
       problemInformationPopup.style.display = "block";
 
-      if (problem.userPhoto !== undefined || problem.userPhoto !== null) {
+      if (problem.userPhoto !== null) {
         userPhotoPopup.setAttribute("style", `background-size: cover; background-image:url(${problem.userPhoto});`)
       }
       usernamePopup.textContent = problem.user;
       emailPopup.textContent = problem.userEmail;
       descriptionPopup.textContent = problem.description;
       timeagoPopup.textContent = getTimeSince(problem.createdAt.seconds * 1000);
+
+      if (problem.status === "Resolved") {
+        acceptButton.style.display = "none";
+      }
 
       acceptButton.addEventListener("click", function () {
         let problemReference = firebase

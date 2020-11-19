@@ -29,7 +29,7 @@
   }
 
   function btnCheck() {
-    if (this.id === "prev") {
+    if (this.id === "prev-index") {
       index--;
 
       if (op_index === 0) {
@@ -63,12 +63,13 @@
     if (index <= 0) {
       return;
     }
-    if (slides[index].id === "fist") {
+    console.log(slides[index]);
+    if (slides[index].id === "fist-index") {
       slider.style.transition = "none";
       index = slides.length - 2;
       slider.style.transform = "translateX(" + (-size * index) + "px)";
     } 
-    else if (slides[index].id === "last") {
+    else if (slides[index].id === "last-index") {
       slider.style.transition = "none";
       index = 1;
       slider.style.transform = "translateX(" + (-size * index) + "px)";

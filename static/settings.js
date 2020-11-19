@@ -65,16 +65,15 @@ function changePassword() {
       // return;
     } else {
       let user = getCurrentUser();
+      let credential = firebase.auth.EmailAuthProvider.credential(
+        user.email,
+        oldPasswordValue
+      );
 
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(user.email, oldPasswordValue)
-        .then((userCredentials) => {
-          console.log(userCredentials);
-          if (!userCredentials) {
-            alert("Invalid old password");
-            return;
-          }
+      user
+        .reauthenticateWithCredential(credential)
+        .then(() => {
+          console.log("User reauthenticated");
         })
         .then(() => {
           user
@@ -110,70 +109,70 @@ function changeUserSettings() {
       console.log("Changed description");
 
       if (newPhotoPictureURL !== null) {
-      user
-      .updateProfile({
-        photoURL: newPhotoPictureURL,
-      })
-      .then(() => {
-        // saveImage(user, FILE_PROFILE_PICTURE);
-        console.log("Update successfull");
-      })
-      .then(() => {
-        let userReference = getCurrentUserReference();
-        console.log(userReference);
-        userReference
-          .set(
-            {
-              profilePicture: newPhotoPictureURL,
-            },
-            { merge: true }
-          )
+        user
+          .updateProfile({
+            photoURL: newPhotoPictureURL,
+          })
           .then(() => {
-            console.log(
-              "Succesfully changed profile picture of user in collection"
-            );
+            // saveImage(user, FILE_PROFILE_PICTURE);
+            console.log("Update successfull");
           })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .then(() => {
-        firebase
-          .firestore()
-          .collection("games")
-          .where("seller", "==", user.displayName)
-          .get()
-          .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              doc
-                .set(
-                  {
-                    sellerPhoto: newPhotoPictureURL,
-                  },
-                  { merge: true }
-                )
-                .then(() => {
-                  console.log("Successfully updated all pictures of user");
-                })
-                .catch((error) => {
-                  console.log(error);
+          .then(() => {
+            let userReference = getCurrentUserReference();
+            console.log(userReference);
+            userReference
+              .set(
+                {
+                  profilePicture: newPhotoPictureURL,
+                },
+                { merge: true }
+              )
+              .then(() => {
+                console.log(
+                  "Succesfully changed profile picture of user in collection"
+                );
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection("games")
+              .where("seller", "==", user.displayName)
+              .get()
+              .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                  doc
+                    .set(
+                      {
+                        sellerPhoto: newPhotoPictureURL,
+                      },
+                      { merge: true }
+                    )
+                    .then(() => {
+                      console.log("Successfully updated all pictures of user");
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
                 });
-            });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           })
           .catch((error) => {
             console.log(error);
           });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    }
-  })
+      }
+    })
     .then(() => {
       changePassword();
     })
     .then(() => {
-      //getToIndexPage();
+      getToIndexPage();
     })
     .catch((error) => {
       console.log(error);
@@ -199,60 +198,65 @@ settingsChangeButton.addEventListener("click", function () {
 
   //console.log(newPhotoPictureURL);
 
-//   user
-//     .updateProfile({
-//       photoURL: newPhotoPictureURL,
-//     })
-//     .then(() => {
-//       saveImage(user, FILE_PROFILE_PICTURE);
-//       console.log("Update successfull");
-//     })
-//     .then(() => {
-//       let userReference = getCurrentUserReference();
-//       userReference
-//         .set(
-//           {
-//             profilePicture: newPhotoPictureURL,
-//           },
-//           { merge: true }
-//         )
-//         .then(() => {
-//           console.log(
-//             "Succesfully changed profile picture of user in collection"
-//           );
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//         });
-//     })
-//     .then(() => {
-//       firebase
-//         .firestore()
-//         .collection("games")
-//         .where("seller", "==", user.displayName)
-//         .get()
-//         .then((querySnapshot) => {
-//           querySnapshot.forEach((doc) => {
-//             doc
-//               .set(
-//                 {
-//                   sellerPhoto: newPhotoPictureURL,
-//                 },
-//                 { merge: true }
-//               )
-//               .then(() => {
-//                 console.log("Successfully updated all pictures of user");
-//               })
-//               .catch((error) => {
-//                 console.log(error);
-//               });
-//           });
-//         });
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
+  //   user
+  //     .updateProfile({
+  //       photoURL: newPhotoPictureURL,
+  //     })
+  //     .then(() => {
+  //       saveImage(user, FILE_PROFILE_PICTURE);
+  //       console.log("Update successfull");
+  //     })
+  //     .then(() => {
+  //       let userReference = getCurrentUserReference();
+  //       userReference
+  //         .set(
+  //           {
+  //             profilePicture: newPhotoPictureURL,
+  //           },
+  //           { merge: true }
+  //         )
+  //         .then(() => {
+  //           console.log(
+  //             "Succesfully changed profile picture of user in collection"
+  //           );
+  //         })
+  //         .catch((error) => {
+  //           console.log(error);
+  //         });
+  //     })
+  //     .then(() => {
+  //       firebase
+  //         .firestore()
+  //         .collection("games")
+  //         .where("seller", "==", user.displayName)
+  //         .get()
+  //         .then((querySnapshot) => {
+  //           querySnapshot.forEach((doc) => {
+  //             doc
+  //               .set(
+  //                 {
+  //                   sellerPhoto: newPhotoPictureURL,
+  //                 },
+  //                 { merge: true }
+  //               )
+  //               .then(() => {
+  //                 console.log("Successfully updated all pictures of user");
+  //               })
+  //               .catch((error) => {
+  //                 console.log(error);
+  //               });
+  //           });
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
 });
+
+const isEmpty = (string) => {
+  if (string.trim() === "") return true;
+  else return false;
+};
 
 function getToIndexPage() {
   window.location.href = "homepage.html";

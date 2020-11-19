@@ -26,7 +26,8 @@
           </div>
         </a>
         <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">:
-              <span>0 USD</span></span></div>
+              <span class="balance-amount"></span>
+            </span></div>
         </div>
         <div class="user-logged-out-header-placeholder">
           <div class="user-icon-2"></div>
@@ -124,6 +125,26 @@
   </div>
 </div>
 
+<div id="popup-post-reviews-id" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+      <div class="history-order-main-div-pop-up">
+          <div class="main-intro-to-verification" style="border: 0;">
+              Reviews
+              <div id="close-reviews-post-modal-id" class="close-modal"></div>
+          </div>
+
+          <div id="reviews-post-list-id" class="history-order-main-list">
+              <!-- <div class="allordderaction reviews-changes">
+                  <div class="history-order-nickname">marioo</div>
+                  <div class="history-order-nickname mn-change">paid for order<span>8 DAYS AGO</span></div>
+                  <div class="positive-review"></div>
+                  <div class="negative-review" style="display: none;"></div>
+              </div> -->
+          </div>
+      </div>
+  </div>
+</div>
+
 <body>
   <div class="container">
     <div class="main-post-div">
@@ -135,8 +156,8 @@
           <div id="post-seller-nickname-id" class="post-nickname-seller">
             <div class="verified"></div>
           </div>
-          <div class="reviews-post-seller-rate">
-            98%
+          <div id="reviews-post-id" class="reviews-post-seller-rate">
+            <span id="reviews-percentage-satisfied-id"></span>
             <span class="satisfied">satisfied</span>
           </div>
         </div>
@@ -321,7 +342,7 @@
   <script src="./static/global.js"></script>
   <script src="./static/post.js"></script>
   <!-- <script src="./static/order.js"></script> -->
-  <script src="./static/auth.js"></script>
+  <!-- <script src="./static/auth.js"></script> -->
   <script src="./static/darktheme.js"></script>
 
   <script src="https://js.mollie.com/v1/mollie.js" defer></script>

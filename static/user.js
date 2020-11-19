@@ -69,6 +69,9 @@ async function getUserDetails() {
     //     console.log("Could not read description of the store");
     //   });
 
+    //reviews.style.display = "block";
+
+
     reviews.addEventListener("click", function () {
       popupReviews.style.display = "block";
 
@@ -79,7 +82,7 @@ async function getUserDetails() {
         .collection("reviews")
         .get()
         .then((snapshot) => {
-          if (snapshot.exists) {
+          if (snapshot.size > 0) {
             snapshot.forEach((doc) => {
               let review = doc.data();
 
@@ -173,9 +176,12 @@ async function getUserDetails() {
               .get()
               .then((snapshot) => {
                 PROFILE_PHOTO = snapshot.data().profilePicture;
+              })
+              .catch((error) => {
+                console.log(error);
               });
 
-            userChatReference = firebase
+            let userChatReference = firebase
               .firestore()
               .collection("chats")
               .doc(user.displayName)
@@ -200,8 +206,10 @@ async function getUserDetails() {
                   username: userId,
                 });
               }
-            });
-            window.location.href = `chat.html?id=${userId}`;
+            })
+            .then(() => {
+              location.href = `chat.html?id=${userId}`;
+            })
           });
 
           unfollowButton.style.display = "inline-block";
@@ -209,7 +217,7 @@ async function getUserDetails() {
 
           unfollowButton.addEventListener("click", function () {
             if (!user) {
-              window.location.href = "sign-in.html";
+              location.href = "sign-in.html";
             }
             console.log("You stopped following " + userId);
             userReference
@@ -529,9 +537,9 @@ getUserDetails();
 let postsArray = [];
 const getPosts = async () => {
   removePosts();
+  let docs;
   let postsSize;
   let lastVisible;
-  let docs;
   let postsReference = firebase
     .firestore()
     .collection("games")

@@ -203,6 +203,71 @@
 <body>
   <div class="container">
 
+        <!-- SLIDER -->
+<div class="fking-slider">
+  <div class="slider-main-cointainer">
+
+    <div class="background">
+      <img src="./static/bg1.jpg" class="bg">
+      <img src="./static/bg2.jpg" class="bg">
+      <img src="./static/bg3.jpg" class="bg">
+      <img src="./static/bg4.jpg" class="bg">
+      <img src="./static/bg5.png" class="bg">
+    </div>
+
+    <div class="slider-container">
+      <div>
+        <div>
+          <div class="slider">
+            <div class="img-slider" id="first-index">
+              <img src="./static/bg5.png">
+            </div>
+            <div class="img-slider">
+              <img src="./static/bg1.jpg">
+            </div>
+            <div class="img-slider">
+              <img src="./static/bg2.jpg">
+            </div>
+            <div class="img-slider">
+              <img src="./static/bg3.jpg">
+            </div>
+            <div class="img-slider">
+              <img src="./static/bg4.jpg">
+            </div>
+            <div class="img-slider">
+              <img src="./static/bg5.png">
+            </div>
+            <div class="img-slider" id="last-index">
+              <img src="./static/bg1.jpg">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <button id="prev-index" class="btn" style="transform: rotate(180deg);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+  </svg></button>
+    <button id="next-index" class="btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-right">
+                              <polyline points="9 18 15 12 9 6"></polyline>
+                          </svg></button>
+
+    <ul>
+      <li class="option" op-index="0"></li>
+      <li class="option" op-index="1"></li>
+      <li class="option" op-index="2"></li>
+      <li class="option" op-index="3"></li>
+      <li class="option" op-index="4"></li>
+
+    </ul>
+  </div>
+
+</div>
+  <!-- SLIDER -->
+  
+
 <!-- SLIDER -->
     <!-- <div class="slider-main-cointainer">
       <div class="slider-container">
@@ -472,8 +537,9 @@
     });
   </script>
   <script src="./static/global.js"></script>
-  <script src="./static/auth.js"></script>
+  <!-- <script src="./static/auth.js"></script> -->
   <script src="./static/main.js"></script>
+  <script src="./static/slider-index.js"></script>
   <script src="./static/darktheme.js"></script>
 </body>
 

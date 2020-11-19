@@ -221,9 +221,17 @@
       });
 
       let refuseButton = document.getElementById("refuse-button-id");
+
+      if (verification.status === "Verified") {
+        refuseButton.style.display = "none";
+      } 
       refuseButton.addEventListener("click", refuseVerificationRequest, false);
 
       let verifyButton = document.getElementById("verify-button-id");
+
+      if (verification.status === "Verified") {
+        verifyButton.style.display = "none";
+      }
       verifyButton.addEventListener("click", acceptVerificationRequest, false);
     });
     divVerifications.appendChild(div);
@@ -245,6 +253,7 @@
             action:
               "Congratulation, your seller account is verified, now you can post items to sell.",
             createdAt: new Date(),
+            seen: false
           });
         })
         .then(() => {
@@ -273,6 +282,7 @@
             action:
               "Unfortunately, your seller account is refused, contact support for more information.",
             createdAt: new Date(),
+            seen: false
           });
         })
         .then(() => {

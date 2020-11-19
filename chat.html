@@ -24,7 +24,7 @@
         <div class="support balance-button">S<div class="balance-support-550px">upport</div>
         </div>
         <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">:
-              <span>0 USD</span></span></div>
+              <span class="balance-amount"></span></span></div>
         </div>
         <div class="user-logged-out-header-placeholder">
           <div class="user-icon-2"></div>
@@ -110,8 +110,7 @@
   </div>
 </header>
 
-<body>
-  <!--POP-UP-img-view-->
+<!--POP-UP-img-view-->
 <div id="chat-img-view-id" class="modal-general" style="display: none;">
   <div class="modal-general-absolute">
     <div class="img-view">
@@ -122,6 +121,7 @@
   </div>
 </div>
 
+<body>
   <div class="container">
     <div class="chat-main-container">
       <div class="chat-part-1-user-lists">
@@ -131,7 +131,7 @@
         </div>
         <div id="chat-part-1-list-id" class="main-list-chat">
 
-          <!-- <div class="no-messages-chat">no messages</div> -->
+          <div id="no-messages-chat-id" class="no-messages-chat" style="display: none;">no messages</div>
           <!-- <div class="user-section-chat">
             <div class="chat-profile-1">
               <div class="seller-is-online-for-chat">on</div>
@@ -154,7 +154,7 @@
       </div>
       <div id="chat-part-2-user-lists-id" class="chat-part-2-user-lists">
         <div class="chat-part-2-header">
-          <div id="chat-messages-user-photo-id" class="chat-profile-1">
+          <div id="chat-messages-user-photo-id" class="chat-profile-1" style="background: url(./static/icons/logo.svg); background-size: cover;">
             <!-- <div class="seller-is-online-for-chat">on</div> -->
           </div>
           <div id="nickname-name-header-id" class="nickname-name-header"></div>
@@ -164,23 +164,23 @@
         <div class="type2-main-chat">
           <div id="chat-messages-main-div-id" class="chat-messages-main-div">
             
-            <div id="first-message-div-id" class="first-message-div">
+            <!-- <div id="first-message-div-id" class="first-message-div"> -->
               <!-- <div id="profileimgchat-id" class="profileimgchat"></div> -->
-              <div id="firstmessages--main-div-id" class="firstmessages--main-div">
+              <!-- <div id="firstmessages--main-div-id" class="firstmessages--main-div"> -->
                 <!-- <div class="messagee"></div> -->
                 <!-- <div class="chat-image-sent"></div> -->
-              </div>
+              <!-- </div> -->
               <!-- <div class="seen">2m ago</div> -->
-            </div>
+            <!-- </div> -->
 
-            <div id="first-message-right-id-2" class="first-message-right">
-              <div id="firstmessages--main-div-id-2" class="firstmessages--main-div">
+            <!-- <div id="first-message-right-id-2" class="first-message-right"> -->
+              <!-- <div id="firstmessages--main-div-id-2" class="firstmessages--main-div"> -->
                 <!-- <div class="messagee messagee-right">45 new messages</div> -->
                 <!-- <div class="messagee messagee-right"></div> -->
                 <!-- <div class="chat-image-sent messagee-right"></div>  -->
-              </div>
+              <!-- </div> -->
               <!-- <div class="seen seen-right">5m ago</div> -->
-            </div>
+            <!-- </div> -->
 
           </div>
           <div class="chat-bottom-header">
@@ -277,8 +277,8 @@
   </script>
 
   <script src="./static/global.js"></script>
-  <script src="./static/auth.js"></script>
-  <script src="./static/chat.js"></script>
+  <!-- <script src="./static/auth.js"></script> -->
+  <script src="./static/chat-demo.js"></script>
   <script src="./static/darktheme.js"></script>
 </body>
 

@@ -31,7 +31,7 @@
       </div>
       <div class="first-header-div-child-2">
         <a href="support.html"><div class="balance-button">S<div class="balance-support-550px">upport</div> </div></a>
-        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span>0 USD</span></span></div></div>
+        <div class="balance-button">B<div class="balance-support-550px">alance<span class="mobile-balance-short">: <span class="balance-amount"></span></span></div></div>
         <div class="user-logged-out-header-placeholder">
             <div class="user-icon-2"></div>
             <div class="user-sign-in">Hi, <span class="user-header-username"></span></div>
@@ -189,25 +189,26 @@
         </div>
         <div class="user-name-container">
           <p id="user-nickname-id" class="nickname">
-            <!-- <span id="verified-span-id" class="verified-user" style="display: none;"></span> -->
+            <span id="verified-span-id" class="verified-user" style="display: none;"></span>
           </p>
           <div class="follow-section">
             <div id="follow-button-id" class="follow-button" style="display: none;">follow</div>
-            <div id="unfollow-button-id" class="follow-button" style="display: none;">unfollow</div>
+            <div id="unfollow-button-id" class="follow-button" style="display: none; background: grey;">unfollow</div>
             <div id="followers-id" class="follower-number-222 follower-number"></div>
           </div>
         </div>
       </div>
 
-      <div id="user-reviews-id" class="user-reviews">
-        <p class="success-rate-number">95%
-          <span class="additional-rate-info">Success Rate out of 141 Orders</span>
+      <div id="user-reviews-id" class="user-reviews" style="display: none;">
+        <p id="success-rate-id" class="success-rate-number">
+          <span id="span-success-rate-id"></span>
+          <span id="span-additional-rate-id" class="additional-rate-info">Success Rate out of 141 Orders</span>
         </p>
 
         <div class="rate-line">
-          <div class="green-line"></div>
+          <div id="green-line-id" class="green-line"></div>
           <div class="white-line"></div>
-          <div class="red-line"></div>
+          <div id="red-line-id" class="red-line"></div>
         </div>
       </div>
     </div>
@@ -295,7 +296,7 @@
 
   <script src="./static/global.js"></script>
   <script src="./static/user-demo.js"></script>
-  <script src="./static/auth.js"></script>
+  <!-- <script src="./static/auth.js"></script> -->
   <script src="./static/darktheme.js"></script>
 
 </body>

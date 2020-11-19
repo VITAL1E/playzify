@@ -1,6 +1,7 @@
 let sellButton = document.getElementsByClassName("sell-with-us-header-2");
 let sellWithUsButton = document.getElementsByClassName("sell-with-us");
 let balanceButton = document.getElementsByClassName("balance-button");
+let balanceAmount = document.getElementsByClassName("balance-amount");
 let notificationsButton = document.getElementsByClassName(
   "comun-main-user-icons-header bell-icon"
 );
@@ -49,20 +50,27 @@ firebase.auth().onAuthStateChanged(function (user) {
       elementsOfNumberOfNotifications !== null ||
       elementsOfNumberOfNotifications !== undefined
     ) {
-      firebase
-        .firestore()
-        .collection("notifications")
-        .doc(user.displayName)
-        .collection("notifications")
-        .get()
-        .then((snapshot) => {
-          console.log(snapshot.size);
-          Array.from(elementsOfNumberOfNotifications).forEach(
-            (elementOfNotification) => {
-              elementOfNotification.innerText = snapshot.size;
-            }
-          );
-        });
+      // firebase
+      //   .firestore()
+      //   .collection("notifications")
+      //   .doc(user.displayName)
+      //   .collection("notifications")
+      //   .where("status", "==", false)
+      //   .get()
+      //   .then((snapshot) => {
+      //     if (snapshot.size === 0) {
+      //       elementsOfNumberOfNotifications.forEach((elementOfNotification) => {
+      //         elementOfNotification.style.display = "none";
+      //       });
+      //       return;
+      //     }
+      //     console.log(snapshot.size);
+      //     Array.from(elementsOfNumberOfNotifications).forEach(
+      //       (elementOfNotification) => {
+      //         elementOfNotification.innerText = snapshot.size;
+      //       }
+      //     );
+      //   });
     } else {
       console.log("No notifications read");
     }
@@ -116,7 +124,8 @@ firebase.auth().onAuthStateChanged(function (user) {
       .firestore()
       .collection("notifications")
       .doc(user.displayName)
-      .collection("notifications");
+      .collection("notifications")
+      .where("seen", "==", false);
 
     Array.from(userAccountButton).forEach((e) =>
       e.addEventListener("click", function () {
@@ -143,13 +152,14 @@ firebase.auth().onAuthStateChanged(function (user) {
 
     notificationsReference.get().then((snapshot) => {
       if (snapshot.size > 0) {
-        Array.from(newNotificationsIcon).forEach(
-          (n) => {
-            n.style.display = "block";
-            newNotificationsIcon.textContent = snapshot.size;
-          } 
-        );
+        Array.from(newNotificationsIcon).forEach((n) => {
+          n.style.display = "block";
+          n.textContent = snapshot.size;
+        });
       } else {
+        Array.from(newNotificationsIcon).forEach((n) => {
+          n.style.display = "none";
+        });
         console.log("no notifications");
       }
     });
@@ -204,9 +214,57 @@ Array.from(balanceButton).forEach((e) =>
   })
 );
 
+Array.from(balanceAmount).forEach((e) => {
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(user.displayName)
+        .get()
+        .then((snapshot) => {
+          e.textContent = `${snapshot.data().balance} EU`;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.log("Fuck you");
+    }
+  });
+});
+
 Array.from(notificationsButton).forEach((e) =>
   e.addEventListener("click", function () {
-    window.location.href = "orders-notifications.html";
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        firebase
+          .firestore()
+          .collection("notifications")
+          .doc(user.displayName)
+          .collection("notifications")
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              console.log(doc.data());
+              console.log(doc);
+              doc.ref
+                .update({
+                  seen: true,
+                })
+                .then(() => {
+                  window.location.href = "orders-notifications.html";
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
   })
 );
 

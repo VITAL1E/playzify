@@ -6,27 +6,6 @@ let everyHeaderUsername = document.getElementsByClassName(
   "user-header-username"
 );
 
-// firebase.auth().onAuthStateChanged(function(user) {
-//   if (user) {
-// Get data
-//    db.collection("games").onSnaphot(snapshot => {
-//    setupGames(snapshot.docs);
-// });
-//   } else {
-// Make it be like empty array
-//    setupGames([]);
-//   }
-// });
-
-// signout
-// function signout() {
-//   var logout = document.querySelector("#some-logout-id");
-//   logout.addEventListener('click', (e) => {
-//     e.preventDefault();
-//     auth.signOut();
-//   });
-// }
-
 function onSelectChangeSecurityQuestionType() {
   let securityQuestionType = document.getElementById(
     "sign-up-security-question-type"
@@ -37,14 +16,13 @@ function onSelectChangeSecurityQuestionType() {
   return securityQuestionTypeOption;
 }
 
-function signUp() {
-  let user = getCurrentUser();
+let clickCounter = 0;
 
-  if (user !== null && user !== undefined) {
-    if (user.emailVerified) {
-      window.location.href = "homepage.html";
-      return;
-    }
+function signUp() {
+  clickCounter++;
+
+  if (clickCounter === 2) {
+    location.reload();
   }
 
   let usernameValue = document.getElementById("sign-up-username").value;
@@ -85,7 +63,6 @@ function signUp() {
   }
 
   if (Object.keys(errors).length > 0) {
-    // comment below line
     errors.error = errors;
     console.log(errors);
   }
@@ -98,7 +75,6 @@ function signUp() {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        // comment below line
         errors.username = "This username is already taken";
         console.log("This username is already taken");
       } else {
@@ -122,7 +98,9 @@ function signUp() {
         createdAt: new Date(),
         favorites: [],
         followers: [],
-        description: "",
+        balance: 0,
+        balanceOnHold: 0,
+        description: "nothing about this user",
         profilePicture: null,
         verified: false,
         userId,
@@ -135,21 +113,29 @@ function signUp() {
         .set(userCredentials)
         .then(() => {
           signForm.querySelector(".register-verification").innerHTML =
-          "Please check your email for verification";
+            "Please check your email for verification";
           signForm.querySelector(".register-error").innerHTML = "";
         })
         .then(() => {
           let user = getCurrentUser();
-          
+
           if (user !== null && user !== undefined) {
             user
-            .sendEmailVerification()
-            .then(() => {
-              console.log("Email sent");            
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+              .sendEmailVerification()
+              .then(() => {
+                console.log("Email sent");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        })
+        .then(() => {
+          let user = getCurrentUser();
+          if (user !== null && user !== undefined) {
+            if (user.emailVerified) {
+              location.href = "homepage.html";
+            }
           }
         })
         .catch((error) => {
@@ -217,16 +203,16 @@ function signIn() {
           .then((userCredentials) => {
             if (userCredentials.user) {
               // WHY reupdate displayName ???
-              userCredentials.user
-                .updateProfile({
-                  displayName: usernameValue,
-                })
-                .then(() => {
-                  console.log(user.displayName);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+              // userCredentials.user
+              //   .updateProfile({
+              //     displayName: usernameValue,
+              //   })
+              //   .then(() => {
+              //     console.log(user.displayName);
+              //   })
+              //   .catch((err) => {
+              //     console.log(err);
+              //   });
               window.location.href = "homepage.html";
             }
           })
@@ -278,83 +264,22 @@ function signUpWithGoogle() {
       let user = result.user;
       console.log("USer " + JSON.parse(JSON.stringify(user)));
 
-      let userId = result.user.uid;
-      console.log("UserId " + userId);
+      let userIdValue = result.user.uid;
+      console.log("UserId " + userIdValue);
 
-      let email = result.user.email;
-      console.log("Google email is " + email);
+      let emailValue = result.user.email;
+      console.log("Google email is " + emailValue);
 
       let isUserNew = result.additionalUserInfo.isNewUser;
       console.log("User credential " + isUserNew); // shows true if first time
 
       if (isUserNew) {
+        console.log("First time");
         window.location.href = "sign-up-google.html";
-
-        let username = document.getElementById("sign-google-username-id").value;
-        let securityQuestion = onSelectChangeSecurityQuestion();
-        let securityAnswer = document.getElementById("sign-google-answer-id")
-          .value;
-        let signGoogleButton = document.getElementById(
-          "sign-in-google-button-id"
-        );
-
-        console.log("Username " + username);
-        console.log("Question " + securityQuestion);
-        console.log("Security answer " + securityAnswer);
-
-        const userCredentials = {
-          userId,
-          email,
-          username,
-          securityQuestion,
-          securityAnswer,
-          verified: false,
-          createdAt: new Date(),
-        };
-
-        // ADD EVENT LISTENER GOOGLE BUTTON SIGN IN
-        signGoogleButton.addEventListener("click", () => {
-          //signGoogle(username, userCredentials);
-          firebase
-            .firestore()
-            .collection("users")
-            .add(userCredentials)
-            .then((reference) => console.log(reference))
-            .then(() => (window.location.href = "homepage.html"))
-            .catch((error) => console.log(error));
-        });
-      } else {
+        } else {
         console.log("Login ");
         window.location.href = "homepage.html";
-
-        // firebase
-        //   .auth()
-        //   .signInWithPopup(provider)
-        //   .then((result) => {
-        //     // This gives you a Google Access Token. You can use it to access the Google API.
-        //     let token = result.credential.accessToken;
-        //     // The signed-in user info.
-        //     let user = result.user;
-        //     // ...
-        //     window.location.href = "index-logged-in.html";
-        //   })
-        //   .catch((error) => {
-        //     // Handle Errors here.
-        //     let errorCode = error.code;
-        //     let errorMessage = error.message;
-        //     // The email of the user's account used.
-        //     let email = error.email;
-        //     // The firebase.auth.AuthCredential type that was used.
-        //     let credential = error.credential;
-        //     // ...
-        //   });
       }
-      //let signInGoogleButton = document.getElementById("sign-in-google-button-id");
-
-      // signInGoogleButton.addEventListener("click", () => {
-      //   window.location.href = "index-logged-in.html";
-      // }, false);
-      // window.location.href = "index-logged-in.html";
     })
     .catch((error) => {
       // Handle Errors here.
@@ -365,49 +290,21 @@ function signUpWithGoogle() {
       // The firebase.auth.AuthCredential type that was used.
       let credential = error.credential;
 
+      // signForm.querySelector(".register-error").innerHTML =
+      //   errorMessage + "351";
       signForm.querySelector(".register-error").innerHTML =
-        errorMessage + "351";
+      errorMessage;
     });
   console.log("Clicked google");
 }
 
-function signGoogle(username, userCredentials) {
-  console.log("Add event listener button");
-  // Check if username is available
-  console.log("Im working");
-  firebase
-    .firestore()
-    .doc(`/users/${username}`)
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        console.log("This username is taken");
-        return;
-      }
-    });
-  // Set USERNAME to NAME displayed
-  let userCurrent = firebase.auth().currentUser;
-  userCurrent.updateProfile({
-    displayName: username,
-  });
-  // .then(() => {
-  //   let displayName = userCurrent.displayName;
-  //   console.log(displayName);
-  // }, (error) => {
-  //   console.log(error);
-  // });
-  firebase.firestore().doc(`/users/${username}`).set(userCredentials);
-
-  window.location.href = "homepage.html";
-  console.log("You successfully signed up");
-  console.log("Work method");
-}
-
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
+    if (user.emailVerified && user.providerId !== "google.com") {
+      window.location.href = "homepage.html";
+    }
     console.log("Logged in as " + JSON.stringify(user));
   } else {
     console.log("Not logged in");
   }
 });
-

@@ -114,7 +114,9 @@ function addImageToForm(e) {
             divDocument.appendChild(image);
             rowOfPhotos.appendChild(divDocument);
           });
-          const reference = firebase.storage().ref(`${user.displayName}/game_images/` + file.name);
+          const reference = firebase
+            .storage()
+            .ref(`${user.displayName}/game_images/` + file.name);
           reference
             .put(file)
             .then((snapshot) => snapshot.ref.getDownloadURL())
@@ -182,10 +184,13 @@ function addItemValidation() {
           server: gameServerOption,
           garanty: gameGarantyOption,
           delivery: gameDeliveryOption,
-          createdAt: new Date().toISOString(),
+          createdAt: new Date(),
         };
 
-        let gamesReference = firebase.firestore().collection("games").doc();
+        let gamesReference = firebase
+          .firestore()
+          .collection("games")
+          .doc();
 
         gamesReference
           .set(gameData)
@@ -197,7 +202,6 @@ function addItemValidation() {
               { merge: true }
             );
           })
-          // CHANGED .then -> .catch
           .catch(function (error) {
             if (error) {
               let errorMessage = error.message;
@@ -210,7 +214,7 @@ function addItemValidation() {
           });
       } else {
         window.alert("All fields required");
-        window.location.reload(false);
+        location.reload();
       }
     } else {
       console.log("fuck off");

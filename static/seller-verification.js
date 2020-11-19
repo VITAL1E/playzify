@@ -11,6 +11,23 @@
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
+      firebase
+        .firestore()
+        .collection("verifications")
+        .doc(user.displayName)
+        .get()
+        .then((snapshot) => {
+          if (snapshot.exists) {
+            if (snapshot.data().status == "Pending") {
+              alert("Your request is already sent");
+              window.location.href = "homepage.html";
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
       // User is signed in.
       let usernameVerification = firebase.auth().currentUser.displayName;
       username = usernameVerification;
@@ -18,7 +35,7 @@
       console.log("signed");
     } else {
       // No user is signed in.
-      console.log("Not signed");
+      location.href = "sign-in.html";
     }
   });
 
@@ -78,7 +95,6 @@
           .put(file)
           .then((snapshot) => snapshot.ref.getDownloadURL())
           .then((url) => {
-            //console.log(url);
             imagesArray.push(url);
             //window.alert(url);
           });

@@ -33,16 +33,13 @@ let userId = url.searchParams.get("id");
 
 async function getUserDetails() {
   firebase.auth().onAuthStateChanged(async function (user) {
-    console.log(user);
-
-    let postsReference = firebase
-      .firestore()
-      .collection("games")
-      .where("seller", "==", userId)
-      .orderBy("createdAt", "desc");
-
     let userFollowers = [];
     let numberOfFollowers;
+
+    let userReference = await firebase
+      .firestore()
+      .collection("users")
+      .doc(userId);
 
     await firebase
       .firestore()
@@ -50,97 +47,57 @@ async function getUserDetails() {
       .doc(userId)
       .get()
       .then((snapshot) => {
+        if (!snapshot.exists) {
+          location.href = "homepage.html";
+        }
         console.log(snapshot.data().description);
         userFollowers = snapshot.data().followers;
         numberOfFollowers = snapshot.data().followers.length;
         nickname.textContent = snapshot.data().username;
+      })
+      .then(() => {
+        firebase
+          .firestore()
+          .collection("reviews")
+          .doc(userId)
+          .collection("reviews")
+          .get()
+          .then((snapshot) => {
+            let size = snapshot.size;
+
+            firebase
+              .firestore()
+              .collection("reviews")
+              .doc(userId)
+              .collection("reviews")
+              .where("status", "==", "Positive")
+              .get()
+              .then((querySnapshot) => {
+                if (querySnapshot.size > 0) {
+                  reviews.style.display = "block";
+                }
+                let percentage = (querySnapshot.size * 100) / size;
+                document.getElementById("span-success-rate-id").textContent = `${percentage.toFixed(0)}%`;
+                document.getElementById("span-additional-rate-id").textContent = `Success Rate out of ${size} Orders`;
+
+                let greenLine = document.getElementById("green-line-id");
+                let redLine = document.getElementById("red-line-id");
+
+                greenLine.style.width = `${percentage.toFixed(0)}%`;
+                redLine.style.width = `${100 - percentage.toFixed(0)}%`;
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
-
-    let userReference = await firebase
-      .firestore()
-      .collection("users")
-      .doc(userId);
-
-
-    // REVIEWS
-    reviews.addEventListener("click", function () {
-      popupReviews.style.display = "block";
-
-
-      firebase
-        .firestore()
-        .collection("reviews")
-        .doc(userId)
-        .collection("reviews")
-        .get()
-        .then((snapshot) => {
-          console.log(snapshot.forEach((doc) => console.log(doc.data())));
-          if (snapshot.exists) {
-            snapshot.forEach((doc) => {
-              let review = doc.data();
-
-              let divMainReview = document.createElement("div");
-              divMainReview.setAttribute(
-                "class",
-                "allordderaction reviews-changes"
-              );
-
-              let divUsername = document.createElement("div");
-              divUsername.setAttribute("class", "history-order-nickname");
-              divUsername.textContent = review.username;
-
-              let divDescription = document.createElement("div");
-              divDescription.setAttribute(
-                "class",
-                "history-order-nickname mn-change"
-              );
-              divDescription.textContent = review.description;
-
-              let timeagoSpan = document.createElement("span");
-              timeagoSpan.textContent = getTimeSince(
-                review.createdAt.seconds * 1000
-              );
-
-              let divReviewIcon = document.createElement("div");
-              if (review.status === "Positive") {
-                divReviewIcon.setAttribute("class", "positive-review");
-              } else {
-                divReviewIcon.setAttribute("class", "negative-review");
-              }
-
-              divDescription.appendChild(timeagoSpan);
-              divMainReview.appendChild(divUsername);
-              divMainReview.appendChild(divDescription);
-              divMainReview.appendChild(divReviewIcon);
-
-              divReviews.appendChild(divMainReview);
-            });
-          } else {
-            let div = document.createElement("div");
-            div.setAttribute("class", "no-something");
-            div.textContent = "there are no reviews";
-
-            divReviews.appendChild(div);
-          }
-        })
-        .then(() => {
-          console.log("Successfully displayed reviewers");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      closeModalReviews.addEventListener("click", function () {
-        popupReviews.style.display = "none";
-        removeEmptySpace();
-        removeReviews();
-      });
-    });
 
     if (user) {
-      console.log(user);
+      // If same user and logged
       if (userId === user.displayName) {
-        // If same user and logged
         settings.style.display = "block";
         message.style.display = "none";
         console.log("Same user");
@@ -150,135 +107,29 @@ async function getUserDetails() {
         });
       } else {
         // If different user and logged
-        if (userFollowers.includes(user.displayName)) {
-          // If follower and logged
-          console.log("yes following");
+        settings.style.display = "none";
+        message.style.display = "block";
 
-          settings.style.display = "none";
-          message.style.display = "block";
+        message.addEventListener("click", function () {
+          let PROFILE_PHOTO;
 
-          message.addEventListener("click", function () {
-            if (!user) {
-              window.location.href = "sign-in.html";
-            }
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .get()
+            .then((snapshot) => {
+              PROFILE_PHOTO = snapshot.data().profilePicture;
+            })
+            .then(() => {
+              userChatReference = firebase
+                .firestore()
+                .collection("chats")
+                .doc(user.displayName)
+                .collection("chats")
+                .doc(userId);
 
-            let PROFILE_PHOTO;
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(userId)
-              .get()
-              .then((snapshot) => {
-                PROFILE_PHOTO = snapshot.data().profilePicture;
-              })
-              .then(() => {
-                userChatReference = firebase
-                  .firestore()
-                  .collection("chats")
-                  .doc(user.displayName)
-                  .collection("chats")
-                  .doc(userId);
-
-                userChatReference.get().then((doc) => {
-                  if (doc.exists) {
-                    console.log("Doc exists");
-                    userChatReference
-                      .set(
-                        {
-                          lastUpdated: new Date(),
-                        },
-                        { merge: true }
-                      )
-                      .then(() => {
-                        console.log("Updated the chat timestamp");
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
-                  } else {
-                    console.log("Doc not exists");
-                    userChatReference
-                      .set({
-                        lastUpdated: new Date(),
-                        lastMessage: "",
-                        profilePhoto: PROFILE_PHOTO,
-                        username: userId,
-                      })
-                      .then((reference) => {
-                        console.log("Initiated chat " + reference);
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
-                  }
-                });
-              })
-              .then(() => {
-                window.location.href = `chat.html?id=${userId}`;
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          });
-
-          unfollowButton.style.display = "inline-block";
-          followButton.style.display = "none";
-
-          unfollowButton.addEventListener("click", function () {
-            if (!user) {
-              window.location.href = "sign-in.html";
-            }
-            console.log("You stopped following " + userId);
-            userReference
-              .update({
-                followers: firebase.firestore.FieldValue.arrayRemove(
-                  user.displayName
-                ),
-              })
-              .then(() => {
-                getUserDetails();
-                //setTimeout(getUserDetails, 10);
-              })
-              .then(() => {
-                removeFollowers();
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          });
-        } else {
-          // If not follower and logged
-          console.log("no following");
-
-          settings.style.display = "none";
-          message.style.display = "block";
-
-          message.addEventListener("click", function () {
-            let PROFILE_PHOTO;
-
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(userId)
-              .get()
-              .then((snapshot) => {
-                console.log(snapshot.data());
-                PROFILE_PHOTO = snapshot.data().profilePicture;
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-
-            userChatReference = firebase
-              .firestore()
-              .collection("chats")
-              .doc(user.displayName)
-              .collection("chats")
-              .doc(userId);
-
-            userChatReference
-              .get()
-              .then((doc) => {
+              userChatReference.get().then((doc) => {
                 if (doc.exists) {
                   console.log("Doc exists");
                   userChatReference
@@ -289,7 +140,10 @@ async function getUserDetails() {
                       { merge: true }
                     )
                     .then(() => {
-                      console.log("Updated the chat");
+                      console.log("Updated the chat timestamp");
+                    })
+                    .then(() => {
+                      window.location.href = `chat.html?id=${userId}`;
                     })
                     .catch((error) => {
                       console.log(error);
@@ -303,29 +157,61 @@ async function getUserDetails() {
                       profilePhoto: PROFILE_PHOTO,
                       username: userId,
                     })
-                    .then((reference) => {
-                      console.log(
-                        "Successfully initiated the chat " + reference
-                      );
+                    .then(() => {
+                      console.log("Initiated chat ");
+                    })
+                    .then(() => {
+                      window.location.href = `chat.html?id=${userId}`;
                     })
                     .catch((error) => {
                       console.log(error);
                     });
                 }
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
+
+        console.log(JSON.stringify(userFollowers));
+
+        // If different user and logged
+        if (userFollowers.includes(user.displayName)) {
+          // If follower and logged
+          console.log("yes following");
+
+          unfollowButton.style.display = "inline-block";
+          followButton.style.display = "none";
+
+          unfollowButton.addEventListener("click", function () {
+            removeFollowers();
+            console.log("You stopped following " + userId);
+
+            userReference
+              .update({
+                followers: firebase.firestore.FieldValue.arrayRemove(
+                  user.displayName
+                ),
               })
               .then(() => {
-                window.location.href = `chat.html?id=${userId}`;
+                getUserDetails();
+              })
+              .catch((error) => {
+                console.log(error);
               });
           });
+        } else {
+          // If not follower and logged
+          console.log("no following");
 
           followButton.style.display = "inline-block";
           unfollowButton.style.display = "none";
 
           followButton.addEventListener("click", function () {
-            if (!user) {
-              window.location.href = "sign-in.html";
-            }
+            removeFollowers();
             console.log("You started following " + userId);
+
             userReference
               .update({
                 followers: firebase.firestore.FieldValue.arrayUnion(
@@ -334,29 +220,27 @@ async function getUserDetails() {
               })
               .then(() => {
                 getUserDetails();
-                //setTimeout(getUserDetails, 10);
               })
               .then(() => {
-                removeFollowers();
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-
-            firebase
-              .firestore()
-              .collection("notifications")
-              .doc(userId)
-              .collection("notifications")
-              .add({
-                typeOfNotification: "General",
-                action: "followed you",
-                userPhoto: user.photoURL,
-                from: user.displayName,
-                createdAt: new Date(),
-              })
-              .then((reference) => {
-                console.log("Successfuly added notification " + reference);
+                firebase
+                  .firestore()
+                  .collection("notifications")
+                  .doc(userId)
+                  .collection("notifications")
+                  .add({
+                    typeOfNotification: "General",
+                    action: "followed you",
+                    userPhoto: user.photoURL,
+                    from: user.displayName,
+                    createdAt: new Date(),
+                    seen: false
+                  })
+                  .then((reference) => {
+                    console.log("Successfuly added notification " + reference);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
               })
               .catch((error) => {
                 console.log(error);
@@ -364,7 +248,7 @@ async function getUserDetails() {
           });
         }
       }
-      //nickname.textContent = user.displayName;
+
       await firebase
         .firestore()
         .collection("users")
@@ -372,288 +256,416 @@ async function getUserDetails() {
         .get()
         .then(function (snapshot) {
           console.log(snapshot.data());
-          let image = document.createElement("img");
-          image.setAttribute("src", `${snapshot.data().profilePicture}`);
-          profilePicture.appendChild(image);
-          //console.log(snapshot.data().profilePicture);
+          if (snapshot.data().profilePicture !== null) {
+            profilePicture.setAttribute(
+              "style",
+              `background:url(${
+                snapshot.data().profilePicture
+              }); background-size: cover;`
+            );
+          }
 
           followers.textContent = `${numberOfFollowers} followers`;
 
-          followers.addEventListener("click", function () {
-            popupFollowers.style.display = "block";
+          removeFollowers();
 
-            closeModalFollowers.addEventListener("click", function () {
-              popupFollowers.style.display = "none";
-              removeFollowers();
-            });
+          // followers.addEventListener("click", function () {
+          //   removeFollowers();
+          //   popupFollowers.style.display = "block";
 
-            let followersOfUser = [];
-            let followersOfFollower = [];
-            let followerImage;
-            let followerUsername;
-            let followerFollowers = [];
+          //   closeModalFollowers.addEventListener("click", function () {
+          //     popupFollowers.style.display = "none";
+          //     removeFollowers();
+          //   });
 
-            // Probably problem with name consistency
-            let userReference = firebase.firestore().collection("users");
+          //   let followersOfUser = [];
+          //   let followersOfFollower = [];
+          //   let followerImage;
+          //   let followerUsername;
+          //   let followerFollowers = [];
 
-            followersOfUser = snapshot.data().followers;
-            console.log(followersOfUser);
+          //   followersOfUser = snapshot.data().followers;
+          //   console.log(followersOfUser);
 
-            if (followersOfUser.length === 0) {
-              removeFollowers();
-              // let div = document.createElement("div");
-              // div.setAttribute("class", "no-something");
-              // div.textContent = "there are no followers";
-              // divMainFollowersList.appendChild(div);
-              // return;
-            }
+          //   if (followersOfUser.length === 0) {
 
-            followersOfUser.forEach((follower) => {
-              removeThereIsNothing();
-              let following = false;
+          //     removeFollowers();
+          //     let div = document.createElement("div");
+          //     div.setAttribute("class", "no-something");
+          //     div.textContent = "there are no followers";
+          //     divMainFollowersList.appendChild(div);
 
-              console.log(follower);
+          //   } else {
 
-              userReference
-                .doc(follower)
-                .get()
-                .then((snapshot) => {
-                  followersOfFollower = snapshot.data();
-                  console.log(followersOfFollower);
-                  console.log("Username " + followersOfFollower.username);
-                  console.log("Image " + followersOfFollower.profilePicture);
-                  console.log("followers " + followersOfFollower.followers);
+          //     let userCollectionReference = firebase
+          //       .firestore()
+          //       .collection("users");
 
-                  let divMainFollower = document.createElement("div");
-                  divMainFollower.setAttribute(
-                    "class",
-                    "main-followers-list-2"
-                  );
+          //       console.log(followersOfUser);
 
-                  let divFollower = document.createElement("div");
-                  divFollower.setAttribute("class", "main-followers-list-3");
+          //     followersOfUser.forEach((follower) => {
+          //       removeThereIsNothing();
+          //       let following = false;
 
-                  let image = document.createElement("div");
-                  image.setAttribute("class", "main-followers-img");
+          //       console.log(follower);
 
-                  if (followersOfFollower.profilePicture !== null) {
-                    image.setAttribute(
-                      "style",
-                      `background-size: cover; background-image:url(${followersOfFollower.profilePicture})`
-                    );
-                  }
+          //       userCollectionReference
+          //         .doc(follower)
+          //         .get()
+          //         .then((snapshot) => {
+          //           followersOfFollower = snapshot.data();
+          //           console.log(followersOfFollower);
+          //           console.log("Username " + followersOfFollower.username);
+          //           console.log("Image " + followersOfFollower.profilePicture);
+          //           console.log("followers " + followersOfFollower.followers);
 
-                  image.addEventListener("click", function () {
-                    window.location.href = `user.html?id=${followersOfFollower.username}`;
-                  });
+          //           let divMainFollower = document.createElement("div");
+          //           divMainFollower.setAttribute(
+          //             "class",
+          //             "main-followers-list-2"
+          //           );
 
-                  let username = document.createElement("div");
-                  username.setAttribute("class", "main-followers-text");
-                  username.textContent = followersOfFollower.username;
+          //           let divFollower = document.createElement("div");
+          //           divFollower.setAttribute("class", "main-followers-list-3");
 
-                  console.log(followersOfFollower.username);
+          //           let image = document.createElement("div");
+          //           image.setAttribute("class", "main-followers-img");
 
-                  let follow = document.createElement("div");
-                  if (followersOfFollower.username !== user.displayName) {
-                    if (
-                      followersOfFollower.followers.includes(user.displayName)
-                    ) {
-                      following = true;
-                      console.log("User is in followers");
-                      follow.setAttribute("class", "unfollow-for-modal-btn");
-                      follow.textContent = "unfollow";
-                    } else {
-                      following = false;
-                      console.log("User is not in followers");
-                      follow.setAttribute("class", "follow-for-modal-btn");
-                      follow.textContent = "follow";
-                    }
-                  }
+          //           if (followersOfFollower.profilePicture !== null) {
+          //             image.setAttribute(
+          //               "style",
+          //               `background-size: cover; background-image:url(${followersOfFollower.profilePicture})`
+          //             );
+          //           }
 
-                  follow.addEventListener("click", function () {
-                    if (!user) {
-                      window.location.href = "sign-in.html";
-                    }
-                    if (following === false) {
-                      following = true;
-                      follow.textContent = "unfollow";
-                      follow.setAttribute("class", "unfollow-for-modal-btn");
+          //           image.addEventListener("click", function () {
+          //             window.location.href = `user.html?id=${followersOfFollower.username}`;
+          //           });
 
-                      userReference.doc(followersOfFollower.username).update({
-                        followers: firebase.firestore.FieldValue.arrayUnion(
-                          user.displayName
-                        ),
-                      });
-                    } else {
-                      following = false;
-                      follow.textContent = "follow";
-                      follow.setAttribute("class", "follow-for-modal-btn");
+          //           let username = document.createElement("div");
+          //           username.setAttribute("class", "main-followers-text");
+          //           username.textContent = followersOfFollower.username;
 
-                      userReference.doc(followersOfFollower.username).update({
-                        followers: firebase.firestore.FieldValue.arrayRemove(
-                          user.displayName
-                        ),
-                      });
-                    }
-                  });
-                  divFollower.appendChild(image);
-                  divFollower.appendChild(username);
-                  divMainFollower.appendChild(divFollower);
-                  divMainFollower.appendChild(follow);
-                  divMainFollowersList.appendChild(divMainFollower);
-                });
-            });
-          });
-          // nickname.textContent = snapshot.data().username;
+          //           console.log(followersOfFollower.username);
+
+          //           let follow = document.createElement("div");
+          //           if (followersOfFollower.username !== user.displayName) {
+          //             if (
+          //               followersOfFollower.followers.includes(user.displayName)
+          //             ) {
+          //               following = true;
+          //               console.log("User is in followers");
+          //               follow.setAttribute("class", "unfollow-for-modal-btn");
+          //               follow.textContent = "unfollow";
+          //             } else {
+          //               following = false;
+          //               console.log("User is not in followers");
+          //               follow.setAttribute("class", "follow-for-modal-btn");
+          //               follow.textContent = "follow";
+          //             }
+          //           }
+
+          //           follow.addEventListener("click", function () {
+          //             if (following === false) {
+          //               following = true;
+          //               follow.textContent = "unfollow";
+          //               follow.setAttribute("class", "unfollow-for-modal-btn");
+
+          //               userCollectionReference
+          //                 .doc(follower)
+          //                 .update({
+          //                   followers: firebase.firestore.FieldValue.arrayUnion(
+          //                     user.displayName
+          //                   ),
+          //                 })
+          //                 .then(() => {
+          //                   console.log("User " + user.displayName);
+          //                   console.log("Successfully followed");
+          //                 })
+          //                 .catch((error) => {
+          //                   console.log(error);
+          //                 });
+          //             } else {
+          //               following = false;
+          //               follow.textContent = "follow";
+          //               follow.setAttribute("class", "follow-for-modal-btn");
+
+          //               userCollectionReference
+          //                 .doc(follower)
+          //                 .update({
+          //                   followers: firebase.firestore.FieldValue.arrayRemove(
+          //                     user.displayName
+          //                   ),
+          //                 })
+          //                 .then(() => {
+          //                   console.log("Successfully unfollowed");
+          //                 })
+          //                 .catch((error) => {
+          //                   console.log(error);
+          //                 });
+          //             }
+          //           });
+          //           divFollower.appendChild(image);
+          //           divFollower.appendChild(username);
+          //           divMainFollower.appendChild(divFollower);
+          //           divMainFollower.appendChild(follow);
+          //           divMainFollowersList.appendChild(divMainFollower);
+          //         });
+          //     });
+          //   }
+          // });
 
           if (snapshot.data().verified === true) {
-            let div = document.createElement("span");
-            div.setAttribute("class", "verified-user");
-
-            nickname.appendChild(div);
+            console.log("verified");
+            verified.style.display = "block";
+            // let div = document.createElement("span");
+            // div.setAttribute("class", "verified-user");
+            // nickname.appendChild(div);
           }
         });
     } else {
-      firebase
-        .firestore()
-        .collection("users")
-        .doc(userId)
-        .get()
-        .then((snapshot) => {
-          console.log("Getting the picture");
-          profilePicture.setAttribute(
-            "style",
-            `background-size: cover; background-image:url(${
-              snapshot.data().profilePicture
-            });`
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      console.log("Not logged in");
     }
   });
 }
 
-// // REVIEWS
-// reviews.addEventListener("click", async function () {
-//   popupReviews.style.display = "block";
+followers.addEventListener("click", function () {
+  firebase.auth().onAuthStateChanged(function (user) {
+    popupFollowers.style.display = "block";
 
+    closeModalFollowers.addEventListener("click", function () {
+      popupFollowers.style.display = "none";
+      removeFollowers();
+    });
 
-//   console.log("Clicked reviews");
-  
-//   firebase
-//     .firestore()
-//     .collection("reviews")
-//     .doc(userId)
-//     .collection("reviews")
-//     .get()
-//     .then((snapshot) => {
-//       console.log(snapshot.data());
-//       if (!snapshot.exists) {
-//         // let div = document.createElement("div");
-//         // div.setAttribute("class", "no-something");
-//         // div.textContent = "there are no reviews";
-//         // divReviews.appendChild(div);
+    let followersOfUser = [];
+    let followersOfFollower = [];
+    let followerImage;
+    let followerUsername;
+    let followerFollowers = [];
 
-//       } else {
-//         snapshot.forEach((doc) => {
-//           let review = doc.data();
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(userId)
+      .get()
+      .then((snapshot) => {
+        followersOfUser = snapshot.data().followers;
+        console.log(followersOfUser);
 
-//           let divMainReview = document.createElement("div");
-//           divMainReview.setAttribute(
-//             "class",
-//             "allordderaction reviews-changes"
-//           );
+        if (followersOfUser.length === 0) {
+          removeFollowers();
+          let div = document.createElement("div");
+          div.setAttribute("class", "no-something");
+          div.textContent = "there are no followers";
+          divMainFollowersList.appendChild(div);
+        } else {
+          let userCollectionReference = firebase
+            .firestore()
+            .collection("users");
 
-//           let divUsername = document.createElement("div");
-//           divUsername.setAttribute("class", "history-order-nickname");
-//           divUsername.textContent = review.username;
+          console.log(followersOfUser);
 
-//           let divDescription = document.createElement("div");
-//           divDescription.setAttribute(
-//             "class",
-//             "history-order-nickname mn-change"
-//           );
-//           divDescription.textContent = review.description;
+          followersOfUser.forEach((follower) => {
+            removeThereIsNothing();
+            let following = false;
 
-//           let timeagoSpan = document.createElement("span");
-//           timeagoSpan.textContent = getTimeSince(
-//             review.createdAt.seconds * 1000
-//           );
+            console.log(follower);
 
-//           let divReviewIcon = document.createElement("div");
-//           if (review.status === "Positive") {
-//             divReviewIcon.setAttribute("class", "positive-review");
-//           } else {
-//             divReviewIcon.setAttribute("class", "negative-review");
-//           }
+            userCollectionReference
+              .doc(follower)
+              .get()
+              .then((snapshot) => {
+                followersOfFollower = snapshot.data();
+                console.log(followersOfFollower);
+                console.log("Username " + followersOfFollower.username);
+                console.log("Image " + followersOfFollower.profilePicture);
+                console.log("followers " + followersOfFollower.followers);
 
-//           divDescription.appendChild(timeagoSpan);
-//           divMainReview.appendChild(divUsername);
-//           divMainReview.appendChild(divDescription);
-//           divMainReview.appendChild(divReviewIcon);
+                let divMainFollower = document.createElement("div");
+                divMainFollower.setAttribute("class", "main-followers-list-2");
 
-//           divReviews.appendChild(divMainReview);
-//         });
-//       }
-//     })
-//     .then(() => {
-//       console.log("Successfully displayed reviewers");
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
+                let divFollower = document.createElement("div");
+                divFollower.setAttribute("class", "main-followers-list-3");
 
-//   closeModalReviews.addEventListener("click", function () {
-//     popupReviews.style.display = "none";
-//     removeEmptySpace();
-//     removeReviews();
-//   });
-// });
+                let username = document.createElement("div");
+                username.setAttribute("class", "main-followers-text");
+                username.textContent = followersOfFollower.username;
 
-const removeFollowers = () => {
-  let elements = document.getElementsByClassName("main-followers-list-2");
+                let image = document.createElement("div");
+                image.setAttribute("class", "main-followers-img");
 
-  while (elements[0]) {
-    elements[0].parentNode.removeChild(elements[0]);
-  }
-};
+                if (followersOfFollower.profilePicture !== null) {
+                  image.setAttribute(
+                    "style",
+                    `background-image:url(${followersOfFollower.profilePicture}); background-size: cover;`
+                  );
+                }
 
-const removeReviews = () => {
-  let elements = document.getElementsByClassName(
-    "allordderaction reviews-changes"
-  );
+                image.addEventListener("click", function () {
+                  window.location.href = `user.html?id=${username.textContent}`;
+                });
 
-  while (elements[0]) {
-    elements[0].parentNode.removeChild(elements[0]);
-  }
-};
+                console.log(followersOfFollower.username);
 
-const removeEmptySpace = () => {
-  let elements = document.getElementsByClassName("no-something");
+                let follow = document.createElement("div");
+                if (followersOfFollower.username !== user.displayName) {
+                  if (
+                    followersOfFollower.followers.includes(user.displayName)
+                  ) {
+                    following = true;
+                    console.log("User is in followers");
+                    follow.setAttribute("class", "unfollow-for-modal-btn");
+                    follow.textContent = "unfollow";
+                  } else {
+                    following = false;
+                    console.log("User is not in followers");
+                    follow.setAttribute("class", "follow-for-modal-btn");
+                    follow.textContent = "follow";
+                  }
+                }
 
-  while (elements[0]) {
-    elements[0].parentNode.removeChild(elements[0]);
-  }
-};
+                follow.addEventListener("click", function () {
+                  if (!user) {
+                    location.href = "sign-in.html";
+                  }
 
-const removeThereIsNothing = () => {
-  let elements = document.getElementsByClassName("no-something");
+                  if (following === false) {
+                    following = true;
+                    follow.textContent = "unfollow";
+                    follow.setAttribute("class", "unfollow-for-modal-btn");
 
-  while (elements[0]) {
-    elements[0].parentNode.removeChild(elements[0]);
-  }
-};
+                    userCollectionReference
+                      .doc(follower)
+                      .update({
+                        followers: firebase.firestore.FieldValue.arrayUnion(
+                          user.displayName
+                        ),
+                      })
+                      .then(() => {
+                        console.log("User " + user.displayName);
+                        console.log("Successfully followed");
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  } else {
+                    following = false;
+                    follow.textContent = "follow";
+                    follow.setAttribute("class", "follow-for-modal-btn");
+
+                    userCollectionReference
+                      .doc(follower)
+                      .update({
+                        followers: firebase.firestore.FieldValue.arrayRemove(
+                          user.displayName
+                        ),
+                      })
+                      .then(() => {
+                        console.log("Successfully unfollowed");
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  }
+                });
+                divFollower.appendChild(image);
+                divFollower.appendChild(username);
+                divMainFollower.appendChild(divFollower);
+                divMainFollower.appendChild(follow);
+                divMainFollowersList.appendChild(divMainFollower);
+              });
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+});
+
+// REVIEWS
+reviews.addEventListener("click", function () {
+  popupReviews.style.display = "block";
+
+  firebase
+    .firestore()
+    .collection("reviews")
+    .doc(userId)
+    .collection("reviews")
+    .get()
+    .then((snapshot) => {
+      if (snapshot.size > 0) {
+        snapshot.docs.forEach((doc) => {
+          let review = doc.data();
+
+          let divMainReview = document.createElement("div");
+          divMainReview.setAttribute(
+            "class",
+            "allordderaction reviews-changes"
+          );
+
+          let divUsername = document.createElement("div");
+          divUsername.setAttribute("class", "history-order-nickname");
+          divUsername.textContent = review.username;
+
+          let divDescription = document.createElement("div");
+          divDescription.setAttribute(
+            "class",
+            "history-order-nickname mn-change"
+          );
+          divDescription.textContent = review.description;
+
+          let timeagoSpan = document.createElement("span");
+          timeagoSpan.textContent = getTimeSince(
+            review.createdAt.seconds * 1000
+          );
+
+          let divReviewIcon = document.createElement("div");
+          if (review.status === "Positive") {
+            divReviewIcon.setAttribute("class", "positive-review");
+          } else {
+            divReviewIcon.setAttribute("class", "negative-review");
+          }
+
+          divDescription.appendChild(timeagoSpan);
+          divMainReview.appendChild(divUsername);
+          divMainReview.appendChild(divDescription);
+          divMainReview.appendChild(divReviewIcon);
+
+          divReviews.appendChild(divMainReview);
+        });
+      } else {
+        let div = document.createElement("div");
+        div.setAttribute("class", "no-something");
+        div.textContent = "there are no reviews";
+
+        divReviews.appendChild(div);
+      }
+    })
+    .then(() => {
+      console.log("Successfully displayed reviewers");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  closeModalReviews.addEventListener("click", function () {
+    popupReviews.style.display = "none";
+    removeEmptySpace();
+    removeReviews();
+  });
+});
 
 getUserDetails();
 
 let postsArray = [];
+
 const getPosts = async () => {
   removePosts();
+  let docs;
   let postsSize;
   let lastVisible;
-  let docs;
   let postsReference = firebase
     .firestore()
     .collection("games")
@@ -664,7 +676,7 @@ const getPosts = async () => {
     docs = snapshot;
     postsSize = snapshot.size;
     lastVisible = snapshot.docs[snapshot.docs.length - 1];
-    //console.log("last", lastVisible.data());
+    // console.log("last", lastVisible.data());
   });
   docs["docs"].forEach((doc) => {
     postsArray.push(doc.data());
@@ -787,14 +799,6 @@ function createPost(post) {
   });
 }
 
-const removePosts = () => {
-  let elements = document.getElementsByClassName("product-home-show");
-
-  while (elements[0]) {
-    elements[0].parentNode.removeChild(elements[0]);
-  }
-};
-
 sellingButton.addEventListener("click", () => {
   console.log("Click selling");
   aboutButton.classList.remove("switch-1-selected");
@@ -832,6 +836,48 @@ aboutButton.addEventListener("click", () => {
 
   removePosts();
 });
+
+const removePosts = () => {
+  let elements = document.getElementsByClassName("product-home-show");
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+};
+
+const removeFollowers = () => {
+  let elements = document.getElementsByClassName("main-followers-list-2");
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+};
+
+const removeReviews = () => {
+  let elements = document.getElementsByClassName(
+    "allordderaction reviews-changes"
+  );
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+};
+
+const removeEmptySpace = () => {
+  let elements = document.getElementsByClassName("no-something");
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+};
+
+const removeThereIsNothing = () => {
+  let elements = document.getElementsByClassName("no-something");
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+};
 
 function getTimeSince(date) {
   let seconds = Math.floor((new Date() - date) / 1000);

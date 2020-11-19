@@ -42,7 +42,7 @@
   addSlideButton.addEventListener("click", function () {
     window.location.href = "admin(add-slide).html";
   });
-  historyButton.addEventListener("click", function() {
+  historyButton.addEventListener("click", function () {
     window.location.href = "admin(history).html";
   });
 
@@ -50,6 +50,20 @@
   let saveButton = document.getElementById("save-button");
   let cancelButton = document.getElementById("cancel-button");
   let blockUserButton = document.getElementById("block-user-button");
+
+  searchBar.addEventListener("keyup", (e) => {
+    console.log(e.target.value);
+    let searchString = e.target.value.toLowerCase();
+    console.log(usersArray);
+    let filteredUsers = usersArray.filter((user) => {
+      return user.username.toLowerCase().includes(searchString);
+    });
+    console.log(filteredUsers);
+    removeUsers();
+    filteredUsers.forEach((user) => {
+      createUser(user);
+    });
+  });
 
   function createUser(user) {
     let div = document.createElement("div");
@@ -101,7 +115,7 @@
         .where("status", "==", "Completed")
         .get()
         .then((snapshot) => {
-          if (snapshot.exists) {
+          if (snapshot.size > 0 || snapshot.exists) {
             popupSold.textContent = `sold: ${snapshot.size}`;
           } else {
             popupSold.textContent = `sold: 0`;
@@ -114,7 +128,7 @@
         .where("status", "==", "Pending")
         .get()
         .then((snapshot) => {
-          if (snapshot.exists) {
+          if (snapshot.size > 0 || snapshot.exists) {
             popupActive.textContent = `${snapshot.size}`;
           } else {
             popupActive.textContent = `active: 0`;
@@ -135,17 +149,42 @@
         });
 
       saveButton.addEventListener("click", function () {
-        let feeValue = document.getElementById("transfer-fee-id").value;
+        let feeValue = document.getElementById("transfer-fee-id").innerText;
         let transferValue = document.getElementById("transfer-money-id").value;
 
-        firebase
-        .firestore()
-        .collection("users")
-        .doc(user.username)
-        .set({
-          balance: transferValue
-        })
-        
+        let balanceValueOfUser = 0;
+
+        console.log(feeValue);
+        console.log(transferValue);
+
+        let userReference = firebase
+          .firestore()
+          .collection("users")
+          .doc(user.username);
+
+          userReference
+          .get()
+          .then((snapshot) => {
+            balanceValueOfUser = snapshot.data().balance
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+          userReference
+          .set(
+            {
+              balance: balanceValueOfUser + parseInt(transferValue),
+            },
+            { merge: true }
+          )
+          .then(() => {
+            console.log("Successfully transferred money money");
+            adminPopup.style.display = "none";
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
 
       cancelButton.addEventListener("click", function () {
@@ -153,21 +192,22 @@
       });
 
       blockUserButton.addEventListener("click", function () {
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(user.username)
-          .delete()
-          .then(() => {
-            alert("Deleted user from collection, also delete from DB entirely");
-            console.log("User successfully deleted from collection");
-          })
-          .then(() => {
-            alert("Delete user from Firebase Auth");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        alert("TODO: confirm to delete user account?");
+        // firebase
+        //   .firestore()
+        //   .collection("users")
+        //   .doc(user.username)
+        //   .delete()
+        //   .then(() => {
+        //     alert("Deleted user from collection, also delete from DB entirely");
+        //     console.log("User successfully deleted from collection");
+        //   })
+        //   .then(() => {
+        //     alert("Delete user from Firebase Auth");
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
         adminPopup.style.display = "none";
       });
     });
@@ -176,17 +216,14 @@
   }
 
   let usersArray = [];
-
   const getUsers = async () => {
-    let lastVisible;
     let docs;
-
+    let lastVisible;
     let usersReference = firebase.firestore().collection("users");
 
     await usersReference.get().then((snapshot) => {
       docs = snapshot;
       lastVisible = snapshot.docs[snapshot.docs.length - 1];
-      // strange behavior
       console.log("last", lastVisible.data());
     });
     docs["docs"].forEach((doc) => {
@@ -198,18 +235,6 @@
       console.log(user);
     });
   };
-
-  searchBar.addEventListener("keyup", (e) => {
-    let searchString = e.target.value.toLowerCase();
-    let filteredUsers = usersArray.filter((user) => {
-      return user.username.toLowerCase().includes(searchString);
-    });
-    console.log(filteredUsers);
-    removeUsers();
-    filteredUsers.forEach((user) => {
-      createUser(user);
-    });
-  });
 
   const removeUsers = () => {
     let elements = document.getElementsByClassName("admins-admin");

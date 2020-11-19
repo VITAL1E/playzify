@@ -7,19 +7,31 @@ let postQuantity = document.getElementById("quantity-to-post-id");
 let postGaranty = document.getElementById("garanty-to-post-id");
 let postSellerPhoto = document.getElementById("post-seller-photo-id");
 let postSellerNickname = document.getElementById("post-seller-nickname-id");
+let postReviewsSatisfied = document.getElementById(
+  "reviews-percentage-satisfied-id"
+);
 let favoritesButton1 = document.getElementById("favorites-main-div-id-1");
 let favoritesButton2 = document.getElementById("favorites-main-div-id-2");
 let likeCount = document.getElementById("number-of-likes-id");
 let likeIcon = document.getElementById("like-icon-id");
 let likeIconRed = document.getElementById("like-icon-red-id");
 
+let postReviews = document.getElementById("reviews-post-id");
+let postReviewsPopup = document.getElementById("popup-post-reviews-id");
+let closePostModalReviews = document.getElementById(
+  "close-reviews-post-modal-id"
+);
+
 let postSellerInfo = document.getElementById("seller-info-id");
+
+let divPostReviews = document.getElementById("reviews-post-list-id");
 
 let postImagePreview = document.getElementById("post-img-view-id");
 let postImageSrcPreview = document.getElementById("post-img-src-id");
 let closeImagePreview = document.getElementsByClassName("close-img");
 
-let postLikeCount;
+let userId = null;
+let postLikeCount = 0;
 
 let postObjectToFetch = {};
 
@@ -81,18 +93,62 @@ function getPostDetails() {
         let verified = document.createElement("div");
         verified.setAttribute("class", "verified");
 
+        userId = postSelected.seller;
         postSellerNickname.innerText = postSelected.seller;
         postSellerNickname.appendChild(verified);
+
+        postSellerNickname.addEventListener("click", function () {
+          window.location.href = `user.html?id=${postSelected.seller}`;
+        });
+
+        let reviewsCount = 0;
+
+        firebase
+          .firestore()
+          .collection("reviews")
+          .doc(postSelected.seller)
+          .collection("reviews")
+          .get()
+          .then((snapshot) => {
+            reviewsCount = snapshot.size;
+            console.log(snapshot);
+          })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection("reviews")
+              .doc(postSelected.seller)
+              .collection("reviews")
+              .where("status", "==", "Positive")
+              .get()
+              .then((querySnapshot) => {
+                if (querySnapshot.empty) {
+                  postReviews.style.display = "none";
+                  //postReviewsSatisfied.textContent = "0 %";
+                } else {
+                  let percentage = (querySnapshot.size * 100) / reviewsCount;
+                  postReviewsSatisfied.textContent = `${percentage.toFixed(
+                    0
+                  )}%`;
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
         if (postSelected.sellerPhoto !== null) {
           let image = document.createElement("img");
           image.setAttribute("src", postSelected.sellerPhoto);
-  
+
           postSellerPhoto.appendChild(image);
           //postImages.innerText = `${postSelected.images}`;
         }
 
-        postSellerInfo.addEventListener("click", function () {
+        postSellerPhoto.addEventListener("click", function () {
           window.location.href = `user.html?id=${postSelected.seller}`;
         });
 
@@ -114,22 +170,23 @@ function getPostDetails() {
         likesReference.get().then((snapshot) => {
           console.log(snapshot.data().likes);
           if (user) {
-              if (snapshot.data().likes.includes(user.displayName)) {
-                likeIcon.style.display = "none";
-                likeIconRed.style.display = "block";
-              } else {
-                likeIcon.style.display = "block";
-                likeIconRed.style.display = "none";
-              }
+            localStorage.setItem("username", user.displayName);
+            if (snapshot.data().likes.includes(user.displayName)) {
+              likeIcon.style.display = "none";
+              likeIconRed.style.display = "block";
+            } else {
+              likeIcon.style.display = "block";
+              likeIconRed.style.display = "none";
+            }
           }
           likeCount.textContent = snapshot.data().likes.length;
         });
 
         function toggle(likeCountNumberUpdate) {
           userReference = firebase
-          .firestore()
-          .collection("users")
-          .doc(user.displayName);
+            .firestore()
+            .collection("users")
+            .doc(user.displayName);
 
           if (likeIcon.style.display === "none") {
             likeIcon.style.display = "block";
@@ -137,56 +194,60 @@ function getPostDetails() {
             //likeCount.textContent = postSelected.likes.length - 1;
             likeCount.textContent = likeCountNumberUpdate - 1;
 
-            likesReference.update({
-              likes: firebase.firestore.FieldValue.arrayRemove(
-                user.displayName
-              ),
-            })
-            .then(() => {
-              userReference.update({
-                favorites: firebase.firestore.FieldValue.arrayRemove(postId),
+            likesReference
+              .update({
+                likes: firebase.firestore.FieldValue.arrayRemove(
+                  user.displayName
+                ),
+              })
+              .then(() => {
+                userReference.update({
+                  favorites: firebase.firestore.FieldValue.arrayRemove(postId),
+                });
+              })
+              .catch((error) => {
+                console.log(error);
               });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-
           } else {
             likeIcon.style.display = "none";
             likeIconRed.style.display = "block";
             likeCount.textContent = likeCountNumberUpdate + 1;
 
-            likesReference.update({
-              likes: firebase.firestore.FieldValue.arrayUnion(user.displayName),
-            })
-            .then(() => {
-              userReference.update({
-                favorites: firebase.firestore.FieldValue.arrayUnion(postId),
-              });
-            })
-            .then(() => {
-              firebase
-              .firestore()
-              .collection("notifications")
-              .doc(postSelected.seller)
-              .collection("notifications")
-              .add({
-                typeOfNotification: "General",
-                action: "favorite your item",
-                userPhoto: user.photoURL,
-                from: user.displayName,
-                createdAt: new Date(),
+            likesReference
+              .update({
+                likes: firebase.firestore.FieldValue.arrayUnion(
+                  user.displayName
+                ),
               })
-              .then((reference) => {
-                console.log("Successfully updated " + reference);
+              .then(() => {
+                userReference.update({
+                  favorites: firebase.firestore.FieldValue.arrayUnion(postId),
+                });
+              })
+              .then(() => {
+                firebase
+                  .firestore()
+                  .collection("notifications")
+                  .doc(postSelected.seller)
+                  .collection("notifications")
+                  .add({
+                    typeOfNotification: "General",
+                    action: "favorite your item",
+                    userPhoto: user.photoURL,
+                    from: user.displayName,
+                    createdAt: new Date(),
+                    seen: false,
+                  })
+                  .then((reference) => {
+                    console.log("Successfully updated " + reference);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
               })
               .catch((error) => {
                 console.log(error);
               });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
           }
         }
       })
@@ -255,5 +316,122 @@ postPrice.addEventListener("click", function () {
     }
   });
 });
+
+postReviewsSatisfied.addEventListener("click", function () {
+  postReviewsPopup.style.display = "block";
+
+  firebase
+    .firestore()
+    .collection("reviews")
+    .doc(userId)
+    .collection("reviews")
+    .get()
+    .then((snapshot) => {
+      if (snapshot.size > 0) {
+        snapshot.docs.forEach((doc) => {
+          let review = doc.data();
+
+          let divMainReview = document.createElement("div");
+          divMainReview.setAttribute(
+            "class",
+            "allordderaction reviews-changes"
+          );
+
+          let divUsername = document.createElement("div");
+          divUsername.setAttribute("class", "history-order-nickname");
+          divUsername.textContent = review.username;
+
+          let divDescription = document.createElement("div");
+          divDescription.setAttribute(
+            "class",
+            "history-order-nickname mn-change"
+          );
+          divDescription.textContent = review.description;
+
+          let timeagoSpan = document.createElement("span");
+          timeagoSpan.textContent = getTimeSince(
+            review.createdAt.seconds * 1000
+          );
+
+          let divReviewIcon = document.createElement("div");
+          if (review.status === "Positive") {
+            divReviewIcon.setAttribute("class", "positive-review");
+          } else {
+            divReviewIcon.setAttribute("class", "negative-review");
+          }
+
+          divDescription.appendChild(timeagoSpan);
+          divMainReview.appendChild(divUsername);
+          divMainReview.appendChild(divDescription);
+          divMainReview.appendChild(divReviewIcon);
+
+          divPostReviews.appendChild(divMainReview);
+        });
+      } else {
+        let div = document.createElement("div");
+        div.setAttribute("class", "no-something");
+        div.textContent = "there are no reviews";
+
+        divPostReviews.appendChild(div);
+      }
+    })
+    .then(() => {
+      console.log("Successfully displayed reviewers");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  closePostModalReviews.addEventListener("click", function () {
+    postReviewsPopup.style.display = "none";
+    removeEmptySpace();
+    removeReviews();
+  });
+});
+
+const removeReviews = () => {
+  let elements = document.getElementsByClassName(
+    "allordderaction reviews-changes"
+  );
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+};
+
+const removeEmptySpace = () => {
+  let elements = document.getElementsByClassName("no-something");
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+};
+
+function getTimeSince(date) {
+  let seconds = Math.floor((new Date() - date) / 1000);
+
+  let interval = seconds / 31536000;
+
+  if (interval > 1) {
+    return Math.floor(interval) + " years ago";
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + " months ago";
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + " days ago";
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + " hours ago";
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + " minutes ago";
+  }
+  return Math.floor(seconds) + " seconds ago";
+}
 
 getPostDetails();

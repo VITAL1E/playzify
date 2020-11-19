@@ -43,10 +43,13 @@ function createPostIndex(post) {
   divSellerRoundImage.setAttribute("class", "seller-round-image");
   divSellerRoundImage.setAttribute("style", "background-size: cover;");
 
-  let image = document.createElement("img");
-  image.setAttribute("src", post.sellerPhoto);
+  // let image = document.createElement("img");
+  // image.setAttribute("src", post.sellerPhoto);
+  //divSellerRoundImage.appendChild(image);
 
-  divSellerRoundImage.appendChild(image);
+  if (post.sellerPhoto !== null) {
+    divSellerRoundImage.setAttribute("style", `background:url(${post.sellerPhoto}); background-size:cover;`);
+  }
 
   // let divSellerRoundImageIsOnline = document.createElement("div");
   // divSellerRoundImageIsOnline.setAttribute("class", "seller-is-online");
@@ -321,7 +324,7 @@ function changeBannerImages() {
         image1.classList.remove("selected-banner");
         image2.classList.remove("selected-banner");
       }
-      banner.setAttribute("style", `background-image:url(${images[i]})`);
+      banner.setAttribute("style", `background-image:url(${images[i]}); background-size:cover;`);
     }
   }
 

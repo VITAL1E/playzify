@@ -6,12 +6,12 @@ const resetPassword = document.getElementById("reset-password-submit-button");
 const mailField = document.getElementById("reset-password-email");
 const signForm = document.querySelector(".content-sign-in");
 
-auth.useDeviceLanguage();
+firebase.auth().useDeviceLanguage();
 
 const resetPasswordFunction = () => {
   const email = mailField.value;
 
-  auth.sendPasswordResetEmail(email)
+  firebase.auth().sendPasswordResetEmail(email)
     .then(() => {
       document.getElementById("reset-password-sent-id").style.display = "block";
     })

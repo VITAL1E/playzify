@@ -7,8 +7,6 @@
 
   let divSelectWithdraws = document.getElementById("select-withdraws-id");
 
-  let cancelButton = document.getElementById("popup-cancel-button-id");
-
   let generalButton = document.getElementById("general-button");
   let adminsButton = document.getElementById("admins-button");
   let supportButton = document.getElementById("support-button");
@@ -139,10 +137,13 @@
       popupWithdraw.style.display = "block";
 
       let popupImage = document.getElementById("popup-image-id");
+
+      if (withdraw.userPhoto !== null) {
       popupImage.setAttribute(
         "style",
         `background-image:url(${withdraw.userPhoto}); background-size: cover;`
       );
+      }
 
       let popupUsername = document.getElementById("popup-username-id");
       popupUsername.textContent = withdraw.user;
@@ -150,7 +151,17 @@
       let popupAmount = document.getElementById("popup-amount-id");
       popupAmount.textContent = `Amount: ${withdraw.amount} EU`;
 
+      let popupEmail = document.getElementById("popup-email-id");
+      popupEmail.textContent = `PayPal Email: ${withdraw.email}`;
+
       let doneButton = document.getElementById("popup-done-button-id");
+
+      let cancelButton = document.getElementById("popup-cancel-button-id");
+
+      if (withdraw.status === "Done") {
+        doneButton.style.display = "none";
+      }
+
       doneButton.addEventListener("click", function () {
         firebase
           .firestore()
@@ -161,6 +172,24 @@
             },
             { merge: true }
           )
+          .then(() => {
+            firebase
+              .firestore()
+              .collection("users")
+              .doc(withdraw.user)
+              .set(
+                {
+                  balanceOnHold: 0,
+                },
+                { merge: true }
+              )
+              .then(() => {
+                console.log("Successully set balance and changed status");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
           .then(() => {
             let user = firebase.auth().currentUser;
             console.log(user);
@@ -174,7 +203,7 @@
               .add({
                 username: user.displayName,
                 action: `transfered money to ${withdraw.user}`,
-                createdAt: new Date()
+                createdAt: new Date(),
               })
               .then(() => {
                 console.log("Successfully added action");
