@@ -14,6 +14,15 @@ let FILE_PROFILE_PICTURE;
 
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
+    console.log(user);
+    let oldPasswordDiv = document.getElementById("old-password-div-id");
+    let newPasswordDiv = document.getElementById("new-password-div-id");
+
+    if (user.providerData[0].providerId !== "google.com") {
+      oldPasswordDiv.style.display = "block";
+      newPasswordDiv.style.display = "block";
+    }
+
     let usernameVerification = firebase.auth().currentUser.displayName;
     username = usernameVerification;
     console.log(usernameVerification);
@@ -57,12 +66,18 @@ function changePassword() {
   let oldPasswordValue = document.getElementById("old-password-id").value;
   let newPasswordValue = document.getElementById("new-password-id").value;
 
+  if (document.getElementById("old-password-id").style.display === "block") {
+    console.log(true);
+  } else {
+    console.log(false);
+  }
+
   if (isEmpty(oldPasswordValue) || isEmpty(newPasswordValue)) {
     return;
   } else {
     if (oldPasswordValue === newPasswordValue) {
       alert("New password cannot be old password");
-      // return;
+      //return;
     } else {
       let user = getCurrentUser();
       let credential = firebase.auth.EmailAuthProvider.credential(
@@ -81,6 +96,10 @@ function changePassword() {
             .then(() => {
               console.log("Successfuly updated the password");
             })
+            .then(() => {
+              alert("Saved changes");
+              getToIndexPage();
+            })
             .catch((error) => {
               console.log(error);
             });
@@ -95,88 +114,139 @@ function changePassword() {
   console.log(newPasswordValue);
 }
 
+let gamesOfCurrentUser = [];
 function changeUserSettings() {
-  let user = getCurrentUser();
-  let userReference = getCurrentUserReference();
-  userReference
-    .set(
-      {
-        description: storeDescription.innerText,
-      },
-      { merge: true }
-    )
-    .then(() => {
-      console.log("Changed description");
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(user.displayName)
+        .set(
+          {
+            description: storeDescription.innerText,
+          },
+          { merge: true }
+        )
+        .then(() => {
+          console.log("Changed description");
 
-      if (newPhotoPictureURL !== null) {
-        user
-          .updateProfile({
-            photoURL: newPhotoPictureURL,
-          })
-          .then(() => {
-            // saveImage(user, FILE_PROFILE_PICTURE);
-            console.log("Update successfull");
-          })
-          .then(() => {
-            let userReference = getCurrentUserReference();
-            console.log(userReference);
-            userReference
-              .set(
-                {
-                  profilePicture: newPhotoPictureURL,
-                },
-                { merge: true }
-              )
+          if (newPhotoPictureURL !== null) {
+            user
+              .updateProfile({
+                photoURL: newPhotoPictureURL,
+              })
               .then(() => {
-                console.log(
-                  "Succesfully changed profile picture of user in collection"
-                );
+                // saveImage(user, FILE_PROFILE_PICTURE);
+                console.log("Update successfull");
+              })
+              .then(() => {
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(user.displayName)
+                  .set(
+                    {
+                      profilePicture: user.photoURL,
+                    },
+                    { merge: true }
+                  )
+                  .then(() => {
+                    console.log(user.photoURL);
+                    console.log(newPhotoPictureURL);
+                    console.log(
+                      "Succesfully changed profile picture of user in collection"
+                    );
+                  })
+                  .then(() => {
+                    firebase
+                      .firestore()
+                      .collection("games")
+                      .where("seller", "==", user.displayName)
+                      .get()
+                      .then((querySnapshot) => {
+                        querySnapshot.docs.forEach((doc) => {
+                          gamesOfCurrentUser.push(doc.data());
+                        });
+                      })
+                      .then(() => {
+                        changeGameSellerPhotos(gamesOfCurrentUser, user.photoURL);
+                        console.log(gamesOfCurrentUser);
+                      })
+                      .then(() => {
+                        let oldPasswordValue = document.getElementById("old-password-id").value;
+                        let newPasswordValue = document.getElementById("new-password-id").value;
+
+                        if (!isEmpty(oldPasswordValue) && !isEmpty(newPasswordValue)) {
+                          changePassword();
+                        }
+                      })
+                      .then(() => {
+                        firebase
+                        .firestore()
+                        .collection("notifications")
+                        .doc(user.displayName)
+                        .collection("notifications")
+                        .add({
+                          typeOfNotification: "Verified",
+                          action: "Great, new account settings successfully saved",
+                          createdAt: new Date(),
+                          seen: false,
+                        })
+                        .then((reference) => {
+                          console.log("Added " + reference);
+                        })
+                        .then(() => {
+                          alert("Saved changes");
+                          //getToIndexPage();
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                        });
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
               })
               .catch((error) => {
                 console.log(error);
               });
-          })
-          .then(() => {
-            firebase
-              .firestore()
-              .collection("games")
-              .where("seller", "==", user.displayName)
-              .get()
-              .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                  doc
-                    .set(
-                      {
-                        sellerPhoto: newPhotoPictureURL,
-                      },
-                      { merge: true }
-                    )
-                    .then(() => {
-                      console.log("Successfully updated all pictures of user");
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                    });
-                });
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    })
-    .then(() => {
-      changePassword();
-    })
-    .then(() => {
-      getToIndexPage();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+          } else {
+            let oldPasswordValue = document.getElementById("old-password-id").value;
+            let newPasswordValue = document.getElementById("new-password-id").value;
+
+            if (!isEmpty(oldPasswordValue) && !isEmpty(newPasswordValue)) {
+              changePassword();
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+    }
+  });
+}
+
+function changeGameSellerPhotos(games, photo) {
+  let gamesReference = firebase.firestore().collection("games");
+
+  games.forEach((game) => {
+    gamesReference
+      .doc(game.postId)
+      .set(
+        {
+          sellerPhoto: photo,
+        },
+        { merge: true }
+      )
+      .then(() => console.log("Changed pic"))
+      .catch(error => console.log(error));
+  });
 }
 
 function getUserSettings() {
@@ -278,6 +348,11 @@ function addImageToForm(e) {
 
   for (let i = 0; i < files.length; i++) {
     let file = files[i];
+
+    if (file.size > 1500000) {
+      alert("File too large!");
+      return;
+    }
 
     if (file) {
       const reader = new FileReader();

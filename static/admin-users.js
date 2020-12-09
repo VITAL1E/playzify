@@ -49,7 +49,7 @@
   let adminPopup = document.getElementById("admin-main-popup-id");
   let saveButton = document.getElementById("save-button");
   let cancelButton = document.getElementById("cancel-button");
-  let blockUserButton = document.getElementById("block-user-button");
+  // let blockUserButton = document.getElementById("block-user-button");
 
   searchBar.addEventListener("keyup", (e) => {
     console.log(e.target.value);
@@ -99,10 +99,13 @@
       let userPostsReference = firebase.firestore().collection("games");
 
       let popupPhoto = document.getElementById("admin-main-popup-photo-id");
-      popupPhoto.setAttribute(
-        "style",
-        `background-image:url(${user.profilePicture}); background-size: cover; `
-      );
+      
+      if (popupPhoto !== null) {
+        popupPhoto.setAttribute(
+          "style",
+          `background-image:url(${user.profilePicture}); background-size: cover; `
+        );
+      }
 
       let popupUsername = document.getElementById(
         "admin-main-popup-username-id"
@@ -167,20 +170,42 @@
           .then((snapshot) => {
             balanceValueOfUser = snapshot.data().balance
           })
-          .catch((error) => {
-            console.log(error);
-          });
-
-          userReference
-          .set(
-            {
-              balance: balanceValueOfUser + parseInt(transferValue),
-            },
-            { merge: true }
-          )
           .then(() => {
-            console.log("Successfully transferred money money");
-            adminPopup.style.display = "none";
+            userReference
+            .set(
+              {
+                balance: balanceValueOfUser + parseInt(transferValue),
+              },
+              { merge: true }
+            )
+            .then(() => {
+              firebase
+              .firestore()
+              .collection("notifications")
+              .doc(user.username)
+              .collection("notifications")
+              .add({
+                action:
+                  `Nice, your account was supplied with ${transferValue} EU.`,
+                seen: false,
+                typeOfNotification: "Submitted",
+                createdAt: new Date(),
+              })
+              .then(() => {
+                alert("Successfully submited money to user");
+                location.href = "homepage.html";
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+            })
+            .then(() => {
+              console.log("Successfully transferred money money");
+              adminPopup.style.display = "none";
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           })
           .catch((error) => {
             console.log(error);
@@ -191,25 +216,25 @@
         adminPopup.style.display = "none";
       });
 
-      blockUserButton.addEventListener("click", function () {
-        alert("TODO: confirm to delete user account?");
-        // firebase
-        //   .firestore()
-        //   .collection("users")
-        //   .doc(user.username)
-        //   .delete()
-        //   .then(() => {
-        //     alert("Deleted user from collection, also delete from DB entirely");
-        //     console.log("User successfully deleted from collection");
-        //   })
-        //   .then(() => {
-        //     alert("Delete user from Firebase Auth");
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
-        adminPopup.style.display = "none";
-      });
+      // blockUserButton.addEventListener("click", function () {
+      //   alert("TODO: confirm to delete user account?");
+      //   // firebase
+      //   //   .firestore()
+      //   //   .collection("users")
+      //   //   .doc(user.username)
+      //   //   .delete()
+      //   //   .then(() => {
+      //   //     alert("Deleted user from collection, also delete from DB entirely");
+      //   //     console.log("User successfully deleted from collection");
+      //   //   })
+      //   //   .then(() => {
+      //   //     alert("Delete user from Firebase Auth");
+      //   //   })
+      //   //   .catch((error) => {
+      //   //     console.log(error);
+      //   //   });
+      //   adminPopup.style.display = "none";
+      // });
     });
 
     mainUsersDiv.appendChild(div);

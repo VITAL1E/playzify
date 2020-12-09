@@ -240,7 +240,7 @@
       problemInformationPopup.style.display = "block";
 
       if (problem.userPhoto !== null) {
-        userPhotoPopup.setAttribute("style", `background-size: cover; background-image:url(${problem.userPhoto});`)
+        userPhotoPopup.setAttribute("style", `background-image:url(${problem.userPhoto}); background-size: cover;`)
       }
       usernamePopup.textContent = problem.user;
       emailPopup.textContent = problem.userEmail;

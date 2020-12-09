@@ -13,35 +13,46 @@
     if (user) {
       firebase
         .firestore()
-        .collection("verifications")
+        .collection("users")
         .doc(user.displayName)
         .get()
         .then((snapshot) => {
-          if (snapshot.exists) {
-            if (snapshot.data().status == "Pending") {
-              alert("Your request is already sent");
-              window.location.href = "homepage.html";
-            }
+          if (snapshot.data().verified === true) {
+            console.log("verified");
+            location.href = "Create-listing.html";
+          } else {
+            firebase
+            .firestore()
+            .collection("verifications")
+            .doc(user.displayName)
+            .get()
+            .then((snapshot) => {
+              if (snapshot.exists) {
+                if (snapshot.data().status === "Pending") {
+                  alert("Your request is already sent");
+                  window.location.href = "homepage.html";
+                }
+                if (snapshot.data().status === "Refused") {
+                  alert("Your request is refused");
+                  window.location.href = "homepage.html";
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           }
-        })
-        .catch((error) => {
-          console.log(error);
         });
-
-      // User is signed in.
       let usernameVerification = firebase.auth().currentUser.displayName;
       username = usernameVerification;
       console.log(usernameVerification);
-      console.log("signed");
     } else {
-      // No user is signed in.
       location.href = "sign-in.html";
     }
   });
 
   let numberOfImages = 0;
   let imagesArray = [];
-
   function addImageToForm(e) {
     let files = e.target.files;
     if (numberOfImages + files.length > 3) {
@@ -52,6 +63,11 @@
 
     for (let i = 0; i < files.length; i++) {
       let file = files[i];
+
+      if (file.size > 1500000) {
+        alert("File too large!");
+        return;
+      }
 
       if (file) {
         const reader = new FileReader();
@@ -160,6 +176,7 @@
             username: user.displayName,
             name: sellerVerificationName,
             surname: sellerVerificationSurname,
+            userPhoto: user.photoURL,
             month: sellerVerificationMonth,
             day: sellerVerificationDay,
             year: sellerVerificationYear,
@@ -173,16 +190,33 @@
 
           // PARSE INT IMPORTANT
           console.log(parseInt(sellerVerificationMonth, 10) + 1);
-          console.log(sellerVerificationDay <= 31);
-          console.log(sellerVerificationMonth <= 12);
+          console.log(parseInt(sellerVerificationDay) <= 31);
+          console.log(parseInt(sellerVerificationMonth) <= 12);
 
           firebase
             .firestore()
             .doc(`verifications/${user.displayName}`)
             .set(verification)
             .then(() => {
-              console.log("Successfully added verification");
-              window.location.href = "homepage.html";
+              firebase
+                .firestore()
+                .collection("notifications")
+                .doc(user.displayName)
+                .collection("notifications")
+                .add({
+                  action:
+                    "Congratulation, your request for verification has been successfully submitted.",
+                  seen: false,
+                  typeOfNotification: "Submitted",
+                  createdAt: new Date(),
+                })
+                .then(() => {
+                  alert("Successfully submited verification");
+                  location.href = "homepage.html";
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             })
             .catch((error) => {
               console.log(error);
@@ -199,7 +233,6 @@
 
   verificationButton.addEventListener("click", function () {
     submitVerificationForm();
-    // send request to admins
 
     console.log("Send to admins");
   });

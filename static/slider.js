@@ -1,82 +1,96 @@
 (function (window, document, undefined) {
   "use strict";
 
-  let slider = document.querySelector(".slider");
-  let buttons = document.querySelectorAll(".btn");
-  let slides = document.querySelectorAll(".img-slider");
-  let backgrounds = document.querySelectorAll(".bg");
-  let options = document.querySelectorAll(".option");
+  document.addEventListener(
+    "load",
+    function () {
+      let slider = document.querySelector(".slider");
+      let buttons = document.querySelectorAll(".btn");
+      let slides = document.querySelectorAll(".img-slider");
+      let backgrounds = document.querySelectorAll(".bg");
+      let options = document.querySelectorAll(".option");
 
-  let index = 1;
-  let op_index = 0;
-  let size = slides[index].clientWidth;
+      let element = document.getElementById("homepage-background");
+      let numberOfChildren = element.getElementsByTagName("img").length;
+      let link = element.querySelector('a');
 
-  update();
+      console.log(numberOfChildren);
 
-  function update() {
-    slider.style.transform = "translateX(" + (-size * index) + "px)";
+      let index = 1;
+      let op_index = 0;
 
-    backgrounds.forEach((img) => img.classList.remove("show"));
-    backgrounds[op_index].classList.add("show");
+      let size = slides[index].clientWidth;
 
-    options.forEach((op) => op.classList.remove("colored"));
-    options[op_index].classList.add("colored");
-  }
+      update();
 
-  function slide() {
-    slider.style.transition = "transform .5s ease-in-out";
-    update();
-  }
+      function update() {
+        slider.style.transform = "translateX(" + -size * index + "px)";
 
-  function btnCheck() {
-    if (this.id === "prev") {
-      index--;
+        backgrounds.forEach((img) => img.classList.remove("show"));
+        backgrounds[op_index].classList.add("show");
 
-      if (op_index === 0) {
-        op_index = 4;
-      } else {
-        op_index--;
+        link.href = backgrounds[op_index].getAttribute("data-href");
+
+        options.forEach((op) => op.classList.remove("colored"));
+        options[op_index].classList.add("colored");
       }
-    } else {
-      index++;
 
-      if (op_index === 4) {
-        op_index = 0;
-      } else {
-        op_index++;
+      function slide() {
+        slider.style.transition = "transform .5s ease-in-out";
+        update();
       }
-    }
-    slide();
-  }
 
-  function optionFunc() {
-    let i = Number(this.getAttribute("op-index"));
-    op_index = i;
-    index = i + 1;
-    slide();
-  }
+      function btnCheck() {
+        if (this.id === "prev") {
+          index--;
 
-  slider.addEventListener("transitionend", () => {
-    if (index >= 4) {
-      return;
-    }
-    if (index <= 0) {
-      return;
-    }
-    if (slides[index].id === "fist") {
-      slider.style.transition = "none";
-      index = slides.length - 2;
-      slider.style.transform = "translateX(" + (-size * index) + "px)";
-    } 
-    else if (slides[index].id === "last") {
-      slider.style.transition = "none";
-      index = 1;
-      slider.style.transform = "translateX(" + (-size * index) + "px)";
-    }
-  });
+          if (op_index === 0) {
+            op_index = numberOfChildren - 1;
+          } else {
+            op_index--;
+          }
+        } else {
+          index++;
 
-  buttons.forEach((btn) => btn.addEventListener("click", btnCheck));
-  options.forEach((option) => option.addEventListener("click", optionFunc));
+          if (op_index === numberOfChildren - 1) {
+            op_index = 0;
+          } else {
+            op_index++;
+          }
+        }
+        slide();
+      }
 
-  setInterval(btnCheck, 5000);
+      function optionFunc() {
+        let i = Number(this.getAttribute("op-index"));
+        op_index = i;
+        index = i + 1;
+        slide();
+      }
+
+      slider.addEventListener("transitionend", () => {
+        if (index >= numberOfChildren - 1) {
+          return;
+        }
+        if (index <= 0) {
+          return;
+        }
+        if (slides[index].id === "fist") {
+          slider.style.transition = "none";
+          index = slides.length - 2;
+          slider.style.transform = "translateX(" + -size * index + "px)";
+        } else if (slides[index].id === "last") {
+          slider.style.transition = "none";
+          index = 1;
+          slider.style.transform = "translateX(" + -size * index + "px)";
+        }
+      });
+
+      buttons.forEach((btn) => btn.addEventListener("click", btnCheck));
+      options.forEach((option) => option.addEventListener("click", optionFunc));
+
+      setInterval(btnCheck, 5000);
+    },
+    5000
+  );
 })(window, document);

@@ -12,6 +12,10 @@
 	left: 0;
 }
 
+.bg {
+  z-index: 10;
+}
+
 .background .bg{
   position: absolute;
   width: 100%;
@@ -113,6 +117,7 @@
     height: 50px;
     width: 50px;
     padding: 0;
+    z-index: 49;
 }
 
 #prev{
@@ -135,7 +140,8 @@
   opacity: 0.8; 
 }
 
-ul{
+.ululul{
+  z-index: 10;
   position: absolute;
     list-style: none;
     display: flex;
@@ -147,7 +153,7 @@ ul{
     width: fit-content;
 }
 
-ul li{
+.ululul li{
   width: 10px;
     height: 10px;
     margin: .6rem;
@@ -624,7 +630,6 @@ header{
     position: relative;
     margin-right: 0;
     background: url("./user-photo.png") no-repeat center center;
-    background-color: black;
     background-size: cover;
     border-radius: 100px;
     top: 12px;
@@ -1955,6 +1960,7 @@ footer{
 }
 
 .chat-profile-1{
+  background: url("./user-photo.png") no-repeat center center;
   height: 40px;
   width: 40px;
   margin: 0;
@@ -1962,7 +1968,6 @@ footer{
   position: relative;
   border: 4px solid;
   border-color: var(--special-new-dark-back-border);
-  background: url("./user-photo.png") no-repeat center center;
   background-size: cover;
   box-shadow: 0px 4px 29px #0000001f;
   background-color: black;
@@ -2171,16 +2176,16 @@ footer{
 }
 
 .profileimgchat{
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   margin: 0;
-  border-radius: 15px;
+  border-radius: 100px;
   position: relative;
-  border: 4px solid white;
-  background: url("./user-photo.png");
-  background-size: cover;
-  box-shadow: 0px 4px 29px #0000001f;
   overflow: hidden;
+  border: 4px solid;
+  border-color: var(--special-new-dark-back-border);
+  box-shadow: 0px 4px 29px #0000001f;
+  background-color: black !important;
 }
 
 .firstmessages--main-div{
@@ -2201,10 +2206,11 @@ footer{
   padding: 10px;
   padding-left: 17px;
   padding-right: 17px;
-  margin-bottom: 15px;
+  margin-bottom: 0;
   line-height: 25px;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-all;
 }
 
 .seen{
@@ -2219,6 +2225,24 @@ footer{
 .seen-right{
   left: inherit;
   right: 10px;
+}
+
+.chat-notification {
+  height: 16px;
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+    background-image: linear-gradient(120deg, #2e67ff 0%, #5190ffbf 100%);
+    text-align: center;
+    width: fit-content;
+    font-weight: 800;
+    position: absolute;
+    top: 6px;
+    right: -22px;
+    left: 0;
+    margin: auto;
+    letter-spacing: 0;
+    padding: 0px 5px;
 }
 
 .chat-messenger-input{
@@ -2378,11 +2402,12 @@ footer{
 
 .chat-image-sent{
   height: 100px;
-  width: 100px;
+  width: 90px;
   margin-bottom: 15px;
   border-radius: 20px;
   cursor: pointer;
   overflow: hidden;
+  border: 0;
 }
 
 /* Post */
@@ -2876,8 +2901,8 @@ footer{
   padding: 0px;
   margin: 0;
   float: left;
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   margin-top: 0%;
   border-radius: 20px;
   box-shadow: var(--balance-shadow);
@@ -2901,8 +2926,8 @@ footer{
 }
 
 .id-document{
-  width: 90px;
-    height: 90px;
+  width: 70px;
+    height: 70px;
     box-sizing: border-box;
     border-radius: 20px;
     position: relative;
@@ -2924,7 +2949,7 @@ footer{
   bottom: 0;
   height: auto;
   color: var(--color);
-  width: 30px;
+  width: 26px;
   stroke-width: 2.6px;
 }
 
@@ -3168,15 +3193,16 @@ footer{
 .real-notification-main-div{
   width: 100%;
   display: flex;
-  border: 1px solid ;
   border-color: var(--border-color);
-  background-color: var(--background-color);
   border-radius: 20px;
   box-sizing: border-box;
   padding: 20px;
   justify-content: space-between;
   margin-bottom: 35px;
   position: relative;
+  border: 1px solid transparent;
+  background-color: var(--background-color);
+  box-shadow: 0px 4px 29px #0000001f;  
 }
 
 .real-notification-main-div-seen{
@@ -3735,6 +3761,8 @@ footer{
   justify-content: space-between;
   margin-bottom: 25px;
   background-color: var(--background-color);
+  border-color: transparent !important;
+  box-shadow: 0px 4px 29px #0000001f;
 }
 
 .transaction-sign{
@@ -3997,6 +4025,8 @@ footer{
   padding: 20px 40px;
   box-sizing: border-box;
   justify-content: space-between;
+  border-color: transparent !important;
+  box-shadow: 0px 4px 29px #0000001f;
 }
 
 .admin-admins-main{
@@ -4017,7 +4047,6 @@ footer{
   width: 55px;
   background: url("./user-photo.png") no-repeat center center;
   background-size: cover;
-  background-color: black;
   border-radius: 100px;
   border: 5px solid white;
   box-sizing: border-box;
@@ -4037,6 +4066,8 @@ footer{
   border-radius: 20px;
   box-sizing: border-box;
   height: fit-content;
+  border-color: transparent !important;
+  box-shadow: 0px 4px 29px #0000001f;
 }
 
 .admin-content-nav{
@@ -4045,6 +4076,8 @@ footer{
   border-radius: 20px;
   box-sizing: border-box;
   padding-bottom: 42px;
+  border-color: transparent !important;
+  box-shadow: 0px 4px 29px #0000001f;
 }
 
 .general-navigation{
@@ -4184,6 +4217,8 @@ footer{
   padding: 20px 0px;
   cursor: pointer;
   transition: 0.1s ease-in-out;
+  border-color: transparent !important;
+  box-shadow: 0px 4px 29px #0000001f;
 }
 
 .admins-admin:nth-child(3n){
@@ -4225,10 +4260,9 @@ footer{
   width: 40px;
   background: url("./user-photo.png") no-repeat center center;
   background-size: cover;
-  background-color: black;
-  border-radius: 21px;
+  border-radius: 210px;
   /* border-radius: 11px; */
-  /* border: 4px solid white; */
+  border: 4px solid white;
   box-sizing: border-box;
   box-shadow: 0px 1px 10px -4px rgba(89, 89, 89, 0.58);
 }
@@ -4348,6 +4382,8 @@ footer{
   line-height: 42px;
   cursor: pointer;
   transition: 0.1s ease-in-out;
+  border-color: transparent !important;
+  box-shadow: 0px 4px 29px #0000001f;
 }
 
 .space-admin{
@@ -4430,6 +4466,8 @@ footer{
   padding-top: 20px;
   cursor: pointer;
   transition: 0.1s ease-in-out;
+  border-color: transparent !important;
+  box-shadow: 0px 4px 29px #0000001f;
 }
 
 .request-support-admin-main-div:nth-child(2n){
@@ -4450,7 +4488,7 @@ footer{
   background: url("./user-photo.png") no-repeat center center;
   background-size: cover;
   background-color: black;
-  border-radius: 9px;
+  border-radius: 900px;
   border: 3px solid white;
   box-sizing: border-box;
   box-shadow: 0px 1px 10px -4px rgba(89, 89, 89, 0.58);
@@ -4524,6 +4562,8 @@ footer{
   font-weight: 800;
   font-size: 15px;
   font-family: 'Nunito', sans-serif;
+  border-color: transparent !important;
+  box-shadow: 0px 4px 29px #0000001f;
 }
 
 .search-bar-user-admin::-webkit-input-placeholder { /* Edge */
@@ -4669,7 +4709,7 @@ footer{
     width: 50px;
     position: relative;
     margin-right: 0;
-    border-radius: 10px;
+    border-radius: 100px;
     background: url("./user-photo.png");
     background-size: cover;
     box-sizing: border-box;

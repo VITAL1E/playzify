@@ -108,7 +108,9 @@
             <div class="comun-main-user-icons-header bell-icon">
               <div class="notification-point" style="display: none;"></div>
             </div>
-            <div class="comun-main-user-icons-header chat-icon"> </div>
+            <div class="comun-main-user-icons-header chat-icon">
+              <div class="chat-notification" style="display: none;"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -352,7 +354,7 @@
             <div id="order-accepted-id" class="all-order-status-divss accepted" style="display:none">A<span>ccepted</span></div>
             <div id="order-delivered-id" class="all-order-status-divss delivered" style="display:none">D<span>elivered</span></div>
             <div id="order-completed-id" class="all-order-status-divss completed" style="display:none">C<span>ompleted</span></div>
-            <div id="order-rejected-id" class="all-order-status-divss refunded-disputed-refused" style="display:none">R<span>ejected</span></div>   
+            <div id="order-rejected-id" class="all-order-status-divss refunded-disputed-refused" style="display:none">R<span>efused</span></div>   
             <div id="order-disputed-id" class="all-order-status-divss refunded-disputed-refused" style="display:none">D<span>isputed</span></div>          
             <div id="order-refunded-id" class="all-order-status-divss refunded-disputed-refused" style="display:none">R<span>efunded</span></div>                 
           </div>
@@ -532,11 +534,6 @@
         </div>
 
         <div class="verification-main-input-div">
-          <p class="verification-main-text">Quantity:</p>
-          <div id="game-quantity-order-id" class="all-text-info-order"></div>
-        </div>
-
-        <div class="verification-main-input-div">
           <p class="verification-main-text">Order ID:</p>
           <div id="game-id-order-id" class="all-text-info-order"></div>
         </div>
@@ -618,7 +615,7 @@
     firebase.analytics();
   </script>
 
-  <!-- <script src="./static/global.js"></script> -->
+  <script src="./static/global.js"></script>
   <script src="./static/order.js"></script>
   <!-- <script src="./static/auth.js"></script> -->
   <script src="./static/darktheme.js"></script>

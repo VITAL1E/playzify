@@ -23,6 +23,11 @@
         for (let i = 0; i < files.length; i++) {
           let file = files[i];
 
+          if (file.size > 1500000) {
+            alert("File too large!");
+            return;
+          }
+
           if (file) {
             const reader = new FileReader();
             reader.addEventListener("load", function (e) {

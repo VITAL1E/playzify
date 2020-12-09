@@ -157,7 +157,17 @@ function getPostDetails() {
 
         let likesReference = firebase.firestore().doc(`/games/${postId}`);
 
-        favoritesButton2.addEventListener("click", function () {
+        favoritesButton2.addEventListener("click", favoriteItemEvent);
+          // firebase.auth().onAuthStateChanged(function (user) {
+          //   if (user) {
+          //     toggle(postSelected.likes.length);
+          //   } else {
+          //     window.location.href = "sign-in.html";
+          //   }
+          // });
+        //});
+
+        function favoriteItemEvent() {
           firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
               toggle(postSelected.likes.length);
@@ -165,7 +175,8 @@ function getPostDetails() {
               window.location.href = "sign-in.html";
             }
           });
-        });
+          favoritesButton2.removeEventListener("click", favoriteItemEvent);
+        }
 
         likesReference.get().then((snapshot) => {
           console.log(snapshot.data().likes);
@@ -192,7 +203,7 @@ function getPostDetails() {
             likeIcon.style.display = "block";
             likeIconRed.style.display = "none";
             //likeCount.textContent = postSelected.likes.length - 1;
-            likeCount.textContent = likeCountNumberUpdate - 1;
+            likeCount.textContent = likeCountNumberUpdate;
 
             likesReference
               .update({
@@ -268,6 +279,16 @@ Array.from(closeImagePreview).forEach((button) => {
   });
 });
 
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+    document.getElementById("post-not-logged-in-header-id").style.display = "none";
+    document.getElementById("post-logged-in-header-id").style.display = "block";
+  } else {
+    document.getElementById("post-not-logged-in-header-id").style.display = "block";
+    document.getElementById("post-logged-in-header-id").style.display = "none";
+  }
+});
+
 postPrice.addEventListener("click", function () {
   // const url = new URL(window.location.href);
   // let postId = url.searchParams.get("id");
@@ -294,13 +315,16 @@ postPrice.addEventListener("click", function () {
           postId: postObjectToFetch.postId,
           seller: postObjectToFetch.seller,
           category: postObjectToFetch.category,
-          createdAt: postObjectToFetch.createdAt,
           delivery: postObjectToFetch.delivery,
           garanty: postObjectToFetch.garanty,
           quantity: postObjectToFetch.quantity,
           server: postObjectToFetch.server,
           title: postObjectToFetch.title,
           buyer: user.displayName,
+          type: postObjectToFetch.type,
+          price: postObjectToFetch.price,
+          sellerProfilePhoto: postObjectToFetch.sellerPhoto,
+          buyerProfilePhoto: user.photoURL
         }),
       })
         .then(function (data) {

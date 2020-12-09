@@ -49,23 +49,18 @@ firebase.auth().onAuthStateChanged(function (user) {
   }
 });
 
-async function getUserDetails() {
-  firebase.auth().onAuthStateChanged(async function (user) {
+function getUserDetails() {
+  firebase.auth().onAuthStateChanged(function (user) {
     let userFollowers = [];
     let numberOfFollowers;
     let numberOfFollowing;
 
-    let userReference = await firebase
+    let userReference = firebase
       .firestore()
       .collection("users")
       .doc(userId);
 
-    let userCurrentReference = await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.displayName);
-
-    await firebase
+    firebase
       .firestore()
       .collection("users")
       .doc(userId)
@@ -235,7 +230,6 @@ async function getUserDetails() {
 
                     userchatReference
                       .set({
-                        seen: false,
                         username: userId,
                         userPhoto: PROFILE_PHOTO,
                         lastMessage: "",
@@ -261,7 +255,6 @@ async function getUserDetails() {
 
                             userchatOtherReference
                               .set({
-                                seen: false,
                                 username: user.displayName,
                                 userPhoto: user.photoURL,
                                 lastMessage: "",
@@ -309,7 +302,6 @@ async function getUserDetails() {
               console.log(error);
             });
         });
-
         console.log(JSON.stringify(userFollowers));
 
         // If different user and logged
@@ -332,7 +324,7 @@ async function getUserDetails() {
         }
       }
 
-      await firebase
+      firebase
         .firestore()
         .collection("users")
         .doc(userId)
@@ -353,95 +345,139 @@ async function getUserDetails() {
           removeFollowers();
         });
     } else {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .get()
+        .then((snapshot) => {
+          PROFILE_PHOTO = snapshot.data().profilePicture;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      console.log(JSON.stringify(userFollowers));
+
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .get()
+        .then(function (snapshot) {
+          console.log(snapshot.data());
+          if (snapshot.data().profilePicture !== null) {
+            profilePicture.setAttribute(
+              "style",
+              `background:url(${
+                snapshot.data().profilePicture
+              }); background-size: cover;`
+            );
+          }
+          following.textContent = `${numberOfFollowing} following`;
+          followers.textContent = `${numberOfFollowers} followers`;
+        });
+
+      removeFollowers();
+
       console.log("Not logged in");
     }
 
-    function followUserEvent() {
-      unfollowButton.style.display = "inline-block";
-      followButton.style.display = "none";
+    if (user) {
+      let userCurrentReference = firebase
+        .firestore()
+        .collection("users")
+        .doc(user.displayName);
 
-      removeFollowers();
-      console.log("You started following " + userId);
+      function followUserEvent() {
+        unfollowButton.style.display = "inline-block";
+        followButton.style.display = "none";
 
-      userReference
-        .update({
-          followers: firebase.firestore.FieldValue.arrayUnion(user.displayName),
-        })
-        .then(() => {
-          userCurrentReference
-            .update({
-              following: firebase.firestore.FieldValue.arrayUnion(userId),
-            })
-            .then(() => {
-              getFollowersCount();
-            })
-            .then(() => {
-              firebase
-                .firestore()
-                .collection("notifications")
-                .doc(userId)
-                .collection("notifications")
-                .add({
-                  typeOfNotification: "General",
-                  action: "followed you",
-                  userPhoto: user.photoURL,
-                  from: user.displayName,
-                  createdAt: new Date(),
-                  seen: false,
-                })
-                .then((reference) => {
-                  console.log("Successfuly added notification " + reference);
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        removeFollowers();
+        console.log("You started following " + userId);
 
-      followButton.removeEventListener("click", followUserEvent);
-      unfollowButton.removeEventListener("click", unfollowUserEvent);
-    }
+        userReference
+          .update({
+            followers: firebase.firestore.FieldValue.arrayUnion(
+              user.displayName
+            ),
+          })
+          .then(() => {
+            userCurrentReference
+              .update({
+                following: firebase.firestore.FieldValue.arrayUnion(userId),
+              })
+              .then(() => {
+                getFollowersCount();
+              })
+              .then(() => {
+                firebase
+                  .firestore()
+                  .collection("notifications")
+                  .doc(userId)
+                  .collection("notifications")
+                  .add({
+                    typeOfNotification: "General",
+                    action: "followed you",
+                    userPhoto: user.photoURL,
+                    from: user.displayName,
+                    createdAt: new Date(),
+                    seen: false,
+                  })
+                  .then((reference) => {
+                    console.log("Successfuly added notification " + reference);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
-    function unfollowUserEvent() {
-      followButton.style.display = "inline-block";
-      unfollowButton.style.display = "none";
+        followButton.removeEventListener("click", followUserEvent);
+        unfollowButton.removeEventListener("click", unfollowUserEvent);
+      }
 
-      removeFollowers();
-      console.log("You stopped following " + userId);
+      function unfollowUserEvent() {
+        followButton.style.display = "inline-block";
+        unfollowButton.style.display = "none";
 
-      userReference
-        .update({
-          followers: firebase.firestore.FieldValue.arrayRemove(
-            user.displayName
-          ),
-        })
-        .then(() => {
-          userCurrentReference
-            .update({
-              following: firebase.firestore.FieldValue.arrayRemove(userId),
-            })
-            .then(() => {
-              getFollowersCount();
-            })
-            .then(() => {
-              console.log("Unfollowed success");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        removeFollowers();
+        console.log("You stopped following " + userId);
 
-      followButton.removeEventListener("click", followUserEvent);
-      unfollowButton.removeEventListener("click", unfollowUserEvent);
+        userReference
+          .update({
+            followers: firebase.firestore.FieldValue.arrayRemove(
+              user.displayName
+            ),
+          })
+          .then(() => {
+            userCurrentReference
+              .update({
+                following: firebase.firestore.FieldValue.arrayRemove(userId),
+              })
+              .then(() => {
+                getFollowersCount();
+              })
+              .then(() => {
+                console.log("Unfollowed success");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        followButton.removeEventListener("click", followUserEvent);
+        unfollowButton.removeEventListener("click", unfollowUserEvent);
+      }
     }
   });
 }
@@ -520,15 +556,17 @@ followers.addEventListener("click", function () {
             .firestore()
             .collection("users");
 
-          userCollectionReference
-            .doc(user.displayName)
-            .get()
-            .then((snapshot) => {
-              userReference = snapshot.data();
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          if (user) {
+            userCollectionReference
+              .doc(user.displayName)
+              .get()
+              .then((snapshot) => {
+                userReference = snapshot.data();
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
 
           console.log(followersOfUser);
 
@@ -575,21 +613,29 @@ followers.addEventListener("click", function () {
                 console.log(followersOfFollower.username);
 
                 let follow = document.createElement("div");
-                if (followersOfFollower.username !== user.displayName) {
-                  if (
-                    followersOfFollower.followers.includes(user.displayName)
-                  ) {
-                    following = true;
-                    console.log("User is in followers");
-                    follow.setAttribute("class", "unfollow-for-modal-btn");
-                    follow.textContent = "unfollow";
-                  } else {
-                    following = false;
-                    console.log("User is not in followers");
-                    follow.setAttribute("class", "follow-for-modal-btn");
-                    follow.textContent = "follow";
+                if (user) {
+                  if (followersOfFollower.username !== user.displayName) {
+                    if (
+                      followersOfFollower.followers.includes(user.displayName)
+                    ) {
+                      following = true;
+                      console.log("User is in followers");
+                      follow.setAttribute("class", "unfollow-for-modal-btn");
+                      follow.textContent = "unfollow";
+                    } else {
+                      following = false;
+                      console.log("User is not in followers");
+                      follow.setAttribute("class", "follow-for-modal-btn");
+                      follow.textContent = "follow";
+                    }
                   }
+                } else {
+                  following = false;
+                  console.log("User is not in followers");
+                  follow.setAttribute("class", "follow-for-modal-btn");
+                  follow.textContent = "follow";
                 }
+
                 follow.addEventListener("click", toggleFollowUserEvent);
 
                 divFollower.appendChild(image);
@@ -601,6 +647,7 @@ followers.addEventListener("click", function () {
                 function toggleFollowUserEvent() {
                   if (!user) {
                     location.href = "sign-in.html";
+                    return;
                   }
 
                   if (following === false) {
@@ -815,6 +862,7 @@ following.addEventListener("click", function () {
                 function unfollowUserEvent() {
                   if (!user) {
                     location.href = "sign-in.html";
+                    return;
                   }
 
                   unfollow.textContent = "follow";
@@ -1115,6 +1163,24 @@ aboutButton.addEventListener("click", () => {
   removePosts();
 });
 
+function generateChatRoomName(user1, user2) {
+  let result = user1.toLowerCase().localeCompare(user2.toLowerCase());
+
+  if (result === 1) {
+    console.log(1);
+    console.log(`${user2}+${user1}`);
+    return `${user2}+${user1}`;
+  }
+  if (result === -1) {
+    console.log(-1);
+    console.log(`${user1}+${user2}`);
+    return `${user1}+${user2}`;
+  }
+  console.log("last");
+  //console.log(`${user1}+${user2}`);
+  return `${user1}+${user2}`;
+}
+
 const removePosts = () => {
   let elements = document.getElementsByClassName("product-home-show");
 
@@ -1182,24 +1248,6 @@ function getTimeSince(date) {
     return Math.floor(interval) + " minutes ago";
   }
   return Math.floor(seconds) + " seconds ago";
-}
-
-function generateChatRoomName(user1, user2) {
-  let result = user1.toLowerCase().localeCompare(user2.toLowerCase());
-
-  if (result === 1) {
-    console.log(1);
-    console.log(`${user2}+${user1}`);
-    return `${user2}+${user1}`;
-  }
-  if (result === -1) {
-    console.log(-1);
-    console.log(`${user1}+${user2}`);
-    return `${user1}+${user2}`;
-  }
-  console.log("last");
-  //console.log(`${user1}+${user2}`);
-  return `${user1}+${user2}`;
 }
 
 getPosts();

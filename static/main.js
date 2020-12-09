@@ -153,7 +153,7 @@ const getPostsIndex = async () => {
   let postsReference = firebase
     .firestore()
     .collection("games")
-    .orderBy("createdAt");
+    .orderBy("createdAt", "desc");
 
   await postsReference.get().then((snapshot) => {
     docs = snapshot;
@@ -287,55 +287,6 @@ function getPostsCountIndex() {
       countOfItems.innerHTML += size;
     });
 }
-
-let i = 0;
-let images = [];
-
-images[0] = "./static/71577e1cf59d802.jpg";
-images[1] = "./static/0ba3d60362c7e6d256cfc1f37156bad9.jpg";
-images[2] = "./static/Blue-Pixel-Call-To-Action-Banner-Background.jpg";
-
-// firebase
-// .firestore()
-// .collection("banner")
-// .get()
-// .then((snapshot) => {
-//   snapshot.docs.forEach((doc) => {
-//     console.log(doc.data().image);
-//     images.push(doc.data().image);
-//   });
-//   console.log(images);
-// });
-
-function changeBannerImages() {
-  if (images[i] !== undefined) {
-    let banner = document.getElementById("banner-index-id");
-    if (banner) {
-      if (images[i] === 0) {
-        image1.classList.add("selected-banner");
-        image2.classList.remove("selected-banner");
-        image3.classList.remove("selected-banner");
-      } else if (images[i] === 1) {
-        image2.classList.add("selected-banner");
-        image1.classList.remove("selected-banner");
-        image3.classList.remove("selected-banner");
-      } else if (images[i] === 2) {
-        image3.classList.add("selected-banner");
-        image1.classList.remove("selected-banner");
-        image2.classList.remove("selected-banner");
-      }
-      banner.setAttribute("style", `background-image:url(${images[i]}); background-size:cover;`);
-    }
-  }
-
-  if (i < images.length - 1) {
-    i++;
-  } else {
-    i = 0;
-  }
-  setTimeout("changeBannerImages();", 3000);
-}
-window.addEventListener("load", changeBannerImages);
 
 getPostsIndex();
 getPostsCountIndex();

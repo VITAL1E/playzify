@@ -100,7 +100,7 @@
 
     -->
 
-  <div class="general-fixed-header">
+  <div id="not-logged-in-header-id" class="general-fixed-header">
     <div class="first-header-div-container">
       <div class="first-header-div-child-1">
         <div class="logo"></div>
@@ -207,19 +207,19 @@
 <div class="fking-slider">
   <div class="slider-main-cointainer">
 
-    <div class="background">
-      <img src="./static/bg1.jpg" class="bg">
+    <div id="index-background" class="background">
+      <!-- <img src="./static/bg1.jpg" class="bg">
       <img src="./static/bg2.jpg" class="bg">
       <img src="./static/bg3.jpg" class="bg">
       <img src="./static/bg4.jpg" class="bg">
-      <img src="./static/bg5.png" class="bg">
+      <img src="./static/bg5.png" class="bg"> -->
     </div>
 
     <div class="slider-container">
       <div>
         <div>
-          <div class="slider">
-            <div class="img-slider" id="first-index">
+          <div id="index-slider" class="slider">
+            <!-- <div class="img-slider" id="first-index">
               <img src="./static/bg5.png">
             </div>
             <div class="img-slider">
@@ -239,7 +239,7 @@
             </div>
             <div class="img-slider" id="last-index">
               <img src="./static/bg1.jpg">
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -254,12 +254,12 @@
                               <polyline points="9 18 15 12 9 6"></polyline>
                           </svg></button>
 
-    <ul>
-      <li class="option" op-index="0"></li>
+    <ul id="index-options-id" class="ululul">
+      <!-- <li class="option" op-index="0"></li>
       <li class="option" op-index="1"></li>
       <li class="option" op-index="2"></li>
       <li class="option" op-index="3"></li>
-      <li class="option" op-index="4"></li>
+      <li class="option" op-index="4"></li> -->
 
     </ul>
   </div>
@@ -539,8 +539,9 @@
   <script src="./static/global.js"></script>
   <!-- <script src="./static/auth.js"></script> -->
   <script src="./static/main.js"></script>
-  <script src="./static/slider-index.js"></script>
+  <script type="module" src="./static/slider-index.js" defer></script>
   <script src="./static/darktheme.js"></script>
+  <script type="module" src="./static/admin-add-slide.js" defer></script>
 </body>
 
 </html>

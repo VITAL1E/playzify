@@ -61,8 +61,8 @@ app.post("/payment", function (req, res) {
       webhookUrl:
         "https://us-central1-zifiplay-e212f.cloudfunctions.net/webhooks/",
       metadata: {
-        orderId
-      }  
+        orderId,
+      },
     })
     .then((payment) => {
       // Forward the customer to the payment.getCheckoutUrl()
@@ -79,20 +79,27 @@ app.post("/payment", function (req, res) {
       console.log("payment.status " + payment.status);
       console.log("Order Id " + payment.metadata.orderId);
       //let orderIdString = orderId.toString();
-      database.collection("orders").doc(orderId.toString()).set({
-        orderId,
-        quantity: req.body.quantity,
-        garanty: req.body.garanty,
-        delivery: req.body.delivery,
-        //createdAt: req.body.createdAt,
-        category: req.body.category,
-        seller: req.body.seller,
-        postId: req.body.postId,
-        buyer: req.body.buyer,
-        paymentId: payment.id,
-        server: req.body.server,
-        description: req.body.description
-      })
+      database.collection("orders").doc(orderId.toString()).set(
+        {
+          orderId,
+          garanty: req.body.garanty,
+          delivery: req.body.delivery,
+          createdAt: new Date(),
+          category: req.body.category,
+          seller: req.body.seller,
+          postId: req.body.postId,
+          buyer: req.body.buyer,
+          paymentId: payment.id,
+          server: req.body.server,
+          description: req.body.description,
+          price: req.body.price,
+          type: req.body.type,
+          sellerProfilePhoto: req.body.sellerProfilePhoto,
+          buyerProfilePhoto: req.body.buyerProfilePhoto,
+          //status: "Paid",
+        },
+        { merge: true }
+      );
       //return payment.getCheckoutUrl();
       //res.send(payment.getCheckoutUrl());
       // console.log(mollieClient.getCheckoutUrl);
@@ -109,7 +116,6 @@ app.post("/payment", function (req, res) {
       console.log(error);
     });
 });
-
 
 // ADD ADMIN
 // const functions = require("firebase-functions");
@@ -130,52 +136,63 @@ app.post("/payment", function (req, res) {
 //   });
 // });
 
-
-
-
-
 exports.webhooks = functions.https.onRequest(function (req, res) {
   mollieClient.payments
-  .get(req.body.id)
-  .then(payment => {
-    // if (payment.isPaid()) {
-    //   console.log("Payment is Paid");
-    //   // Hooray, you've received a payment! You can start shipping to the consumer.
-    // } else if (payment.isExpired()) {
-    //   console.log("Payment is expired");
-    // } else if (payment.isPending()) {
-    //   console.log("Payment is pending");
-    // } else if (payment.isFailed()) {
-    //   console.log("Payment is failed");
-    // } else if (payment.isCanceled()) {
-    //   console.log("Payment is canceled");
-    // } else if (!payment.isOpen()) {
-    //   console.log("Payment is aborted");
-    //   // The payment isn't paid and has expired. We can assume it was aborted.
-    // } else {
-    console.log("Payment status " + payment.status);
-    //}
-    let orderReference = database.collection("orders").where("paymentId", "==", req.body.id);
-    orderReference.update({
-      status: payment.status
-    })
-    .then(function () {
-      console.log("Success");
+    .get(req.body.id)
+    .then((payment) => {
+      // if (payment.isPaid()) {
+      //   console.log("Payment is Paid");
+      //   // Hooray, you've received a payment! You can start shipping to the consumer.
+      // } else if (payment.isExpired()) {
+      //   console.log("Payment is expired");
+      // } else if (payment.isPending()) {
+      //   console.log("Payment is pending");
+      // } else if (payment.isFailed()) {
+      //   console.log("Payment is failed");
+      // } else if (payment.isCanceled()) {
+      //   console.log("Payment is canceled");
+      // } else if (!payment.isOpen()) {
+      //   console.log("Payment is aborted");
+      //   // The payment isn't paid and has expired. We can assume it was aborted.
+      // } else {
+      console.log("Payment status " + payment.status);
+      //}
+
+      if (payment.isPaid()) {
+
+        updateOrderStatus(req.body.id);
+
+        //res.send(payment.status);
+        return null;
+      }
       return null;
     })
-    .catch(function (error) {
-      console.log("Error " + error);
+    .catch((error) => {
+      res.send(error);
     });
-
-    res.send(payment.status);
-    return null;
-  })
-  .catch(error => {
-    // Do some proper error handling.
-    res.send(error);
-  });
   console.log("req.body " + req.body);
 });
+
+function updateOrderStatus(orderId) {
+  firebase
+  .firestore()
+  .collection("orders")
+  .where("paymentId", "==", orderId)
+  .update({
+    status: payment.status,
+    history: {
+      "seller accepted the order": new Date(),
+    }
+  })
+  .then(function () {
+    console.log("Success");
+    return null;
+  })
+  .catch(function (error) {
+    console.log("Error " + error);
+  });
+}
+
 // const functions = require("firebase-functions");
 // const admin = require("firebase-admin");
 // const serviceAccount = require("./admin.json");

@@ -229,8 +229,8 @@
 
     await slides.get().then((snapshot) => {
       docs = snapshot;
-      lastVisible = snapshot.docs[snapshot.docs.length - 1];
-      console.log("last", lastVisible.data());
+      // lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      // console.log("last", lastVisible.data());
     });
     docs["docs"].forEach((doc) => {
       slidesArray.push(doc.data());

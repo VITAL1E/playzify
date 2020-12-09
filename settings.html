@@ -108,7 +108,9 @@
             <div class="comun-main-user-icons-header bell-icon">
               <div class="notification-point" style="display: none;"></div>
             </div>
-            <div class="comun-main-user-icons-header chat-icon"> </div>
+            <div class="comun-main-user-icons-header chat-icon">
+              <div class="chat-notification" style="display: none;"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -158,13 +160,13 @@
           </div>
       </div>
 
-        <div class="verification-main-input-div">
+        <div id="old-password-div-id" class="verification-main-input-div" style="display: none;">
           <p class="verification-main-text">Old password</p>
           <input id="old-password-id" class="verification-main-input" placeholder="type general setting" type="password" autocomplete="off" maxlength="24">
           <div id="settings-password-error-id" class="register-error"></div>
         </div>
 
-        <div class="verification-main-input-div">
+        <div id="new-password-div-id" class="verification-main-input-div" style="display: none;">
           <p class="verification-main-text">New password</p>
           <input id="new-password-id" class="verification-main-input" placeholder="type general setting" type="password" autocomplete="off" maxlength="24">
         </div>

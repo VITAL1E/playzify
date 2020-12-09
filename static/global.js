@@ -5,13 +5,18 @@ let balanceAmount = document.getElementsByClassName("balance-amount");
 let notificationsButton = document.getElementsByClassName(
   "comun-main-user-icons-header bell-icon"
 );
+let newChatNotificationsIcon = document.getElementsByClassName(
+  "chat-notification"
+);
+
 let newNotificationsIcon = document.getElementsByClassName(
   "notification-point"
 );
 
-let chatButton = document.getElementsByClassName(
-  "comun-main-user-icons-header chat-icon"
+let chatsButton = document.getElementsByClassName(
+  "chat-icon"
 );
+
 let settingsButton = document.getElementsByClassName("settings-div");
 let userAccountButton = document.getElementsByClassName(
   "user-logged-out-header-placeholder"
@@ -127,6 +132,13 @@ firebase.auth().onAuthStateChanged(function (user) {
       .collection("notifications")
       .where("seen", "==", false);
 
+    let chatReference = firebase
+      .firestore()
+      .collection("userchats")
+      .doc(user.displayName)
+      .collection("userchats")
+      .where("seen", "==", false);
+
     Array.from(userAccountButton).forEach((e) =>
       e.addEventListener("click", function () {
         window.location.href = `user.html?id=${user.displayName}`;
@@ -139,15 +151,28 @@ firebase.auth().onAuthStateChanged(function (user) {
           .get()
           .then((snapshot) => {
             if (snapshot.data().verified) {
-              window.location.href = "Create-listing.html";
+              location.href = "Create-listing.html";
             } else {
-              window.location.href = "seller-verification.html";
+              location.href = "seller-verification.html";
             }
           })
           .catch((error) => {
             console.log(error);
           });
       });
+    });
+
+    chatReference.get().then((snapshot) => {
+      if (snapshot.size > 0) {
+        Array.from(newChatNotificationsIcon).forEach((n) => {
+          n.style.display = "block";
+          n.textContent = snapshot.size;
+        });
+      } else {
+        Array.from(newChatNotificationsIcon).forEach((n) => {
+          n.style.display = "none";
+        });
+      }
     });
 
     notificationsReference.get().then((snapshot) => {
@@ -245,6 +270,12 @@ Array.from(notificationsButton).forEach((e) =>
           .collection("notifications")
           .get()
           .then((snapshot) => {
+            if (!snapshot.exists) {
+              // If user no notifications -> still can go to this page
+              console.log("No notifications");
+              console.log("Sasati no notifications but still go to page");
+              window.location.href = "orders-notifications.html";
+            }
             snapshot.forEach((doc) => {
               console.log(doc.data());
               console.log(doc);
@@ -268,11 +299,113 @@ Array.from(notificationsButton).forEach((e) =>
   })
 );
 
-Array.from(chatButton).forEach((e) =>
+Array.from(chatsButton).forEach((e) =>
   e.addEventListener("click", function () {
-    window.location.href = "chat.html";
+    Array.from(newChatNotificationsIcon).forEach((n) => {
+      n.style.display = "none";
+    });
+    firebase.auth().onAuthStateChanged(function (user) {
+      //let unseenMessagesArray = [];
+      if (user) {
+        firebase
+          .firestore()
+          .collection("userchats")
+          .doc(user.displayName)
+          .collection("userchats")
+          // .where("seen", "==", false)
+          .get()
+          .then((snapshot) => {
+            if (!snapshot.exists) {
+              // If user no notifications -> still can go to this page
+              console.log("No chats");
+              console.log("Sasati no notifications but still go to page");
+              //location.href = "chat.html";
+            }
+
+            let chatReference = firebase
+            .firestore()
+            .collection("userchats")
+            .doc(user.displayName)
+            .collection("userchats");
+
+            snapshot
+              .forEach((doc) => {
+                //unseenMessagesArray.push(doc.data());
+
+                console.log(doc.data());
+                console.log(doc);
+
+                  chatReference
+                  .doc(doc.data().username)
+                  .set({
+                    seen: true
+                  }, { merge: true })
+                  .then(() => {
+                    location.href = "chat.html";
+                    console.log("success kzdms");
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+
+                // doc.ref
+                //   .update({
+                //     seen: true,
+                //   })
+                //   .then(() => {
+                //     location.href = "chat.html";
+                //   })
+                //   .catch((error) => {
+                //     console.log(error);
+                //   });
+              })
+          })
+          .then(() => {
+            //changeMessagesToSeen(user.displayName, unseenMessagesArray);
+          })
+          .then(() => {
+            console.log("Success");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
   })
 );
+
+// function changeMessagesToSeen(user, unseenMessages) {
+//   let userChatsReference = firebase
+//     .firestore()
+//     .collection("userchats")
+//     .doc(user)
+//     .collection("userchats");
+
+//     console.log(unseenMessages);
+
+//   unseenMessages
+//     .forEach((message) => {
+//       userChatsReference
+//         .doc(message.username)
+//         .set(
+//           { 
+//             seen: true
+//           }, { merge: true }
+//         )
+//         .then(() => {
+//           console.log("Success updated to seen all");
+//         })
+//         .catch((error) => {
+//           console.log(error);
+//         });
+//     });
+// }
+
+// Array.from(chatButton).forEach((e) => {
+//   e.addEventListener("click", function () {
+//     location.href = "chat.html";
+//   });
+// });
 
 // Array.from(allCategoriesButton).forEach(e => e.addEventListener("click", function() {
 //   let allCategoriesPopup = document.querySelector(".drop-down-main-category-banner");

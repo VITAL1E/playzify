@@ -60,11 +60,6 @@ async function getUserDetails() {
       .collection("users")
       .doc(userId);
 
-    let userCurrentReference = await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.displayName);
-
     await firebase
       .firestore()
       .collection("users")
@@ -157,153 +152,118 @@ async function getUserDetails() {
               PROFILE_PHOTO = snapshot.data().profilePicture;
             })
             .then(() => {
-              let chat = firebase.firestore().collection("chats").doc(chatname);
-
-              if (chat && chat.exists) {
-                chat
-                  .update({
-                    lastUpdated: new Date(),
-                  })
-                  .then(() => {
-                    console.log("Chat updated");
-                  })
-                  .then(() => {
+              firebase
+                .database()
+                .ref("chats/")
+                .once("value", (snapshot) => {
+                  if (!snapshot.hasChild(chatname)) {
                     firebase
-                      .firestore()
-                      .collection("userchats")
-                      .doc(user.displayName)
-                      .collection("userchats")
-                      .doc(userId)
+                      .database()
+                      .ref(`chats/${chatname}`)
                       .set(
                         {
-                          lastUpdated: new Date(),
+                          lastUpdated: new Date().getTime(),
+                          createdAt: new Date().getTime(),
+                          lastMessage: "",
+                          user1Photo: PROFILE_PHOTO,
+                          user2Photo: user.photoURL,
+                          user1: userId,
+                          user2: user.displayName,
                         },
-                        { merge: true }
-                      )
+                        (error) => {
+                          if (error) {
+                            console.log(error);
+                          } else {
+                            firebase
+                              .database()
+                              .ref(`userchats/${user.displayName}/${userId}`)
+                              .set(
+                                {
+                                  lastUpdated: new Date().getTime(),
+                                  lastMessage: "",
+                                  username: userId,
+                                },
+                                (error) => {
+                                  if (error) {
+                                    console.log(error);
+                                  } else {
+                                    firebase
+                                      .database()
+                                      .ref(
+                                        `userchats/${userId}/${user.displayName}`
+                                      )
+                                      .set(
+                                        {
+                                          lastUpdated: new Date().getTime(),
+                                          lastMessage: "",
+                                          username: user.displayName,
+                                        },
+                                        (error) => {
+                                          if (error) {
+                                            console.log(error);
+                                          } else {
+                                            location.href = `chat.html?id=${userId}`;
+                                          }
+                                        }
+                                      );
+                                  }
+                                }
+                              );
+                          }
+                        }
+                      );
+                  } else {
+                    firebase
+                      .database()
+                      .ref(`chats/${chatname}`)
+                      .update({
+                        lastUpdated: new Date().getTime(),
+                        username: user.displayName,
+                        lastMessage: "",
+                      })
                       .then(() => {
                         firebase
-                          .firestore()
-                          .collection("userchats")
-                          .doc(userId)
-                          .collection("userchats")
-                          .doc(user.displayName)
-                          .set(
-                            {
-                              lastUpdated: new Date(),
-                            },
-                            { merge: true }
-                          )
-                          .then(() => {
-                            location.href = `chat.html?id=${userId}`;
-                          })
-                          .catch((error) => {
-                            console.log(error);
-                          });
-                      })
-                      .then(() => {
-                        console.log("Everything updated");
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              } else {
-                chat
-                  .set({
-                    lastUpdated: new Date(),
-                    lastMessage: "",
-                    user1: user.displayName,
-                    user2: userId,
-                    user1Photo: user.photoURL,
-                    user2Photo: PROFILE_PHOTO,
-                  })
-                  .then(() => {
-                    console.log("Chat set");
-                  })
-                  .then(() => {
-                    let userchatReference = firebase
-                      .firestore()
-                      .collection("userchats")
-                      .doc(user.displayName)
-                      .collection("userchats")
-                      .doc(userId);
-
-                    console.log(userchatReference.id);
-
-                    userchatReference
-                      .set({
-                        seen: false,
-                        username: userId,
-                        userPhoto: PROFILE_PHOTO,
-                        lastMessage: "",
-                        lastUpdated: new Date(),
-                      })
-                      .then(() => {
-                        userchatReference
-                          .set(
-                            {
-                              userchatId: userchatReference.id,
-                            },
-                            { merge: true }
-                          )
-                          .then(() => {
-                            let userchatOtherReference = firebase
-                              .firestore()
-                              .collection("userchats")
-                              .doc(userId)
-                              .collection("userchats")
-                              .doc(user.displayName);
-
-                            console.log(userchatOtherReference.id);
-
-                            userchatOtherReference
-                              .set({
-                                seen: false,
-                                username: user.displayName,
-                                userPhoto: user.photoURL,
-                                lastMessage: "",
-                                lastUpdated: new Date(),
-                              })
-                              .then(() => {
-                                userchatOtherReference
-                                  .set(
-                                    {
-                                      userchatId: userchatOtherReference.id,
-                                    },
-                                    { merge: true }
-                                  )
-                                  .then(() => {
-                                    console.log(
-                                      "Created new userchat for both users"
-                                    );
-                                    location.href = `chat.html?id=${userId}`;
-                                  })
-                                  .catch((error) => {
-                                    console.log(error);
-                                  });
-                              })
-                              .catch((error) => {
-                                console.log(error);
-                              });
-                          })
-                          .catch((error) => {
-                            console.log(error);
-                          });
-                      })
-                      .then(() => {
-                        console.log("Done");
+                        .database()
+                        .ref(`userchats/${user.displayName}/${userId}`)
+                        .update(
+                          {
+                            lastUpdated: new Date().getTime(),
+                            lastMessage: "",
+                            username: userId,
+                          },
+                          (error) => {
+                            if (error) {
+                              console.log(error);
+                            } else {
+                              firebase
+                                .database()
+                                .ref(
+                                  `userchats/${userId}/${user.displayName}`
+                                )
+                                .update(
+                                  {
+                                    lastUpdated: new Date().getTime(),
+                                    lastMessage: "",
+                                    username: user.displayName,
+                                  },
+                                  (error) => {
+                                    if (error) {
+                                      console.log(error);
+                                    } else {
+                                      location.href = `chat.html?id=${userId}`;
+                                    }
+                                  }
+                                );
+                            }
+                          }
+                        );
+                        console.log("Chat created");
                       })
                       .catch((error) => {
                         console.log(error);
                       });
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              }
+                  }
+                });
             })
             .catch((error) => {
               console.log(error);
@@ -353,95 +313,139 @@ async function getUserDetails() {
           removeFollowers();
         });
     } else {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .get()
+        .then((snapshot) => {
+          PROFILE_PHOTO = snapshot.data().profilePicture;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      console.log(JSON.stringify(userFollowers));
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .get()
+        .then(function (snapshot) {
+          console.log(snapshot.data());
+          if (snapshot.data().profilePicture !== null) {
+            profilePicture.setAttribute(
+              "style",
+              `background:url(${
+                snapshot.data().profilePicture
+              }); background-size: cover;`
+            );
+          }
+          following.textContent = `${numberOfFollowing} following`;
+          followers.textContent = `${numberOfFollowers} followers`;
+        });
+
+      removeFollowers();
+
       console.log("Not logged in");
     }
 
-    function followUserEvent() {
-      unfollowButton.style.display = "inline-block";
-      followButton.style.display = "none";
+    if (user) {
+      let userCurrentReference = await firebase
+        .firestore()
+        .collection("users")
+        .doc(user.displayName);
 
-      removeFollowers();
-      console.log("You started following " + userId);
+      function followUserEvent() {
+        unfollowButton.style.display = "inline-block";
+        followButton.style.display = "none";
 
-      userReference
-        .update({
-          followers: firebase.firestore.FieldValue.arrayUnion(user.displayName),
-        })
-        .then(() => {
-          userCurrentReference
-            .update({
-              following: firebase.firestore.FieldValue.arrayUnion(userId),
-            })
-            .then(() => {
-              getFollowersCount();
-            })
-            .then(() => {
-              firebase
-                .firestore()
-                .collection("notifications")
-                .doc(userId)
-                .collection("notifications")
-                .add({
-                  typeOfNotification: "General",
-                  action: "followed you",
-                  userPhoto: user.photoURL,
-                  from: user.displayName,
-                  createdAt: new Date(),
-                  seen: false,
-                })
-                .then((reference) => {
-                  console.log("Successfuly added notification " + reference);
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        removeFollowers();
+        console.log("You started following " + userId);
 
-      followButton.removeEventListener("click", followUserEvent);
-      unfollowButton.removeEventListener("click", unfollowUserEvent);
-    }
+        userReference
+          .update({
+            followers: firebase.firestore.FieldValue.arrayUnion(
+              user.displayName
+            ),
+          })
+          .then(() => {
+            userCurrentReference
+              .update({
+                following: firebase.firestore.FieldValue.arrayUnion(userId),
+              })
+              .then(() => {
+                getFollowersCount();
+              })
+              .then(() => {
+                firebase
+                  .firestore()
+                  .collection("notifications")
+                  .doc(userId)
+                  .collection("notifications")
+                  .add({
+                    typeOfNotification: "General",
+                    action: "followed you",
+                    userPhoto: user.photoURL,
+                    from: user.displayName,
+                    createdAt: new Date(),
+                    seen: false,
+                  })
+                  .then((reference) => {
+                    console.log("Successfuly added notification " + reference);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
-    function unfollowUserEvent() {
-      followButton.style.display = "inline-block";
-      unfollowButton.style.display = "none";
+        followButton.removeEventListener("click", followUserEvent);
+        unfollowButton.removeEventListener("click", unfollowUserEvent);
+      }
 
-      removeFollowers();
-      console.log("You stopped following " + userId);
+      function unfollowUserEvent() {
+        followButton.style.display = "inline-block";
+        unfollowButton.style.display = "none";
 
-      userReference
-        .update({
-          followers: firebase.firestore.FieldValue.arrayRemove(
-            user.displayName
-          ),
-        })
-        .then(() => {
-          userCurrentReference
-            .update({
-              following: firebase.firestore.FieldValue.arrayRemove(userId),
-            })
-            .then(() => {
-              getFollowersCount();
-            })
-            .then(() => {
-              console.log("Unfollowed success");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        removeFollowers();
+        console.log("You stopped following " + userId);
 
-      followButton.removeEventListener("click", followUserEvent);
-      unfollowButton.removeEventListener("click", unfollowUserEvent);
+        userReference
+          .update({
+            followers: firebase.firestore.FieldValue.arrayRemove(
+              user.displayName
+            ),
+          })
+          .then(() => {
+            userCurrentReference
+              .update({
+                following: firebase.firestore.FieldValue.arrayRemove(userId),
+              })
+              .then(() => {
+                getFollowersCount();
+              })
+              .then(() => {
+                console.log("Unfollowed success");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        followButton.removeEventListener("click", followUserEvent);
+        unfollowButton.removeEventListener("click", unfollowUserEvent);
+      }
     }
   });
 }
@@ -520,15 +524,17 @@ followers.addEventListener("click", function () {
             .firestore()
             .collection("users");
 
-          userCollectionReference
-            .doc(user.displayName)
-            .get()
-            .then((snapshot) => {
-              userReference = snapshot.data();
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          if (user) {
+            userCollectionReference
+              .doc(user.displayName)
+              .get()
+              .then((snapshot) => {
+                userReference = snapshot.data();
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
 
           console.log(followersOfUser);
 
@@ -575,21 +581,29 @@ followers.addEventListener("click", function () {
                 console.log(followersOfFollower.username);
 
                 let follow = document.createElement("div");
-                if (followersOfFollower.username !== user.displayName) {
-                  if (
-                    followersOfFollower.followers.includes(user.displayName)
-                  ) {
-                    following = true;
-                    console.log("User is in followers");
-                    follow.setAttribute("class", "unfollow-for-modal-btn");
-                    follow.textContent = "unfollow";
-                  } else {
-                    following = false;
-                    console.log("User is not in followers");
-                    follow.setAttribute("class", "follow-for-modal-btn");
-                    follow.textContent = "follow";
+                if (user) {
+                  if (followersOfFollower.username !== user.displayName) {
+                    if (
+                      followersOfFollower.followers.includes(user.displayName)
+                    ) {
+                      following = true;
+                      console.log("User is in followers");
+                      follow.setAttribute("class", "unfollow-for-modal-btn");
+                      follow.textContent = "unfollow";
+                    } else {
+                      following = false;
+                      console.log("User is not in followers");
+                      follow.setAttribute("class", "follow-for-modal-btn");
+                      follow.textContent = "follow";
+                    }
                   }
+                } else {
+                  following = false;
+                  console.log("User is not in followers");
+                  follow.setAttribute("class", "follow-for-modal-btn");
+                  follow.textContent = "follow";
                 }
+
                 follow.addEventListener("click", toggleFollowUserEvent);
 
                 divFollower.appendChild(image);
@@ -601,6 +615,7 @@ followers.addEventListener("click", function () {
                 function toggleFollowUserEvent() {
                   if (!user) {
                     location.href = "sign-in.html";
+                    return;
                   }
 
                   if (following === false) {
@@ -815,6 +830,7 @@ following.addEventListener("click", function () {
                 function unfollowUserEvent() {
                   if (!user) {
                     location.href = "sign-in.html";
+                    return;
                   }
 
                   unfollow.textContent = "follow";
@@ -1115,6 +1131,24 @@ aboutButton.addEventListener("click", () => {
   removePosts();
 });
 
+function generateChatRoomName(user1, user2) {
+  let result = user1.toLowerCase().localeCompare(user2.toLowerCase());
+
+  if (result === 1) {
+    console.log(1);
+    console.log(`${user2}+${user1}`);
+    return `${user2}+${user1}`;
+  }
+  if (result === -1) {
+    console.log(-1);
+    console.log(`${user1}+${user2}`);
+    return `${user1}+${user2}`;
+  }
+  console.log("last");
+  //console.log(`${user1}+${user2}`);
+  return `${user1}+${user2}`;
+}
+
 const removePosts = () => {
   let elements = document.getElementsByClassName("product-home-show");
 
@@ -1182,24 +1216,6 @@ function getTimeSince(date) {
     return Math.floor(interval) + " minutes ago";
   }
   return Math.floor(seconds) + " seconds ago";
-}
-
-function generateChatRoomName(user1, user2) {
-  let result = user1.toLowerCase().localeCompare(user2.toLowerCase());
-
-  if (result === 1) {
-    console.log(1);
-    console.log(`${user2}+${user1}`);
-    return `${user2}+${user1}`;
-  }
-  if (result === -1) {
-    console.log(-1);
-    console.log(`${user1}+${user2}`);
-    return `${user1}+${user2}`;
-  }
-  console.log("last");
-  //console.log(`${user1}+${user2}`);
-  return `${user1}+${user2}`;
 }
 
 getPosts();

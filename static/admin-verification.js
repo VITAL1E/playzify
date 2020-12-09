@@ -185,10 +185,12 @@
       street.textContent = verification.address;
       postalCode.textContent = verification.postalCode;
 
-      sellerPicture.setAttribute(
-        "style",
-        `background-image:url(${verification.userPhoto})`
-      );
+      if (verification.userPhoto !== null) {
+        sellerPicture.setAttribute(
+          "style",
+          `background-image:url(${verification.userPhoto})`
+        );
+      }
 
       if (verification.images) {
         removeDocuments();
@@ -220,26 +222,19 @@
         removeDocuments();
       });
 
-      let refuseButton = document.getElementById("refuse-button-id");
-
-      if (verification.status === "Verified") {
-        refuseButton.style.display = "none";
-      } 
-      refuseButton.addEventListener("click", refuseVerificationRequest, false);
-
       let verifyButton = document.getElementById("verify-button-id");
+      verifyButton.addEventListener("click", verifyVerificationRequest, false);
 
-      if (verification.status === "Verified") {
-        verifyButton.style.display = "none";
-      }
-      verifyButton.addEventListener("click", acceptVerificationRequest, false);
+      let refuseButton = document.getElementById("refuse-button-id");
+      refuseButton.addEventListener("click", refuseVerificationRequest, false);
     });
     divVerifications.appendChild(div);
 
-    function acceptVerificationRequest() {
+    function verifyVerificationRequest() {
+      console.log(verification.username);
       firebase
         .firestore()
-        .doc(`/verifications/${verification.verificationId}`)
+        .doc(`/verifications/${verification.username}`)
         .set(
           {
             status: "Verified",
@@ -253,8 +248,24 @@
             action:
               "Congratulation, your seller account is verified, now you can post items to sell.",
             createdAt: new Date(),
-            seen: false
+            seen: false,
           });
+        })
+        .then(() => {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(verification.username)
+            .set({
+              verified: true,
+            }, { merge: true }
+            )
+            .then(() => {
+              console.log("Set user verified to true");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         })
         .then(() => {
           verificationRequestsDivsPopup.style.display = "none";
@@ -266,6 +277,7 @@
     }
 
     function refuseVerificationRequest() {
+      console.log(verification.username);
       firebase
         .firestore()
         .doc(`/verifications/${verification.username}`)
@@ -282,8 +294,24 @@
             action:
               "Unfortunately, your seller account is refused, contact support for more information.",
             createdAt: new Date(),
-            seen: false
+            seen: false,
           });
+        })
+        .then(() => {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(verification.username)
+            .set({
+              verified: false,
+            }, { merge: true }
+            )
+            .then(() => {
+              console.log("Set user verified to false");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         })
         .then(() => {
           verificationRequestsDivsPopup.style.display = "none";
@@ -329,6 +357,7 @@
   divSelectVerifications.addEventListener("change", function () {
     let selectFilter = `${divSelectVerifications.value}`;
     getVerifications(selectFilter);
+    console.log(selectFilter);
   });
 
   Array.from(closeImagePreview).forEach((button) => {
