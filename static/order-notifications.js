@@ -13,11 +13,9 @@ let notificationSold = document.getElementById(
 let thereAreNoNotifications = document.getElementById(
   "there-are-no-items-notifications-id"
 );
-
 let thereAreNoSoldOrders = document.getElementById(
   "there-are-no-sold-notifications-id"
 );
-
 let thereAreNoPurchasedOrders = document.getElementById(
   "there-are-no-purchased-notifications-id"
 );
@@ -80,6 +78,8 @@ notificationSold.addEventListener("click", () => {
 });
 
 function getOrderNotifications(status) {
+  removeThereAreNoNotifications();
+
   firebase.auth().onAuthStateChanged((user) => {
     let soldArray = [];
     if (user) {
@@ -102,7 +102,8 @@ function getOrderNotifications(status) {
       .then((querySnapshot) => {
         console.log(querySnapshot.docs.length);
         if (querySnapshot.docs.length === 0) {
-          thereAreNoSoldOrders.style.display = "block";
+          console.log("Empty");
+          thereAreNoPurchasedOrders.style.display = "block";
           return;
         }
         querySnapshot.docs.forEach((snapshot) => {
@@ -401,10 +402,28 @@ function createOrderNotification(order) {
   );
 
   let divOrderCategoryNotificationReal = document.createElement("div");
-  divOrderCategoryNotificationReal.setAttribute(
-    "class",
-    "category-product-listed-mini-sign mini-sign-notification"
-  );
+
+  if (order.category === "Accounts") {
+    divOrderCategoryNotificationReal.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign"
+    );
+  } else if (order.category === "Items") {
+    divOrderCategoryNotificationReal.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-2"
+    );
+  } else if (order.category === "GameCoins") {
+    divOrderCategoryNotificationReal.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-3"
+    );
+  } else if (order.category === "Boosting") {
+    divOrderCategoryNotificationReal.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-4"
+    );
+  }
 
   div.appendChild(divImage);
   divAction.appendChild(title);

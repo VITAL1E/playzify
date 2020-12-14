@@ -28,6 +28,7 @@
   let popupOrderHistory = document.getElementById("pop-up-order-history");
   let popupOrderQuestion = document.getElementById("pop-up-order-question");
   let popupOrderDispute = document.getElementById("pop-up-order-dispute");
+  let popupOrderReview = document.getElementById("pop-up-order-review");
   let closeModalButton = document.getElementsByClassName("close-modal");
 
   // ORDER STATUS SECTION
@@ -176,6 +177,25 @@
           sellerProfilePhoto: doc.data().sellerProfilePhoto,
         };
 
+        if (doc.data().reviewed == true) {
+          firebase
+            .firestore()
+            .collection("reviews")
+            .doc(orderSelected.seller)
+            .collection("reviews")
+            .doc(orderSelected.buyer)
+            .get()
+            .then((snapshot) => {
+              // NO ACTION BUTTONS
+              divMainActionButtons.remove();
+
+              createReview(snapshot.data());
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+
         console.log(doc.data().category);
         console.log(doc.data().title);
         console.log(doc.data().description);
@@ -287,7 +307,7 @@
 
             // ORDER INFROMATION
             divMainOrderInformationText.textContent =
-              "You have X days to Accept or Refuse the order. If you ignore this order, it will be automatically refunded.";
+              "You have 1 day to Accept or Refuse the order. If you ignore this order, it will be automatically refunded.";
 
             // ORDER STATUS
             // maybe not just yet, after payment confirmed
@@ -338,7 +358,7 @@
 
                     // ORDER INFROMATION
                     divMainOrderInformationText.textContent =
-                      "You have X day to Deliver the order. If you ignore this order, it will be automatically refunded.";
+                      "You have 1 day to Deliver the order. If you ignore this order, it will be automatically refunded.";
 
                     popupOrderQuestion.style.display = "none";
                   })
@@ -401,7 +421,7 @@
 
             // ORDER INFROMATION
             divMainOrderInformationText.textContent =
-              "Seller has X days to Accept or Refuse the order. If he ignores this order, it will be automatically refunded.";
+              "Seller has 1 day to Accept or Refuse the order. If he ignores this order, it will be automatically refunded.";
 
             // ORDER STATUS
             let status = "Paid";
@@ -487,13 +507,7 @@
 
             // ORDER INFROMATION
             divMainOrderInformationText.textContent =
-              "You have X day to Deliver the order. If you ignore this order, it will be automatically refunded.";
-
-            // ORDER STATUS
-            let status = "Sold-Accepted";
-            getOrderStatus(status);
-            // orderSoldStatus.style.display = "block";
-            // orderAcceptedStatus.style.display = "block";
+              "You have 1 day to Deliver the order. If you ignore this order, it will be automatically refunded.";
 
             // DELIVER CLICK
             if (divDeliverButton !== null) {
@@ -517,7 +531,7 @@
 
             // ORDER INFROMATION
             divMainOrderInformationText.textContent =
-              "Seller has X day to Deliver the order. If he ignores this order, it will be automatically refunded.";
+              "Seller has 1 day to Deliver the order. If he ignores this order, it will be automatically refunded.";
 
             // ORDER STATUS
             let status = "Paid-Accepted";
@@ -569,23 +583,47 @@
                       { merge: true }
                     )
                     .then(() => {
+                      let USER_PHOTO = null;
                       firebase
-                      .firestore()
-                      .doc(`disputes/${orderId}`)
-                      .set({
-                        createdAt: new Date(),
-                        from: username,
-                        message: explanation
-                      })
-                      .then(() => {
-                        let status = "Disputed";
-                        getOrderStatus(status);
-                        alert("You disputed the order");
-                        popupOrderDispute.style.display = "none";
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
+                        .firestore()
+                        .collection("users")
+                        .doc(username)
+                        .get()
+                        .then((snapshot) => {
+                          USER_PHOTO = snapshot.data().profilePicture;
+
+                          firebase
+                            .firestore()
+                            .doc(`disputes/${orderId}`)
+                            .set({
+                              createdAt: new Date(),
+                              from: username,
+                              message: explanation,
+                              status: "Unresolved",
+                              orderId: orderId,
+                              userPhoto: USER_PHOTO,
+                            })
+                            .then(() => {
+                              let status = "Disputed";
+                              getOrderStatus(status);
+
+                              alert("You disputed the order");
+
+                              // NO ACTION BUTTONS
+                              divMainActionButtons.remove();
+
+                              // ORDER INFROMATION
+                              divMainOrderInformationText.textContent =
+                                "Order is disputed.";
+                              popupOrderDispute.style.display = "none";
+                            })
+                            .catch((error) => {
+                              console.log(error);
+                            });
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                        });
                     })
                     .catch((error) => {
                       console.log(error);
@@ -669,8 +707,11 @@
                   { merge: true }
                 )
                 .then(() => {
-                  let status = "Sold-Accepted-Delivered-Completed";
+                  let status = "Paid-Accepted-Delivered-Completed";
                   getOrderStatus(status);
+
+                  // NO ACTION BUTTONS
+                  divMainActionButtons.remove();
                 })
                 .then(() => {
                   alert("You confirmed the order");
@@ -713,7 +754,133 @@
             console.log("User is buyer");
 
             // ACTION BUTTONS
-            divMainActionButtons.remove();
+            let divReviewButton = document.createElement("div");
+
+            divReviewButton.setAttribute("class", "all-order-action-buttons");
+            divReviewButton.textContent = "ADD REVIEW";
+
+            actionButtons.appendChild(divReviewButton);
+
+            divReviewButton.addEventListener("click", function () {
+              popupOrderReview.style.display = "block";
+
+              let likeButton = document.getElementById(
+                "sure-review-order-like"
+              );
+              let dislikeButton = document.getElementById(
+                "sure-review-order-dislike"
+              );
+
+              likeButton.addEventListener("click", function () {
+                let explanation = document.getElementById(
+                  "review-content-explanation-id"
+                ).innerText;
+
+                if (explanation.length === 0) {
+                  console.log("lol");
+                  alert("You have to write review");
+                } else {
+                  let review = {};
+
+                  firebase
+                    .firestore()
+                    .doc(`orders/${orderId}`)
+                    .set(
+                      {
+                        reviewed: true,
+                        history: {
+                          "buyer added review for the order": new Date(),
+                        },
+                      },
+                      { merge: true }
+                    )
+                    .then(() => {
+                      review = {
+                        createdAt: new Date(),
+                        username: username,
+                        description: explanation,
+                        status: "Positive",
+                      };
+
+                      firebase
+                        .firestore()
+                        .collection("reviews")
+                        .doc(orderSelected.seller)
+                        .collection("reviews")
+                        .doc(username)
+                        .set(review)
+                        .then(() => {
+                          alert("You reviewed the order");
+                          createReview(review);
+                          // ACTION BUTTONS
+                          divMainActionButtons.remove();
+
+                          popupOrderReview.style.display = "none";
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                        });
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                }
+              });
+
+              dislikeButton.addEventListener("click", function () {
+                let explanation = document.getElementById(
+                  "review-content-explanation-id"
+                ).innerText;
+
+                if (explanation.length === 0) {
+                  alert("You have to write review");
+                } else {
+                  firebase
+                    .firestore()
+                    .doc(`orders/${orderId}`)
+                    .set(
+                      {
+                        reviewed: true,
+                        history: {
+                          "buyer added review for the order": new Date(),
+                        },
+                      },
+                      { merge: true }
+                    )
+                    .then(() => {
+                      let review = {
+                        createdAt: new Date(),
+                        username: username,
+                        description: explanation,
+                        status: "Negative",
+                      };
+
+                      firebase
+                        .firestore()
+                        .collection("reviews")
+                        .doc(orderSelected.seller)
+                        .collection("reviews")
+                        .doc(username)
+                        .set(review)
+                        .then(() => {
+                          alert("You reviewed the order");
+                          createReview(review);
+                          // ACTION BUTTONS
+                          divMainActionButtons.remove();
+
+                          popupOrderReview.style.display = "none";
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                        });
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                }
+              });
+            });
+
             // textActionButtons.remove();
             // while (orderActionButtons[0]) {
             //   orderActionButtons[0].parentNode.removeChild(orderActionButtons[0]);
@@ -1014,7 +1181,6 @@
           !isEmpty(deliverPopupSecretQuestion) &&
           !isEmpty(deliverPopupSecretAnswer)
         ) {
-
           let productData = {
             accountCountry: deliverPopupAccountCountry,
             accountId: deliverPopupAccountId,
@@ -1028,7 +1194,7 @@
             recoveryEmailPassword: deliverPopupRecoveryEmailPassword,
             secretAnswer: deliverPopupSecretAnswer,
             secretQuestion: deliverPopupSecretQuestion,
-          }
+          };
 
           firebase
             .firestore()
@@ -1044,9 +1210,17 @@
               { merge: true }
             )
             .then(() => {
+              // NO ACTION BUTTONS
+              divMainActionButtons.remove();
+
+              // ORDER STATUS
+              let status = "Sold-Accepted";
+              getOrderStatus(status);
               createDeliveredItem(productData, productData.photos);
               alert("Item successfully submitted");
               popupDelivery.style.display = "none";
+
+              location.reload();
             })
             .catch((error) => {
               console.log(error);
@@ -1301,7 +1475,7 @@
 
     if (!isEmpty(item.additionalNote)) {
       divDeliveredItem.appendChild(divDeliveredItemAdditionalNoteValue);
-    } 
+    }
 
     divDeliveredItem.appendChild(divDeliveredItemPhotosText);
 
@@ -1312,6 +1486,18 @@
     divMainDeliveredItem.appendChild(divDeliveredItem);
 
     divOrderMainProductData.appendChild(divMainDeliveredItem);
+  }
+
+  function createReview(review) {
+    document.getElementById("review-section-id").style.display = "block";
+    document.getElementById("order-review-text-id").textContent =
+      review.description;
+
+    if (review.status === "Positive") {
+      document.getElementById("positive-review-id").style.display = "block";
+    } else if (review.status === "Negative") {
+      document.getElementById("negative-review-id").style.display = "block";
+    }
   }
 
   function getOrderStatus(status) {
@@ -1387,6 +1573,7 @@
         orderAcceptedStatus.style.display = "inline-block";
         orderDeliveredStatus.style.display = "inline-block";
         orderCompletedStatus.style.display = "inline-block";
+        orderPaidStatus.style.display = "none";
         orderRejectedStatus.style.display = "none";
         orderDisputedStatus.style.display = "none";
         orderRefundedStatus.style.display = "none";
@@ -1402,6 +1589,7 @@
         break;
       case "Disputed":
         orderDisputedStatus.style.display = "inline-block";
+        orderPaidStatus.style.display = "none";
         orderSoldStatus.style.display = "none";
         orderAcceptedStatus.style.display = "none";
         orderDeliveredStatus.style.display = "none";
@@ -1431,6 +1619,7 @@
       popupOrderHistory.style.display = "none";
       popupOrderQuestion.style.display = "none";
       popupOrderDispute.style.display = "none";
+      popupOrderReview.style.display = "none";
     });
   });
 
@@ -1689,6 +1878,77 @@
     if (string.trim() === "") return true;
     else return false;
   };
+
+  // checks if one day has passed.
+  function hasOneDayPassed() {
+    // get today's date. eg: "7/17/2007"
+    var date = new Date().toLocaleDateString();
+
+    // if there's a date in localstorage and it's equal to the above:
+    // inferring a day has yet to pass since both dates are equal.
+    if (localStorage.getItem("orderRefundCountdown") == date) {
+      return false;
+    }
+
+    // this portion of logic occurs when a day has passed
+    localStorage.getItem("orderRefundCountdown") = date;
+    return true;
+  }
+
+  // some function which should run once a day
+  function runOncePerDay() {
+    if (!hasOneDayPassed()) {
+      return false;
+    }
+
+    // your code below
+    // when order is Paid, save date to localStorage
+    // when order is Paid, save date to localStorage
+    let orderReference = firebase.firestore().collection("orders").doc(orderId);
+
+    orderReference
+      .get()
+      .then((snapshot) => {
+        let status = snapshot.data().status;
+
+        if (status === "Paid") {
+          orderReference
+            .set(
+              {
+                status: "Refunded",
+              },
+              { merge: true }
+            )
+            .then(() => {
+              console.log("Refunded to order");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
+        } else if (status === "Accepted") {
+          orderReference
+            .set(
+              {
+                status: "Refunded",
+              },
+              { merge: true }
+            )
+            .then(() => {
+              console.log("Refunded to order");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
+        } else {
+          console.log("Cannot refund order");
+        }
+      })
+      .set({});
+  }
+
+  runOncePerDay(); // run the code
 
   //getOrderDetails();
   //});

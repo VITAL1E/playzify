@@ -14,11 +14,13 @@
   let sellerVerificationButton = document.getElementById(
     "seller-verifications-button"
   );
+  let reportsButton = document.getElementById("reports-button");
   let withdrawsButton = document.getElementById("withdraws-button");
   let usersButton = document.getElementById("users-button");
   let addCategoryButton = document.getElementById("add-category-button");
   let addSlideButton = document.getElementById("add-slide-button");
   let historyButton = document.getElementById("history");
+  let disputesButton = document.getElementById("disputes-button");
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -36,6 +38,9 @@
     window.location.href = "admin.html";
   });
 
+  disputesButton.addEventListener("click", function () {
+    window.location.href = "admin(disputes).html";
+  });
   adminsButton.addEventListener("click", function () {
     window.location.href = "admin(admins).html";
   });
@@ -59,6 +64,9 @@
   });
   historyButton.addEventListener("click", function () {
     window.location.href = "admin(history).html";
+  });
+  reportsButton.addEventListener("click", function () {
+    window.location.href = "admin(reports).html";
   });
 
   let rowOfIdDocuments = document.getElementById(
@@ -261,6 +269,23 @@
             }, { merge: true }
             )
             .then(() => {
+              firebase
+              .firestore()
+              .collection("history")
+              .doc(user.displayName)
+              .collection("actions")
+              .add({
+                username: user.displayName,
+                action: `accepted verification of ${verification.username}`,
+                createdAt: new Date()
+              })
+              .then(() => {
+                console.log("Successfully added action");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+
               console.log("Set user verified to true");
             })
             .catch((error) => {
@@ -307,6 +332,24 @@
             }, { merge: true }
             )
             .then(() => {
+
+              firebase
+              .firestore()
+              .collection("history")
+              .doc(user.displayName)
+              .collection("actions")
+              .add({
+                username: user.displayName,
+                action: `refused verification of ${verification.username}`,
+                createdAt: new Date()
+              })
+              .then(() => {
+                console.log("Successfully added action");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+
               console.log("Set user verified to false");
             })
             .catch((error) => {

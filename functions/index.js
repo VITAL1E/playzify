@@ -139,7 +139,7 @@ app.post("/payment", function (req, res) {
 exports.webhooks = functions.https.onRequest(function (req, res) {
   mollieClient.payments
     .get(req.body.id)
-    .then((payment) => {
+    .then((payment) => { 
       // if (payment.isPaid()) {
       //   console.log("Payment is Paid");
       //   // Hooray, you've received a payment! You can start shipping to the consumer.
@@ -158,8 +158,8 @@ exports.webhooks = functions.https.onRequest(function (req, res) {
       console.log("Payment status " + payment.status);
       //}
 
-      if (payment.isPaid()) {
-
+      if (payment.status === "Paid" || payment.status === "paid") {
+        console.log("LOL status paid");
         updateOrderStatus(req.body.id);
 
         //res.send(payment.status);

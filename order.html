@@ -180,6 +180,23 @@
   </div>
 </div>
 
+<!--POP-UP-REVIEW-->
+<div id="pop-up-order-review" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="all-mini-main-div-pop-up">
+      <div class="question-pop-intro-all">Please add review for the seller</div>
+      <div class="close-modal"></div>
+      <div id="review-pop-div-id" class="cont-dispute-pop-div">
+        <p id="review-content-explanation-id" contenteditable="true" class="cont-review-pop" placeholder="type explanation" spellcheck="false"></p>
+      </div>
+      <div id="sure-review-order-confirmation-id" class="main-order-action-buttons" style="border: 0;">
+        <div id="sure-review-order-like" class="all-order-action-buttons">Like</div>
+        <div id="sure-review-order-dislike" class="all-order-action-buttons">Dislike</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--POP-UP-DELIVERY-->
 <div id="pop-up-delivery" class="modal-general" style="display: none;">
   <div class="modal-general-absolute">
@@ -334,6 +351,16 @@
             <!-- <div id="accept-order" class="all-order-action-buttons">ACCEPT</div>
             <div id="refuse-order" class="all-order-action-buttons">REFUSE</div> -->
           </div>
+        </div>
+
+        <div id="review-section-id" class="verification-main-input-div" style="display: none;">
+          <p class="verification-main-text">Review:</p>
+          <div id="order-review-text-id" class="all-text-info-order">
+            <!-- You have X day to Accept or Refuse the order. If you ignore this order
+            it will be automatically refunded. -->
+          </div>
+          <div id="positive-review-id" class="positive-review" style="display: none;"></div>
+          <div id="negative-review-id" class="negative-review" style="display: none;"></div>
         </div>
 
         <div class="verification-main-input-div">

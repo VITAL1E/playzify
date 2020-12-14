@@ -5,9 +5,14 @@ let following = document.getElementById("following-id");
 
 let sellingButton = document.getElementById("selling-button-id");
 let aboutButton = document.getElementById("about-button-id");
+
+let productList = document.getElementById("product-list-user-id");
+let productListCount = document.getElementById("count-of-items-user-id"); 
+
 // What user is selling
 let textSelling = document.getElementById("selling-text-id");
 let divMainSelling = document.getElementById("product-list-selling-id");
+
 // Description of user
 let textAbout = document.getElementById("about-text-id");
 
@@ -31,6 +36,12 @@ let reviews = document.getElementById("user-reviews-id");
 let popupReviews = document.getElementById("popup-reviews-id");
 let closeModalReviews = document.getElementById("close-reviews-modal-id");
 let divReviews = document.getElementById("reviews-list-id");
+
+// FILTER
+let filterButton = document.getElementsByClassName("filter-icon");
+let filterPopup = document.getElementById("filter-user-id");
+let applyButton = document.getElementById("apply-user-id");
+let cancelButton = document.getElementById("cancel-user-id");
 
 let profilePicture = document.getElementById("main-seller-image-id");
 
@@ -954,6 +965,7 @@ const getPosts = async () => {
     docs = snapshot;
     postsSize = snapshot.size;
     lastVisible = snapshot.docs[snapshot.docs.length - 1];
+    productListCount.textContent = `Items: ${snapshot.size}`;
     // console.log("last", lastVisible.data());
   });
   docs["docs"].forEach((doc) => {
@@ -1082,6 +1094,7 @@ sellingButton.addEventListener("click", () => {
   aboutButton.classList.remove("switch-1-selected");
   sellingButton.classList.add("switch-1-selected");
   textAbout.style.display = "none";
+  productList.style.display = "block"
   getPosts();
 });
 
@@ -1091,6 +1104,7 @@ aboutButton.addEventListener("click", () => {
   aboutButton.classList.add("switch-1-selected");
   textAbout.style.display = "block";
   textSelling.style.display = "none";
+  productList.style.display = "none";
 
   firebase
     .firestore()
@@ -1114,6 +1128,101 @@ aboutButton.addEventListener("click", () => {
 
   removePosts();
 });
+
+applyButton.addEventListener("click", async () => {
+  removePosts();
+  let docs;
+  let postsSize;
+  let lastVisible;
+  //let productTypeOption = onSelectChangeProductTypeFilter();
+  let gameTypeOption = document.getElementById("select-by-game-type-user").value;
+  let gameServerOption = document.getElementById("select-by-game-server-user").value;
+  let gamePriceOption = document.getElementById("select-by-price-user").value;
+
+  console.log(gameTypeOption);
+  console.log(gameServerOption);
+  console.log(gamePriceOption);
+
+  let filterQuery = firebase
+    .firestore()
+    .collection("games")
+    .orderBy("createdAt")
+    //.where("category", "==", productTypeOption)
+    .where("seller", "==", userId)
+    .where("type", "==", gameTypeOption)
+    .where("server", "==", gameServerOption)
+    .limit(8);
+
+  if (gamePriceOption == "high") {
+    filterQuery = filterQuery.orderBy("price", "desc");
+  } else {
+    filterQuery = filterQuery.orderBy("price");
+  }
+
+  await filterQuery.get().then(function (querySnapshot) {
+    console.log(querySnapshot.docs);
+    /////////// assign docs to snapshot ???
+    let filteredPostsArray = [];
+    docs = querySnapshot;
+    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+    console.log("last", lastVisible);
+    ///////////
+
+    productListCount.textContent = "Items: " + querySnapshot.docs.length;
+    querySnapshot.forEach(function (doc) {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+    });
+
+    docs["docs"].forEach((doc) => {
+      filteredPostsArray.push(doc.data());
+    });
+
+    filteredPostsArray.forEach((post) => {
+      createPost(post);
+    });
+  });
+
+  // const paginate = async () => {
+  //   let docs;
+  //   let postsReferencePagination = filterQuery.startAfter(lastVisible).limit(8);
+  //   console.log(filterQuery);
+
+  //   await postsReferencePagination.get().then((querySnapshot) => {
+  //     docs = querySnapshot;
+  //     console.log(docs);
+  //     lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+  //   });
+
+  //   docs["docs"].forEach((doc) => {
+  //     createPost(doc.data());
+  //     // create post dynamically
+  //     postsSize++;
+  //   });
+
+  //   if (postsSize >= size) {
+  //     showMoreButton.style.display = "none";
+  //   }
+  // };
+
+  // if (showMoreButton != null) {
+  //   showMoreButton.addEventListener("click", () => {
+  //     paginate();
+  //   });
+  // }
+
+  filterPopup.style.display = "none";
+});
+
+cancelButton.addEventListener("click", function () {
+  filterPopup.style.display = "none";
+});
+
+Array.from(filterButton).forEach((e) =>
+  e.addEventListener("click", function () {
+    filterPopup.style.display = "block";
+  })
+);
 
 const removePosts = () => {
   let elements = document.getElementsByClassName("product-home-show");

@@ -7,11 +7,13 @@
   let sellerVerificationButton = document.getElementById(
     "seller-verifications-button"
   );
+  let reportsButton = document.getElementById("reports-button");
   let withdrawsButton = document.getElementById("withdraws-button");
   let usersButton = document.getElementById("users-button");
   let addCategoryButton = document.getElementById("add-category-button");
   let addSlideButton = document.getElementById("add-slide-button");
   let historyButton = document.getElementById("history");
+  let disputesButton = document.getElementById("disputes-button");
 
   let homepageBanner = document.getElementById("homepage-slider");
   console.log(homepageBanner);
@@ -33,6 +35,12 @@
   if (generalButton) {
     generalButton.addEventListener("click", function () {
       window.location.href = "admin.html";
+    });
+  }
+
+  if (disputesButton) {
+    disputesButton.addEventListener("click", function () {
+      window.location.href = "admin(disputes).html";
     });
   }
 
@@ -81,6 +89,12 @@
   if (historyButton) {
     historyButton.addEventListener("click", function () {
       window.location.href = "admin(history).html";
+    });
+  }
+
+  if (reportsButton) {
+    reportsButton.addEventListener("click", function () {
+      window.location.href = "admin(reports).html";
     });
   }
 

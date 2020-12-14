@@ -13,6 +13,78 @@
     rel="stylesheet">
 </head>
 
+<!--MODAL FILTER-->
+<div id="filter-user-id" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="history-order-main-div-pop-up">
+      <div class="main-intro-to-verification" style="border: 0;;">
+        Filter
+      </div>
+
+      <div class="verification-main-input-div">
+        <p class="verification-main-text">By game type</p>
+
+        <div class="drop-dawn-add-game-list">
+          <div class="arrow-drop-down-games-main">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-chevron-right chevron-for-drop-down">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          <select id="select-by-game-type-user" name="cars" class="drop-dawn-add-game-select">
+            <option value="Counter Strike">Counter Strike</option>
+            <option value="Marioo">Marioo</option>
+            <option value="PUBG">PUBG</option>
+            <option value="Fortnite">Fortnite</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="verification-main-input-div">
+        <p class="verification-main-text">By game server</p>
+
+        <div class="drop-dawn-add-game-list">
+          <div class="arrow-drop-down-games-main">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-chevron-right chevron-for-drop-down">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          <select id="select-by-game-server-user" name="cars" class="drop-dawn-add-game-select">
+            <option value="EU">EU</option>
+            <option value="USA">USA</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="verification-main-input-div">
+        <p class="verification-main-text">By price</p>
+
+        <div class="drop-dawn-add-game-list">
+          <div class="arrow-drop-down-games-main">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-chevron-right chevron-for-drop-down">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          <select id="select-by-price-user" name="cars" class="drop-dawn-add-game-select">
+            <option value="High">High</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="main-order-action-buttons" style="margin-top: 25px ; border-bottom: 0;">
+        <div id="apply-user-id" class="all-order-action-buttons">Apply</div>
+        <div id="cancel-user-id" class="all-order-action-buttons">Cancel</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <header>
   <div id="user-not-logged-in-header-id" class="general-fixed-header" style="display: none;">
     <div class="first-header-div-container">
@@ -348,6 +420,12 @@
     </div>
 
     <div id="about-text-id" class="about-text" style="display: none;">
+    </div>
+
+    <div id="product-list-user-id" class="intro-to-product-list">
+      <div id="count-of-items-user-id" class="products-count-home">Items: </div>
+      <div class="filter-icon">filter</div>
+      <div class="remove-filter"></div>
     </div>
 
     <div id="product-list-selling-id" class="product-list-home"></div>

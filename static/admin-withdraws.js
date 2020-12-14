@@ -13,16 +13,21 @@
   let sellerVerificationButton = document.getElementById(
     "seller-verifications-button"
   );
+  let reportsButton = document.getElementById("reports-button");
   let withdrawsButton = document.getElementById("withdraws-button");
   let usersButton = document.getElementById("users-button");
   let addCategoryButton = document.getElementById("add-category-button");
   let addSlideButton = document.getElementById("add-slide-button");
   let historyButton = document.getElementById("history");
+  let disputesButton = document.getElementById("disputes-button");
 
   generalButton.addEventListener("click", function () {
     window.location.href = "admin.html";
   });
 
+  disputesButton.addEventListener("click", function () {
+    window.location.href = "admin(disputes).html";
+  });
   adminsButton.addEventListener("click", function () {
     window.location.href = "admin(admins).html";
   });
@@ -46,6 +51,9 @@
   });
   historyButton.addEventListener("click", function () {
     window.location.href = "admin(history).html";
+  });
+  reportsButton.addEventListener("click", function () {
+    window.location.href = "admin(reports).html";
   });
 
   function createWithdrawRequest(withdraw) {
@@ -184,37 +192,49 @@
                 { merge: true }
               )
               .then(() => {
-                console.log("Successully set balance and changed status");
+                let user = firebase.auth().currentUser;
+                console.log(user);
+                console.log(user.displayName);
+    
+                firebase
+                  .firestore()
+                  .collection("history")
+                  .doc(user.displayName)
+                  .collection("actions")
+                  .add({
+                    username: user.displayName,
+                    action: `transfered money to ${withdraw.user}`,
+                    createdAt: new Date(),
+                  })
+                  .then(() => {
+                    firebase
+                    .firestore()
+                    .collection("notifications")
+                    .doc(withdraw.user)
+                    .collection("notifications")
+                    .add({
+                      action: "Withdraw request accepted, money will arrive soon",
+                      typeOfNotification: "Verified",
+                      seen: false,
+                      createdAt: new Date()
+                    })
+                    .then((reference) => {
+                      console.log("Added history of admin " + JSON.stringify(reference));
+                      console.log("Successfully added action");
+                      popupWithdraw.style.display = "none";
+                      location.reload();
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
               })
               .catch((error) => {
                 console.log(error);
               });
-          })
-          .then(() => {
-            let user = firebase.auth().currentUser;
-            console.log(user);
-            console.log(user.displayName);
-
-            firebase
-              .firestore()
-              .collection("history")
-              .doc(user.displayName)
-              .collection("actions")
-              .add({
-                username: user.displayName,
-                action: `transfered money to ${withdraw.user}`,
-                createdAt: new Date(),
-              })
-              .then(() => {
-                console.log("Successfully added action");
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          })
-          .then(() => {
-            popupWithdraw.style.display = "none";
-            location.reload();
           })
           .catch((error) => {
             console.log(error);

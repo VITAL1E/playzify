@@ -7,16 +7,21 @@
   let sellerVerificationButton = document.getElementById(
     "seller-verifications-button"
   );
+  let reportsButton = document.getElementById("reports-button");
   let withdrawsButton = document.getElementById("withdraws-button");
   let usersButton = document.getElementById("users-button");
   let addCategoryButton = document.getElementById("add-category-button");
   let addSlideButton = document.getElementById("add-slide-button");
   let historyButton = document.getElementById("history");
+  let disputesButton = document.getElementById("disputes-button");
 
   generalButton.addEventListener("click", function () {
     window.location.href = "admin.html";
   });
 
+  disputesButton.addEventListener("click", function () {
+    window.location.href = "admin(disputes).html";
+  });
   adminsButton.addEventListener("click", function () {
     window.location.href = "admin(admins).html";
   });
@@ -40,6 +45,9 @@
   });
   historyButton.addEventListener("click", function() {
     window.location.href = "admin(history).html";
+  });
+  reportsButton.addEventListener("click", function () {
+    window.location.href = "admin(reports).html";
   });
 
   let totalUsers = document.getElementById("admin-info-total-users");

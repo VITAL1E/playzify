@@ -274,7 +274,7 @@ Array.from(notificationsButton).forEach((e) =>
               // If user no notifications -> still can go to this page
               console.log("No notifications");
               console.log("Sasati no notifications but still go to page");
-              window.location.href = "orders-notifications.html";
+              location.href = "orders-notifications.html";
             }
             snapshot.forEach((doc) => {
               console.log(doc.data());
@@ -284,7 +284,7 @@ Array.from(notificationsButton).forEach((e) =>
                   seen: true,
                 })
                 .then(() => {
-                  window.location.href = "orders-notifications.html";
+                  location.href = "orders-notifications.html";
                 })
                 .catch((error) => {
                   console.log(error);
