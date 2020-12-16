@@ -100,9 +100,12 @@
           <div class="user-logged-in-main-icons">
             <div class="comun-main-user-icons-header favorites-icon"> </div>
             <div class="comun-main-user-icons-header bell-icon">
-              <div class="notification-point" style="display: none;"></div>
+              <div class="notification-point" style="display: none;">
+              </div>
             </div>
-            <div class="comun-main-user-icons-header chat-icon"> </div>
+            <div class="comun-main-user-icons-header chat-icon">
+              <div class="chat-notification" style="display: none;"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -115,8 +118,7 @@
   <div class="modal-general-absolute">
     <div class="img-view">
       <div class="close-img"></div>
-      <img id="chat-img-src-id" class="img-view-2"
-        src="https://instagram.fkiv3-1.fna.fbcdn.net/v/t51.2885-15/fr/e15/s1080x1080/103939052_258375325421544_4676289371263885247_n.jpg?_nc_ht=instagram.fkiv3-1.fna.fbcdn.net&_nc_cat=100&_nc_ohc=jYU-fA0lFb0AX9WiNY5&oh=02ce6b362606153a07631e90cf56dece&oe=5F1DC5A7">
+      <img id="chat-img-src-id" class="img-view-2">
     </div>
   </div>
 </div>
@@ -259,6 +261,8 @@
 
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
 
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+
   <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
@@ -278,7 +282,8 @@
 
   <script src="./static/global.js"></script>
   <!-- <script src="./static/auth.js"></script> -->
-  <script src="./static/chat-demo.js"></script>
+  <!-- <script src="./static/chat-demo.js"></script> -->
+  <script src="./static/chat-demo-fs.js"></script>
   <script src="./static/darktheme.js"></script>
 </body>
 

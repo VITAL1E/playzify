@@ -14,16 +14,106 @@
 
 
 <header>
-  <!--
+  <div id="about-not-logged-in-header-id" class="general-fixed-header" style="display: none;">
+    <div class="first-header-div-container">
+      <div class="first-header-div-child-1">
+        <div class="logo"></div>
+        <div class="logo-dark"></div>
+      </div>
+      <!-- <div class="first-header-div-child-3">
+            <div class="user-logged-out-header-placeholder">
+                <div class="user-icon"></div>
+                <div class="user-sign-in user-sign-in-450px">Hi, <span>Sign in</span></div>
+            </div>
+         </div> -->
 
-    <div class="logo"></div>
-    <div class="search">
+      <div class="first-header-div-child-2">
+        <a href="sign-in.html">
+          <div class="balance-button">Log In</div>
+        </a>
+        <a href="sign-up.html">
+          <div class="balance-button" style="margin-right: 0;">Sign Up</div>
+        </a>
+      </div>
     </div>
-    <div class="feed-icon"></div>
 
-    -->
+    <div class="second-header-blacked">
+      <div class="second-header-div-container">
 
-  <div class="general-fixed-header">
+        <div class="drop-down-main-category-banner" style="display: none;">
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Categories</div>
+            </div>
+            <div class="main-drop-dawn-categories">
+              <div class="category-product-listed-mini-sign category-drop-dawn-sign"></div>
+              <div class="category-drop-dawn-name">Accounts</div>
+            </div>
+
+            <div class="main-drop-dawn-categories selected-drop-dawn-category">
+              <div
+                class="category-product-listed-mini-sign category-product-listed-mini-sign-2 category-drop-dawn-sign">
+              </div>
+              <div class="category-drop-dawn-name">Game Coins</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div
+                class="category-product-listed-mini-sign category-product-listed-mini-sign-3 category-drop-dawn-sign">
+              </div>
+              <div class="category-drop-dawn-name">Items</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div
+                class="category-product-listed-mini-sign category-product-listed-mini-sign-4 category-drop-dawn-sign">
+              </div>
+              <div class="category-drop-dawn-name">Boosting</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Games</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Fortnite</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows" style="border: 0;">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Servers</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Europe</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="second-header-div-child-1 change-for-index-sell-with-us-1">
+          <div class="all-categories-main-button padding-in-right-buttons-general-0">
+            All Categories
+            <!--<div class="categories-arrow"></div>-->
+          </div>
+          <div class="search-bar">
+            <input id="search-bar-index-id" class="search-bar-input" placeholder="Search" autocomplete="off"
+              maxlength="24">
+            <div class="search-icon"></div>
+          </div>
+        </div>
+        <div class="second-header-div-child-2 change-for-index-sell-with-us-2">
+          <button class="theme-main-selector-moon" id="dark-mode-toggle">
+            <div class="moon-dark"></div>
+            <div class="sun-white"></div>
+          </button>
+          <div class="sell-with-us">Sell <span>with Play Zify</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="about-logged-in-header-id" class="general-fixed-header" style="display: none;">
     <div class="first-header-div-container">
       <div class="first-header-div-child-1">
         <div class="logo"></div>
@@ -108,7 +198,9 @@
             <div class="comun-main-user-icons-header bell-icon">
               <div class="notification-point" style="display: none;"></div>
             </div>
-            <div class="comun-main-user-icons-header chat-icon"> </div>
+            <div class="comun-main-user-icons-header chat-icon">
+              <div class="chat-notification" style="display: none;"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -206,6 +298,7 @@
   <script src="./static/global.js"></script>
   <!-- <script src="./static/auth.js"></script> -->
   <script src="./static/darktheme.js"></script>
+  <script src="./static/footer-about.js"></script>
 
 </body>
 

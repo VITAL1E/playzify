@@ -178,7 +178,8 @@ async function getMainChat() {
     let PROFILE_PHOTO;
     let LAST_CHAT_USERNAME;
 
-    if (userId) {
+    console.log(userId);
+    if (userId !== "" || userId !== null || userId !== "undefined") {
       LAST_CHAT_USERNAME = userId;
       chatWithObject.username = userId;
 
@@ -200,8 +201,10 @@ async function getMainChat() {
       firebase
         .firestore()
         .collection("chats")
-        .doc(user.displayName)
-        .collection("chats")
+        .where("user", "==", user.displayName)
+        .where("seller", "==", user.displayName)
+        //.doc(user.displayName)
+        //.collection("chats")
         .orderBy("lastUpdated", "desc")
         .limit(1)
         .get()

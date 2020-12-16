@@ -188,7 +188,9 @@
                       <div class="comun-main-user-icons-header bell-icon"> 
                            <div class="notification-point" style="display: none;"></div>
                       </div>
-                      <div class="comun-main-user-icons-header chat-icon"> </div>
+                      <div class="comun-main-user-icons-header chat-icon">
+                        <div class="chat-notification" style="display: none;"></div>
+                      </div>
                   </div>
               </div>
           </div>
@@ -203,19 +205,19 @@
 <div class="fking-slider">
     <div class="slider-main-cointainer">
 
-      <div class="background">
-        <img src="./static/bg1.jpg" class="bg">
+      <div id="homepage-background" class="background">
+        <!-- <img src="./static/bg1.jpg" class="bg">
         <img src="./static/bg2.jpg" class="bg">
         <img src="./static/bg3.jpg" class="bg">
         <img src="./static/bg4.jpg" class="bg">
-        <img src="./static/bg5.png" class="bg">
+        <img src="./static/bg5.png" class="bg"> -->
       </div>
 
       <div class="slider-container">
         <div>
           <div>
-            <div class="slider">
-              <div class="img-slider" id="first">
+            <div id="homepage-slider" class="slider">
+              <!-- <div class="img-slider" id="first">
                 <img src="./static/bg5.png">
               </div>
               <div class="img-slider">
@@ -235,7 +237,7 @@
               </div>
               <div class="img-slider" id="last">
                 <img src="./static/bg1.jpg">
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -250,12 +252,12 @@
                                 <polyline points="9 18 15 12 9 6"></polyline>
                             </svg></button>
 
-      <ul class="ululul">
-        <li class="option" op-index="0"></li>
+      <ul id="homepage-options-id" class="ululul">
+        <!-- <li class="option" op-index="0"></li>
         <li class="option" op-index="1"></li>
         <li class="option" op-index="2"></li>
         <li class="option" op-index="3"></li>
-        <li class="option" op-index="4"></li>
+        <li class="option" op-index="4"></li> -->
 
       </ul>
     </div>
@@ -465,8 +467,9 @@
   <script src="./static/global.js"></script>
   <script src="./static/index.js"></script>
   <script src="./static/darktheme.js"></script>
-  <script src="./static/slider.js"></script>
-  <script src="./static/admin-add-category.js"></script>
+  <script type="module" src="./static/slider.js" defer></script>
+  <script type="module" src="./static/admin-add-slide.js" defer></script>
+  <!-- <script src="./static/admin-add-category.js"></script> -->
 
 </body>
 

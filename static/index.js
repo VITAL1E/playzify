@@ -209,7 +209,6 @@ const getPosts = async () => {
     .firestore()
     .collection("games")
     .orderBy("createdAt");
-    // .limit(8);
 
   await postsReference
     .get()
@@ -503,59 +502,6 @@ function getPostsCount() {
 // });
 // }
 
-
-let i = 0;
-let images = [];
-
-images[0] = "./static/71577e1cf59d802.jpg";
-images[1] = "./static/0ba3d60362c7e6d256cfc1f37156bad9.jpg";
-images[2] = "./static/Blue-Pixel-Call-To-Action-Banner-Background.jpg";
-
-let image1 = document.getElementById("image-1");
-let image2 = document.getElementById("image-2");
-let image3 = document.getElementById("image-3");
-
-// firebase
-// .firestore()
-// .collection("banner")
-// .get()
-// .then((snapshot) => {
-//   snapshot.docs.forEach((doc) => {
-//     console.log(doc.data().image);
-//     images.push(doc.data().image);
-//   });
-//   console.log(images);
-// });
-
-function changeBannerImages() {
-  if (images[i] !== undefined) {
-    let banner = document.getElementById("banner-id");
-    if (banner) {
-      if (images[i] === 0) {
-        image1.classList.add("selected-banner");
-        image2.classList.remove("selected-banner");
-        image3.classList.remove("selected-banner");
-      } else if (images[i] === 1) {
-        image2.classList.add("selected-banner");
-        image1.classList.remove("selected-banner");
-        image3.classList.remove("selected-banner");
-      } else if (images[i] === 2) {
-        image3.classList.add("selected-banner");
-        image1.classList.remove("selected-banner");
-        image2.classList.remove("selected-banner");
-      }
-      banner.setAttribute("style", `background-image:url(${images[i]})`);
-    }
-  }
-
-  if (i < images.length - 1) {
-    i++;
-  } else {
-    i = 0;
-  }
-  setTimeout("changeBannerImages();", 3000);
-}
-window.addEventListener("load", changeBannerImages);
 
 getPosts();
 getPostsCount();

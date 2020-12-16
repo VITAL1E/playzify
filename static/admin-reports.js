@@ -2,25 +2,14 @@
   "use strict";
 
   let divMainSupportList = document.getElementById(
-    "admin-support-problems-main-div-id"
+    "admin-reports-problems-main-div-id"
   );
 
-  let divSelectSupportStatus = document.getElementById("select-support-id");
-
-  // function getOnSelectSupportStatusChange() {
-  //   let divSelectSupportStatusOption = divSelectSupportStatus.options[divSelectSupportStatus.selectedIndex].value;
-  //   console.log(divSelectSupportStatusOption);
-  //   return divSelectSupportStatusOption;
-  // }
-
-  // IMAGE VIEW
-  let imageViewPopup = document.getElementById("admin-support-img-view-id");
-  let imageSrcPopup = document.getElementById("admin-support-img-src-id");
-  let closeImagePreview = document.getElementsByClassName("close-img");
+  let divSelectSupportStatus = document.getElementById("select-reports-id");
 
   // POPUP
   let problemInformationPopup = document.getElementById(
-    "admin-support-popup-id"
+    "admin-reports-popup-id"
   );
 
   // POPUP INFORMATION
@@ -29,7 +18,6 @@
   let emailPopup = document.getElementById("popup-email-id");
   let timeagoPopup = document.getElementById("popup-timeago-id");
   let descriptionPopup = document.getElementById("popup-description-id");
-  let imagePopup = document.getElementById("id-document-id");
 
   // POPUP BUTTONS
   let acceptButton = document.getElementById("popup-solved-button");
@@ -38,6 +26,7 @@
   let generalButton = document.getElementById("general-button");
   let adminsButton = document.getElementById("admins-button");
   let supportButton = document.getElementById("support-button");
+  let disputesButton = document.getElementById("disputes-button");
   let sellerVerificationButton = document.getElementById(
     "seller-verifications-button"
   );
@@ -47,12 +36,10 @@
   let addCategoryButton = document.getElementById("add-category-button");
   let addSlideButton = document.getElementById("add-slide-button");
   let historyButton = document.getElementById("history");
-  let disputesButton = document.getElementById("disputes-button");
 
   generalButton.addEventListener("click", function () {
     window.location.href = "admin.html";
   });
-
   disputesButton.addEventListener("click", function () {
     window.location.href = "admin(disputes).html";
   });
@@ -84,30 +71,31 @@
     window.location.href = "admin(reports).html";
   });
 
-  let problemsArray = [];
-  const getProblems = async (status) => {
+  let reportsArray = [];
+  const getReports = async (status) => {
     let docs;
     let lastVisible;
-    let problemsReference;
+    let reportsReference;
 
-    removeProblems();
+    removeReports();
+
 
     if (status === "Unresolved" || status === "" || status === undefined) {
-      problemsReference = firebase
+      reportsReference = firebase
         .firestore()
-        .collection("problems")
+        .collection("reports")
         .where("status", "==", "Unresolved")
         .orderBy("createdAt", "desc");
     } else {
-      problemsReference = firebase
+      reportsReference = firebase
         .firestore()
-        .collection("problems")
+        .collection("reports")
         .where("status", "==", "Resolved")
         .orderBy("createdAt", "desc");
     }
 
-    problemsArray = [];
-    await problemsReference.get().then((snapshot) => {
+    reportsArray = [];
+    await reportsReference.get().then((snapshot) => {
       if (snapshot.docs.length === 0) {
         return;
       }
@@ -116,33 +104,33 @@
       console.log("last", lastVisible.data());
 
       docs["docs"].forEach((doc) => {
-        problemsArray.push(doc.data());
+        reportsArray.push(doc.data());
       });
-      removeProblems();
+      removeReports();
 
-      problemsArray.forEach((post) => {
-        createProblem(post);
+      reportsArray.forEach((post) => {
+        createReport(post);
       });
 
-      problemsArray = [];
+      reportsArray = [];
     });
   };
 
   divSelectSupportStatus.addEventListener("change", function () {
     let selectFilter = `${divSelectSupportStatus.value}`;
     console.log(divSelectSupportStatus.value);
-    getProblems(selectFilter);
+    getReports(selectFilter);
   });
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      getProblems("Unresolved");
+      getReports("Unresolved");
     } else {
       console.log("Not logged in and not admin");
     }
   });
 
-  function createProblem(problem) {
+  function createReport(dispute) {
     let div = document.createElement("div");
     div.setAttribute("class", "request-support-admin-main-div");
 
@@ -157,20 +145,8 @@
       "class",
       "request-support-user-photo-name-main-div-1"
     );
-    if (problem.userPhoto !== undefined || problem.userPhoto !== null) {
-      divUserPhoto.setAttribute("style", `background-size: cover; background-image:url(${problem.userPhoto});`)
-    }
-
-    if (problem.image) {
-      if (problem.image.length > 0) {
-        imagePopup.style.display = "block";
-        imagePopup.setAttribute("style", `background-image:url(${problem.image[0]}); background-size: cover; margin-left: 25px; margin-top: 25px;`);
-  
-        imagePopup.addEventListener("click", function () {
-          imageViewPopup.style.display = "block";
-          imageSrcPopup.setAttribute("src", problem.image[0]);
-        });
-      }
+    if (dispute.userPhoto !== null) {
+      divUserPhoto.setAttribute("style", `background-image:url(${dispute.userPhoto}); background-size: cover;`);
     }
 
     let divUserPhotoUsername = document.createElement("div");
@@ -178,7 +154,7 @@
       "class",
       "request-support-user-photo-name-main-div-2"
     );
-    divUserPhotoUsername.textContent = problem.user;
+    divUserPhotoUsername.textContent = dispute.from;
 
     let divMainProblem = document.createElement("div");
     divMainProblem.setAttribute("class", "support-content-problem-main-div");
@@ -188,7 +164,7 @@
       "class",
       "support-content-problem-main-div-1"
     );
-    divMainProblemTitle.textContent = problem.name;
+    divMainProblemTitle.textContent = dispute.message;
 
     let divMainInformation = document.createElement("div");
     divMainInformation.setAttribute(
@@ -207,7 +183,7 @@
     divStatus.textContent = "status:";
 
     let divStatusSpan = document.createElement("span");
-    if (problem.status === "Resolved") {
+    if (dispute.status === "Resolved") {
       divStatusSpan.setAttribute(
         "class",
         "transaction-info-all-span greeen-support-admin-status"
@@ -218,7 +194,7 @@
         "transaction-info-all-span rred-support-admin-status"
       );
     }
-    divStatusSpan.textContent = problem.status;
+    divStatusSpan.textContent = dispute.status;
 
     let divMainTime = document.createElement("div");
     divMainTime.setAttribute("class", "general-support-request-information-1");
@@ -229,7 +205,7 @@
 
     let divTimeSpan = document.createElement("span");
     divTimeSpan.setAttribute("class", "transaction-info-all-span");
-    divTimeSpan.textContent = getTimeSince(problem.createdAt.seconds * 1000);
+    divTimeSpan.textContent = getTimeSince(dispute.createdAt.seconds * 1000);
 
     divMainUserPhoto.appendChild(divUserPhoto);
     divMainUserPhoto.appendChild(divUserPhotoUsername);
@@ -252,23 +228,27 @@
     div.addEventListener("click", function () {
       problemInformationPopup.style.display = "block";
 
-      if (problem.userPhoto !== null) {
-        userPhotoPopup.setAttribute("style", `background-image:url(${problem.userPhoto}); background-size: cover;`)
+      if (dispute.userPhoto !== null) {
+        userPhotoPopup.setAttribute("style", `background-image:url(${dispute.userPhoto}); background-size: cover;`)
       }
-      usernamePopup.textContent = problem.user;
-      emailPopup.textContent = problem.userEmail;
-      descriptionPopup.textContent = problem.description;
-      timeagoPopup.textContent = getTimeSince(problem.createdAt.seconds * 1000);
+      usernamePopup.textContent = dispute.from;
+      emailPopup.textContent = `https://zifiplay-e212f.web.app/post.html?id=${dispute.postId}`;
+      descriptionPopup.textContent = dispute.message;
+      timeagoPopup.textContent = getTimeSince(dispute.createdAt.seconds * 1000);
 
-      if (problem.status === "Resolved") {
+      if (dispute.status === "Resolved") {
         acceptButton.style.display = "none";
       }
+
+      emailPopup.addEventListener("click", function () {
+        location.href = `https://zifiplay-e212f.web.app/post.html?id=${dispute.postId}`;
+      });
 
       acceptButton.addEventListener("click", function () {
         let problemReference = firebase
           .firestore()
-          .collection("problems")
-          .doc(problem.problemId);
+          .collection("disputes")
+          .doc(dispute.postId);
 
         problemReference.set(
           {
@@ -288,7 +268,7 @@
           .collection("actions")
           .add({
             username: user.displayName,
-            action: `solved a support case at ${problem.name}`,
+            action: `solved a report case at ${dispute.postId}`,
             createdAt: new Date()
           })
           .then(() => {
@@ -314,13 +294,7 @@
     divMainSupportList.appendChild(div);
   }
 
-  Array.from(closeImagePreview).forEach((button) => {
-    button.addEventListener("click", () => {
-      imageViewPopup.style.display = "none";
-    });
-  });
-
-  const removeProblems = () => {
+  const removeReports = () => {
     let elements = document.getElementsByClassName(
       "request-support-admin-main-div"
     );
@@ -357,5 +331,5 @@
     return Math.floor(seconds) + " seconds ago";
   }
 
-  //getProblems();
+  //getReports();
 })(window, document);

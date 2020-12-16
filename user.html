@@ -13,17 +13,179 @@
     rel="stylesheet">
 </head>
 
-<header>
-  <!--
+<!--MODAL FILTER-->
+<div id="filter-user-id" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+    <div class="filter-main-div-pop-up">
+      <div class="main-intro-to-verification" style="border: 0;;">
+        Filter
+      </div>
 
-    <div class="logo"></div>
-    <div class="search">
+      <div class="verification-main-input-div">
+        <p class="verification-main-text">By game type</p>
+
+        <div class="drop-dawn-add-game-list">
+          <div class="arrow-drop-down-games-main">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-chevron-right chevron-for-drop-down">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          <select id="select-by-game-type-user" name="cars" class="drop-dawn-add-game-select">
+            <option value="Counter Strike">Counter Strike</option>
+            <option value="Marioo">Marioo</option>
+            <option value="PUBG">PUBG</option>
+            <option value="Fortnite">Fortnite</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="verification-main-input-div">
+        <p class="verification-main-text">By game server</p>
+
+        <div class="drop-dawn-add-game-list">
+          <div class="arrow-drop-down-games-main">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-chevron-right chevron-for-drop-down">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          <select id="select-by-game-server-user" name="cars" class="drop-dawn-add-game-select">
+            <option value="EU">EU</option>
+            <option value="USA">USA</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="verification-main-input-div">
+        <p class="verification-main-text">By price</p>
+
+        <div class="drop-dawn-add-game-list">
+          <div class="arrow-drop-down-games-main">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-chevron-right chevron-for-drop-down">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          <select id="select-by-price-user" name="cars" class="drop-dawn-add-game-select">
+            <option value="High">High</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="main-order-action-buttons blabla" style="margin-top: 25px ; border-bottom: 0;">
+        <div id="apply-user-id" class="all-order-action-buttons">Apply</div>
+        <div id="cancel-user-id" class="all-order-action-buttons">Cancel</div>
+      </div>
     </div>
-    <div class="feed-icon"></div>
+  </div>
+</div>
 
-    -->
+<header>
+  <div id="user-not-logged-in-header-id" class="general-fixed-header" style="display: none;">
+    <div class="first-header-div-container">
+      <div class="first-header-div-child-1">
+        <div class="logo"></div>
+        <div class="logo-dark"></div>
+      </div>
+      <!-- <div class="first-header-div-child-3">
+            <div class="user-logged-out-header-placeholder">
+                <div class="user-icon"></div>
+                <div class="user-sign-in user-sign-in-450px">Hi, <span>Sign in</span></div>
+            </div>
+         </div> -->
 
-  <div class="general-fixed-header">
+      <div class="first-header-div-child-2">
+        <a href="sign-in.html">
+          <div class="balance-button">Log In</div>
+        </a>
+        <a href="sign-up.html">
+          <div class="balance-button" style="margin-right: 0;">Sign Up</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="second-header-blacked">
+      <div class="second-header-div-container">
+
+        <div class="drop-down-main-category-banner" style="display: none;">
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Categories</div>
+            </div>
+            <div class="main-drop-dawn-categories">
+              <div class="category-product-listed-mini-sign category-drop-dawn-sign"></div>
+              <div class="category-drop-dawn-name">Accounts</div>
+            </div>
+
+            <div class="main-drop-dawn-categories selected-drop-dawn-category">
+              <div
+                class="category-product-listed-mini-sign category-product-listed-mini-sign-2 category-drop-dawn-sign">
+              </div>
+              <div class="category-drop-dawn-name">Game Coins</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div
+                class="category-product-listed-mini-sign category-product-listed-mini-sign-3 category-drop-dawn-sign">
+              </div>
+              <div class="category-drop-dawn-name">Items</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div
+                class="category-product-listed-mini-sign category-product-listed-mini-sign-4 category-drop-dawn-sign">
+              </div>
+              <div class="category-drop-dawn-name">Boosting</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Games</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Fortnite</div>
+            </div>
+          </div>
+          <div class="category-drop-down-3-rows" style="border: 0;">
+            <div class="main-drop-dawn-intros">
+              <div class="category-drop-dawn-introo">Servers</div>
+            </div>
+
+            <div class="main-drop-dawn-categories">
+              <div class="category-drop-dawn-name">Europe</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="second-header-div-child-1 change-for-index-sell-with-us-1">
+          <div class="all-categories-main-button padding-in-right-buttons-general-0">
+            All Categories
+            <!--<div class="categories-arrow"></div>-->
+          </div>
+          <div class="search-bar">
+            <input id="search-bar-index-id" class="search-bar-input" placeholder="Search" autocomplete="off"
+              maxlength="24">
+            <div class="search-icon"></div>
+          </div>
+        </div>
+        <div class="second-header-div-child-2 change-for-index-sell-with-us-2">
+          <button class="theme-main-selector-moon" id="dark-mode-toggle">
+            <div class="moon-dark"></div>
+            <div class="sun-white"></div>
+          </button>
+          <div class="sell-with-us">Sell <span>with Play Zify</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="user-logged-in-header-id" class="general-fixed-header" style="display: none;">
     <div class="first-header-div-container">
       <div class="first-header-div-child-1">
         <div class="logo"></div>
@@ -109,7 +271,9 @@
             <div class="comun-main-user-icons-header bell-icon">
               <div class="notification-point" style="display: none;"></div>
             </div>
-            <div class="comun-main-user-icons-header chat-icon"></div>
+            <div class="comun-main-user-icons-header chat-icon">
+              <div class="chat-notification" style="display: none;"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -151,6 +315,41 @@
   </div>
 </div>
 
+
+<!-- MODALU CU FOLLOWING -->
+<div id="popup-following-id" class="modal-general" style="display: none;">
+  <div class="modal-general-absolute">
+      <div class="history-order-main-div-pop-up">
+          <div class="main-intro-to-verification">
+              Following
+              <div id="close-following-modal-id" class="close-modal"></div>
+          </div>
+
+          <div class="history-order-main-list">
+            <div id="following-list-id" class="main-followers-list">
+              <!-- <div class="main-followers-list-2">
+                <div class="main-followers-list-3">
+                  <div class="main-followers-img"></div>
+                  <div class="main-followers-text">cv nume</div>
+                </div>
+                <div class="follow-for-modal-btn">follow</div>
+              </div>
+
+              <div class="main-followers-list-2">
+                <div class="main-followers-list-3">
+                  <div class="main-followers-img"></div>
+                  <div class="main-followers-text">cv nume</div>
+                </div>
+                <div class="unfollow-for-modal-btn">unfollow</div>
+              </div> -->
+            </div>
+
+          </div>
+      </div>
+  </div>
+</div>
+
+
 <div id="popup-reviews-id" class="modal-general" style="display: none;">
   <div class="modal-general-absolute">
       <div class="history-order-main-div-pop-up">
@@ -188,13 +387,15 @@
           <!-- <div class="main-seller-is-online main-seller-is-offline">off</div> -->
         </div>
         <div class="user-name-container">
-          <p id="user-nickname-id" class="nickname">
+          <p class="nickname">
+            <span id="user-nickname-id"></span>
             <span id="verified-span-id" class="verified-user" style="display: none;"></span>
           </p>
           <div class="follow-section">
             <div id="follow-button-id" class="follow-button" style="display: none;">follow</div>
             <div id="unfollow-button-id" class="follow-button" style="display: none; background: grey;">unfollow</div>
             <div id="followers-id" class="follower-number-222 follower-number"></div>
+            <div id="following-id" class="follower-number-222 follower-number"style="margin-left:11px;"></div>
           </div>
         </div>
       </div>
@@ -219,6 +420,12 @@
     </div>
 
     <div id="about-text-id" class="about-text" style="display: none;">
+    </div>
+
+    <div id="product-list-user-id" class="intro-to-product-list">
+      <div id="count-of-items-user-id" class="products-count-home">Items: </div>
+      <div class="filter-icon">filter</div>
+      <div class="remove-filter"></div>
     </div>
 
     <div id="product-list-selling-id" class="product-list-home"></div>
@@ -277,6 +484,8 @@
 
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
 
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+
   <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
@@ -295,8 +504,9 @@
   </script>
 
   <script src="./static/global.js"></script>
-  <script src="./static/user-demo.js"></script>
+  <!-- <script src="./static/user-demo.js"></script> -->
   <!-- <script src="./static/auth.js"></script> -->
+  <script src="./static/user-demo.js"></script>
   <script src="./static/darktheme.js"></script>
 
 </body>

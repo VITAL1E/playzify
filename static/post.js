@@ -30,6 +30,16 @@ let postImagePreview = document.getElementById("post-img-view-id");
 let postImageSrcPreview = document.getElementById("post-img-src-id");
 let closeImagePreview = document.getElementsByClassName("close-img");
 
+let postReportDeleteText = document.getElementById("are-you-sure-post-text-id");
+let postReportDeletePopup = document.getElementById("pop-up-report-post");
+let postReportText = document.getElementById(
+  "report-post-content-explanation-id"
+);
+
+let deleteButton = document.getElementById("sure-report-post-yes");
+let closeButton = document.getElementById("sure-report-post-no");
+let closeModalButton = document.getElementsByClassName("close-modal");
+
 let userId = null;
 let postLikeCount = 0;
 
@@ -84,8 +94,86 @@ function getPostDetails() {
         }
         postLikeCount = postSelected.likes;
 
+        let descriptionSpan = document.createElement("div");
+        descriptionSpan.textContent = `${postSelected.description}`;
+
+        let reportDelete = document.createElement("div");
+        reportDelete.setAttribute("style", "color: red;");
+
+        if (postSelected.seller === user.displayName) {
+          reportDelete.textContent = "Delete";
+          reportDelete.addEventListener("click", function () {
+            postReportDeletePopup.style.display = "block";
+            postReportDeleteText.innerText =
+              "Are you sure you want to delete this post?";
+            document.getElementById("report-post-pop-div-id").remove();
+
+            deleteButton.innerText = "Delete";
+            deleteButton.addEventListener("click", function () {
+              firebase
+                .firestore()
+                .collection("games")
+                .doc(postId)
+                .delete()
+                .then(() => {
+                  console.log("deleted document");
+                  postReportDeletePopup.style.display = "none";
+                  location.href = `user.html?id=${user.displayName}`;
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            });
+
+            closeButton.addEventListener("click", function () {
+              postReportDeletePopup.style.display = "none";
+            });
+          });
+        } else {
+          reportDelete.textContent = "Report";
+          reportDelete.addEventListener("click", function () {
+            postReportDeletePopup.style.display = "block";
+            postReportDeleteText.innerText =
+              "Are you sure you want to report this post?";
+
+            deleteButton.addEventListener("click", function () {
+              if (isEmpty(postReportText.innerText)) {
+                alert("You have to write explanation");
+                console.log("empty");
+                return;
+              }
+
+              firebase
+                .firestore()
+                .collection("reports")
+                .add({
+                  postId: postId,
+                  from: user.displayName,
+                  userPhoto: user.photoURL,
+                  message: postReportText.innerText,
+                  status: "Unresolved",
+                  createdAt: new Date(),
+                })
+                .then((reference) => {
+                  console.log("added new report " + reference);
+                  postReportDeletePopup.style.display = "none";
+                  location.href = "homepage.html";
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            });
+
+            closeButton.addEventListener("click", function () {
+              postReportDeletePopup.style.display = "none";
+            });
+          });
+        }
+
+        postDescription.appendChild(descriptionSpan);
+        postDescription.appendChild(reportDelete);
+
         postTitle.innerText = `${postSelected.title}`;
-        postDescription.innerText = `${postSelected.description}`;
         postPrice.innerText = `${postSelected.price} EUR`;
         postQuantity.innerText = `${postSelected.quantity}`;
         postGaranty.innerText = `${postSelected.garanty}`;
@@ -157,7 +245,17 @@ function getPostDetails() {
 
         let likesReference = firebase.firestore().doc(`/games/${postId}`);
 
-        favoritesButton2.addEventListener("click", function () {
+        favoritesButton2.addEventListener("click", favoriteItemEvent);
+        // firebase.auth().onAuthStateChanged(function (user) {
+        //   if (user) {
+        //     toggle(postSelected.likes.length);
+        //   } else {
+        //     window.location.href = "sign-in.html";
+        //   }
+        // });
+        //});
+
+        function favoriteItemEvent() {
           firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
               toggle(postSelected.likes.length);
@@ -165,7 +263,8 @@ function getPostDetails() {
               window.location.href = "sign-in.html";
             }
           });
-        });
+          favoritesButton2.removeEventListener("click", favoriteItemEvent);
+        }
 
         likesReference.get().then((snapshot) => {
           console.log(snapshot.data().likes);
@@ -192,7 +291,7 @@ function getPostDetails() {
             likeIcon.style.display = "block";
             likeIconRed.style.display = "none";
             //likeCount.textContent = postSelected.likes.length - 1;
-            likeCount.textContent = likeCountNumberUpdate - 1;
+            likeCount.textContent = likeCountNumberUpdate;
 
             likesReference
               .update({
@@ -268,6 +367,18 @@ Array.from(closeImagePreview).forEach((button) => {
   });
 });
 
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+    document.getElementById("post-not-logged-in-header-id").style.display =
+      "none";
+    document.getElementById("post-logged-in-header-id").style.display = "block";
+  } else {
+    document.getElementById("post-not-logged-in-header-id").style.display =
+      "block";
+    document.getElementById("post-logged-in-header-id").style.display = "none";
+  }
+});
+
 postPrice.addEventListener("click", function () {
   // const url = new URL(window.location.href);
   // let postId = url.searchParams.get("id");
@@ -294,13 +405,16 @@ postPrice.addEventListener("click", function () {
           postId: postObjectToFetch.postId,
           seller: postObjectToFetch.seller,
           category: postObjectToFetch.category,
-          createdAt: postObjectToFetch.createdAt,
           delivery: postObjectToFetch.delivery,
           garanty: postObjectToFetch.garanty,
           quantity: postObjectToFetch.quantity,
           server: postObjectToFetch.server,
           title: postObjectToFetch.title,
           buyer: user.displayName,
+          type: postObjectToFetch.type,
+          price: postObjectToFetch.price,
+          sellerProfilePhoto: postObjectToFetch.sellerPhoto,
+          buyerProfilePhoto: user.photoURL,
         }),
       })
         .then(function (data) {
@@ -389,6 +503,12 @@ postReviewsSatisfied.addEventListener("click", function () {
   });
 });
 
+Array.from(closeModalButton).forEach((e) => {
+  e.addEventListener("click", function () {
+    document.getElementById("pop-up-report-post").style.display = "none";
+  });
+});
+
 const removeReviews = () => {
   let elements = document.getElementsByClassName(
     "allordderaction reviews-changes"
@@ -405,6 +525,11 @@ const removeEmptySpace = () => {
   while (elements[0]) {
     elements[0].parentNode.removeChild(elements[0]);
   }
+};
+
+const isEmpty = (string) => {
+  if (string.trim() === "") return true;
+  else return false;
 };
 
 function getTimeSince(date) {

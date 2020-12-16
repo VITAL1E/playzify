@@ -230,7 +230,7 @@ async function getUserDetails() {
                 setTimeout(getUserDetails, 10);
               })
               .then(() => {
-                //removeFollowers();
+                removeFollowers();
               })
               .catch((error) => {
                 console.log(error);

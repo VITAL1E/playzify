@@ -13,11 +13,9 @@ let notificationSold = document.getElementById(
 let thereAreNoNotifications = document.getElementById(
   "there-are-no-items-notifications-id"
 );
-
 let thereAreNoSoldOrders = document.getElementById(
   "there-are-no-sold-notifications-id"
 );
-
 let thereAreNoPurchasedOrders = document.getElementById(
   "there-are-no-purchased-notifications-id"
 );
@@ -31,6 +29,9 @@ notificationGeneral.addEventListener("click", () => {
   thereAreNoSoldOrders.style.display = "none";
   thereAreNoNotifications.style.display = "block";
   thereAreNoPurchasedOrders.style.display = "none";
+  // Remove
+  removeNotifications();
+
   // Filter
   getNotifications("General");
 });
@@ -43,9 +44,13 @@ notificationPurchased.addEventListener("click", () => {
   // Change
   thereAreNoSoldOrders.style.display = "none";
   thereAreNoNotifications.style.display = "none";
-  thereAreNoPurchasedOrders.style.display = "block";
+  //thereAreNoPurchasedOrders.style.display = "block";
   // Filter
   removeNotifications();
+
+  getOrderNotifications("Purchased");
+
+  //removeThereAreNoNotifications();
   // Change
   //getNotifications("");
 });
@@ -56,17 +61,76 @@ notificationSold.addEventListener("click", () => {
   notificationPurchased.classList.remove("switch-1-selected");
 
   // Change
-  thereAreNoSoldOrders.style.display = "block";
+  //thereAreNoSoldOrders.style.display = "block";
   thereAreNoNotifications.style.display = "none";
   thereAreNoPurchasedOrders.style.display = "none";
   // Filter
   removeNotifications();
+
+  getOrderNotifications("Sold");
+
+
+
+
+  //removeThereAreNoNotifications();
   // Change
   //getNotifications("");
 });
 
+function getOrderNotifications(status) {
+  removeThereAreNoNotifications();
+
+  firebase.auth().onAuthStateChanged((user) => {
+    let soldArray = [];
+    if (user) {
+      let ordersReference;
+
+      if (status === "Sold") {
+        ordersReference = firebase
+        .firestore()
+        .collection("orders")
+        .where("seller", "==", user.displayName)
+        .get();
+      } else if (status === "Purchased") {
+        ordersReference = firebase
+        .firestore()
+        .collection("orders")
+        .where("buyer", "==", user.displayName)
+        .get();
+      }
+      ordersReference
+      .then((querySnapshot) => {
+        console.log(querySnapshot.docs.length);
+        if (querySnapshot.docs.length === 0) {
+          console.log("Empty");
+          thereAreNoPurchasedOrders.style.display = "block";
+          return;
+        }
+        querySnapshot.docs.forEach((snapshot) => {
+          soldArray.push(snapshot.data());
+        });
+        soldArray.forEach((order) => {
+          createOrderNotification(order);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      soldArray = [];
+    }
+  });
+}
+
 const removeNotifications = () => {
   let elements = document.getElementsByClassName("real-notification-main-div");
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+};
+
+const removeThereAreNoNotifications = () => {
+  let elements = document.getElementsByClassName("no-something");
 
   while (elements[0]) {
     elements[0].parentNode.removeChild(elements[0]);
@@ -131,7 +195,10 @@ function createNotification(notification) {
     // div.addEventListener("click", function () {
     //   window.location.href = `order.html?id=${notification.orderId}`;
     // });
-  } else if (notification.typeOfNotification === "Verified") {
+  } else if (
+    notification.typeOfNotification === "Verified" ||
+    notification.typeOfNotification === "Submitted"
+  ) {
     let div = document.createElement("div");
     div.setAttribute("class", "real-notification-main-div");
 
@@ -159,6 +226,12 @@ function createNotification(notification) {
       "class",
       "name-notttfication name-notttfication-mini"
     );
+    if (
+      notification.action ===
+      "Unfortunately, your seller account is refused, contact support for more information."
+    ) {
+      divNamePriceNotificationReal.setAttribute("style", "color:red");
+    }
     divNamePriceNotificationReal.textContent = notification.action;
 
     let timeSpan = document.createElement("span");
@@ -273,6 +346,101 @@ function createNotification(notification) {
   }
 }
 
+function createOrderNotification(order) {
+  let div = document.createElement("div");
+  div.setAttribute("class", "real-notification-main-div");
+
+  let divImage = document.createElement("div");
+  divImage.setAttribute("class", "seller-round-image");
+
+  if (order.sellerProfilePhoto !== null) {
+    divImage.setAttribute(
+      "style",
+      `margin: 0; background-image:url(${order.sellerProfilePhoto}); background-size: cover;`
+    );
+  }
+
+  divImage.addEventListener("click", function () {
+    location.href = `order.html?id=${order.orderId}`;
+  });
+
+  let divMainAction = document.createElement("div");
+  divMainAction.setAttribute("class", "main-div-name-price-notification");
+
+  let divAction = document.createElement("div");
+  divAction.setAttribute("class", "main-div-name-price-notification-real");
+
+  let title = document.createElement("div");
+  title.setAttribute("class", "name-notttfication");
+  title.textContent = order.description;
+
+  let price = document.createElement("div");
+  price.setAttribute("class", "price-notttfication");
+  price.textContent = `Price: ${order.price} EUR`;
+
+  let time = document.createElement("div");
+  time.setAttribute("class", "mini-time");
+  time.textContent = " " + new Date(order.createdAt.seconds * 1000).toDateString(); //getTimeSince(order.createdAt.seconds * 1000);
+
+  let divOrder = document.createElement("div");
+  divOrder.setAttribute("class", "main-div-order-status-notification-real");
+
+  let divOrderStatus = document.createElement("div");
+  divOrderStatus.setAttribute("class", "order-statuss");
+
+  let divOrderStatusText = document.createElement("span");
+  divOrderStatusText.textContent = "Order status:";
+
+  let divOrderStatusIcon = document.createElement("span");
+  divOrderStatusIcon.setAttribute("class", "order-status-real");
+  divOrderStatusIcon.textContent = order.status;
+
+  let divOrderStatusNotificationReal = document.createElement("div");
+  divOrderStatusNotificationReal.setAttribute(
+    "class",
+    "main-div-order-status-notification-real category-mini-change"
+  );
+
+  let divOrderCategoryNotificationReal = document.createElement("div");
+
+  if (order.category === "Accounts") {
+    divOrderCategoryNotificationReal.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign"
+    );
+  } else if (order.category === "Items") {
+    divOrderCategoryNotificationReal.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-2"
+    );
+  } else if (order.category === "GameCoins") {
+    divOrderCategoryNotificationReal.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-3"
+    );
+  } else if (order.category === "Boosting") {
+    divOrderCategoryNotificationReal.setAttribute(
+      "class",
+      "category-product-listed-mini-sign category-product-listed-mini-sign-4"
+    );
+  }
+
+  div.appendChild(divImage);
+  divAction.appendChild(title);
+  divAction.appendChild(price);
+  divAction.appendChild(time);
+  divMainAction.appendChild(divAction);
+  divOrderStatus.appendChild(divOrderStatusIcon);
+  divOrder.appendChild(divOrderStatus);
+  divMainAction.appendChild(divOrder);
+  divOrderStatusNotificationReal.appendChild(divOrderCategoryNotificationReal);
+  divMainAction.appendChild(divOrderStatusNotificationReal);
+  div.appendChild(divMainAction);
+
+  rowOfNotification.appendChild(div);
+
+}
+
 const getNotifications = async (orderStatus) => {
   firebase.auth().onAuthStateChanged(function (user) {
     let notificationsReference;
@@ -317,6 +485,7 @@ const getNotifications = async (orderStatus) => {
             thereAreNoNotifications.style.display = "block";
             return;
           }
+          thereAreNoNotifications.style.display = "none";
           console.log(querySnapshot);
           querySnapshot.forEach((doc) => {
             createNotification(doc.data());

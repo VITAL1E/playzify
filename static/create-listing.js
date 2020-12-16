@@ -3,8 +3,6 @@ let inputFile = document.getElementById("addImg1");
 
 let addItemButton = document.getElementById("create-listing-add-item-id");
 
-let userCreateListing = {};
-
 function onSelectChangeCategoryType() {
   let categoryType = document.getElementById("create-listing-category-type");
   let categoryTypeOption =
@@ -40,24 +38,26 @@ function onSelectChangeGameDelivery() {
 
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
-    // User is signed in.
-    let usernameVerification = firebase.auth().currentUser.displayName;
     firebase
       .firestore()
       .collection("users")
-      .doc(usernameVerification)
+      .doc(user.displayName)
       .get()
       .then((snapshot) => {
-        console.log(snapshot.data());
-        userCreateListing = snapshot.data();
+        if (!snapshot.data().verified === true) {
+          alert("You are not verified yet!");
+          location.href = "homepage.html";
+        }
+        if (!user.emailVerified) {
+          alert("Please verify your email address first!");
+          location.href = "homepage.html";
+        }
       })
       .catch((error) => {
         console.log(error);
       });
-    console.log(usernameVerification);
     console.log("signed");
   } else {
-    // No user is signed in.
     console.log("Not signed");
   }
 });
@@ -78,9 +78,15 @@ function addImageToForm(e) {
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
 
+        if (file.size > 1500000) {
+          alert("File too large!");
+          return;
+        }
+
         if (file) {
           const reader = new FileReader();
-          reader.addEventListener("load", function (e) {
+
+          reader.addEventListener("load", function (e) {  
             console.log(this);
 
             let imageFile = e.target;
@@ -90,6 +96,7 @@ function addImageToForm(e) {
             let divDocument = document.createElement("div");
             let divDocumentClose = document.createElement("div");
             let image = document.createElement("img");
+            //let imagePreview = document.createElement("img");
 
             divDocument.setAttribute("class", "id-document");
             divDocumentClose.setAttribute("class", "id-document-close");
@@ -103,13 +110,32 @@ function addImageToForm(e) {
               reference.delete();
               //.then(snapshot => snapshot.ref.getDownloadURL());
             });
+
             image.setAttribute("class", "image-preview");
             image.setAttribute(
               "style",
-              "width: inherit; height: inherit; border-radius: 20px;"
+              "border-radius: 15px; height: 70px; width: 70px;"
             );
-            image.setAttribute("src", imageFile.result);
+           image.setAttribute("src", imageFile.result);
 
+            // imagePreview.onload = function (e) {
+            //   let canvas = document.createElement("canvas");
+            //   let MAX_WIDTH = 200;
+
+            //   let scaleSize = MAX_WIDTH / e.target.width;
+            //   canvas.width = MAX_WIDTH;
+            //   canvas.height = e.target.height * scaleSize;
+
+            //   let ctx = canvas.getContext("2d");
+            //   console.log(imageFile);
+            //   console.log(e.target);
+
+            //   ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
+            //   console.log(e.target);
+
+            //   let srcEncoded = ctx.canvas.toDataURL(e.target, "image/jpeg");
+            //   image.setAttribute("src", srcEncoded);
+            // }
             divDocument.appendChild(divDocumentClose);
             divDocument.appendChild(image);
             rowOfPhotos.appendChild(divDocument);
@@ -140,6 +166,8 @@ function getImageURLsFromArray(...imagesArray) {
 }
 
 function addItemValidation() {
+  addItemButton.removeEventListener("click", addItemValidation, false);
+
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       let gameTitle = document.getElementById("create-listing-title").value;
@@ -156,23 +184,30 @@ function addItemValidation() {
       let gameGarantyOption = onSelectChangeGameGaranty();
       let gameDeliveryOption = onSelectChangeGameDelivery();
 
-      if (
-        (categoryTypeOption != "" ||
-          gameServerOption != "" ||
-          gameGarantyOption != "" ||
-          gameDeliveryOption != "" ||
-          gameTypeOption != "" ||
-          gameTitle != "" ||
-          gamePrice != "" ||
-          !isNaN(gamePrice) ||
-          gamePrice > 0 ||
-          gamePrice < 10000 ||
-          gameDescriptionContent != "") &&
-        userCreateListing.verified !== true
+      console.log(categoryTypeOption);
+      console.log(gameTypeOption);
+      console.log(gameTitle);
+      console.log(gamePrice);
+      console.log(gameDescriptionContent);
+      console.log(getImageURLsFromArray(...imagesArray));
+      console.log(gameServerOption);
+      console.log(gameGarantyOption);
+      console.log(gameDeliveryOption);
+
+      if (isValid(categoryTypeOption) &&
+          isValid(gameTypeOption) &&
+          isValid(gameTitle) &&
+          isValid(gamePrice) &&
+          !isNaN(parseInt(gamePrice)) &&
+          (parseInt(gamePrice) > 0 && parseInt(gamePrice) <= 9999) &&
+          isValid(gameDescriptionContent) &&
+          isValid(gameServerOption) &&
+          isValid(gameGarantyOption) &&
+          isValid(gameDeliveryOption)
       ) {
         let gameData = {
           postId: "",
-          likes: 0,
+          likes: [],
           seller: user.displayName,
           sellerPhoto: user.photoURL,
           category: categoryTypeOption,
@@ -202,18 +237,33 @@ function addItemValidation() {
               { merge: true }
             );
           })
-          .catch(function (error) {
-            if (error) {
+          .then(() => {
+            console.log("Success");
+            location.href = "homepage.html";
+          })
+          .catch((error) => {
               let errorMessage = error.message;
               console.log(errorMessage);
               window.alert("Message " + errorMessage);
-            } else {
-              console.log("Success");
-              window.location.href = "homepage.html";
-            }
           });
+
       } else {
-        window.alert("All fields required");
+        if (parseInt(gamePrice) === 0) {
+          alert("Invalid price");
+          return;
+        }
+        alert("All fields required!");
+
+        console.log(categoryTypeOption);
+        console.log(gameTypeOption);
+        console.log(gameTitle);
+        console.log(gamePrice);
+        console.log(gameDescriptionContent);
+        console.log(getImageURLsFromArray(...imagesArray));
+        console.log(gameServerOption);
+        console.log(gameGarantyOption);
+        console.log(gameDeliveryOption);
+
         location.reload();
       }
     } else {
@@ -221,6 +271,13 @@ function addItemValidation() {
     }
   });
 }
+
+const isValid = (string) => {
+  if (string.trim() === "") {
+    return false;
+  }
+  return true;
+};
 
 inputFile.addEventListener("change", addImageToForm, false); // false, inner div first then outter handled
 addItemButton.addEventListener("click", addItemValidation, false);

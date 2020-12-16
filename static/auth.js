@@ -98,6 +98,7 @@ function signUp() {
         createdAt: new Date(),
         favorites: [],
         followers: [],
+        following: [],
         balance: 0,
         balanceOnHold: 0,
         description: "nothing about this user",
@@ -189,6 +190,7 @@ function signIn() {
 
   let email;
   let user = firebase.auth().currentUser;
+  
   firebase
     .firestore()
     .doc(`/users/${usernameValue}`)
@@ -215,12 +217,6 @@ function signIn() {
               //   });
               window.location.href = "homepage.html";
             }
-          })
-          .catch((err) => {
-            // Wrong password message
-            let errorMessage = err.message;
-            signForm.querySelector(".register-error").innerHTML = errorMessage;
-            console.log(err);
           })
           .catch((err) => {
             let errorMessage = err.message;
@@ -276,9 +272,34 @@ function signUpWithGoogle() {
       if (isUserNew) {
         console.log("First time");
         window.location.href = "sign-up-google.html";
-        } else {
+      } else {
         console.log("Login ");
-        window.location.href = "homepage.html";
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(user.displayName)
+          .get()
+          .then((snapshot) => {
+            if (snapshot.exists) {
+              console.log("User exist in collection");
+              location.href = "homepage.html";
+            } else {
+              firebase
+              .auth()
+              .signOut()
+              .then(function () {
+                console.log("Not exist just signed out");
+                alert("Please sign with Google first");
+                location.href = "sign-up.html";
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     })
     .catch((error) => {
@@ -292,19 +313,23 @@ function signUpWithGoogle() {
 
       // signForm.querySelector(".register-error").innerHTML =
       //   errorMessage + "351";
-      signForm.querySelector(".register-error").innerHTML =
-      errorMessage;
+      signForm.querySelector(".register-error").innerHTML = errorMessage;
     });
   console.log("Clicked google");
 }
 
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    if (user.emailVerified && user.providerId !== "google.com") {
-      window.location.href = "homepage.html";
+function checkIfVerfifiedEmail() {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      if (user.emailVerified && user.providerData[0].providerId !== "google.com") {
+        location.href = "homepage.html";
+      }
+      console.log("Logged in as " + JSON.stringify(user));
+    } else {
+      console.log("Not logged in");
     }
-    console.log("Logged in as " + JSON.stringify(user));
-  } else {
-    console.log("Not logged in");
-  }
-});
+  });
+}
+
+setInterval(checkIfVerfifiedEmail, 5000);
+

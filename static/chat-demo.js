@@ -204,8 +204,10 @@ async function getMainChat() {
       firebase
         .firestore()
         .collection("chats")
-        .doc(user.displayName)
-        .collection("chats")
+        .where("user", "==", user.displayName)
+        .where("seller", "==", user.displayName)
+        // .doc(user.displayName)
+        // .collection("chats")
         .orderBy("lastUpdated", "desc")
         .limit(1)
         .get()
@@ -941,25 +943,19 @@ window.onload = function () {
   }
 };
 
-// await firebase
-// .firestore()
-// .collection("chats")
-// .doc(user.displayName)
-// .collection("chats")
-// .doc(userId)
-// .collection("messages")
-// .get()
-// .then((snapshot) => {
-//   if (snapshot.exists) {
-//     console.log("There are messages");
-//     loadMessages(userId);
-//   } else {
-//     console.log("No messages");
-//   }
-// })
-// .catch((error) => {
-//   console.log(error);
-// });
+function generateChatRoomName(user1, user2) {
+  let result = user1.toLowerCase().localeCompare(user2.toLowerCase());
+
+  if (result === 0) {
+    return `${user1}+${user2}`;
+  }
+  if (result === 1) {
+    return `${user2}+${user1}`;
+  }
+  if (result === -1) {
+    return `${user1}+${user2}`;
+  }
+}
 
 if (userId) {
   loadMessages(userId);

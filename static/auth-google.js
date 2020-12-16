@@ -11,8 +11,7 @@ function onSelectChangeSecurityQuestion() {
 let signGoogleButton = document.getElementById("sign-in-google-button-id");
 
 signGoogleButton.addEventListener("click", () => {
-  let usernameValue = document.getElementById("sign-google-username-id")
-    .value;
+  let usernameValue = document.getElementById("sign-google-username-id").value;
   let securityQuestionValue = onSelectChangeSecurityQuestion();
   let securityAnswerValue = document.getElementById("sign-google-answer-id")
     .value;
@@ -28,6 +27,7 @@ signGoogleButton.addEventListener("click", () => {
         userId: user.uid,
         email: user.email,
         favorites: [],
+        following: [],
         followers: [],
         username: usernameValue,
         securityQuestion: securityQuestionValue,
@@ -35,7 +35,7 @@ signGoogleButton.addEventListener("click", () => {
         profilePicture: null,
         balance: 0,
         balanceOnHold: 0,
-        verified: true,
+        verified: false,
         description: "nothing about this user",
         createdAt: new Date(),
       };
@@ -50,19 +50,39 @@ signGoogleButton.addEventListener("click", () => {
           user
             .updateProfile({
               displayName: usernameValue,
-              photoURL: null,
             })
             .then(() => {
               console.log("Updated this user");
+            })
+            .then(() => {
+              firebase
+                .firestore()
+                .collection("users")
+                .doc(usernameValue)
+                .set({
+                  profilePicture: user.photoURL
+                }, { merge: true })
+                .then(() => {
+                  console.log("Updated picture profile");
+                })
+                .then(() => {
+                  location.href = "homepage.html";
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             })
             .catch((error) => {
               console.log(error);
             });
         })
         .then(() => {
-          location.href = "homepage.html";
+          console.log("to homeapge");
+          //location.href = "homepage.html";
         })
         .catch((error) => console.log(error));
+    } else {
+      location.href = "homepage.html";
     }
   });
 });

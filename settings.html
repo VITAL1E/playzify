@@ -100,7 +100,7 @@
           <button class="theme-main-selector-moon" id="dark-mode-toggle">
             <div class="moon-dark"></div>
             <div class="sun-white"></div>
-        </button>
+          </button>
           <div class="sell-with-us-header-2">Sell</div>
           <div class="theme-main-selector-sun" style="display: none;"></div>
           <div class="user-logged-in-main-icons">
@@ -108,7 +108,9 @@
             <div class="comun-main-user-icons-header bell-icon">
               <div class="notification-point" style="display: none;"></div>
             </div>
-            <div class="comun-main-user-icons-header chat-icon"> </div>
+            <div class="comun-main-user-icons-header chat-icon">
+              <div class="chat-notification" style="display: none;"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -136,6 +138,11 @@
         </div>
 
         <div class="verification-main-input-div">
+          <p class="verification-main-text">Email</p>
+          <p contenteditable="true" id="emailInput" class="describe-your-item-contentible" spellcheck="false"></p>
+        </div>
+
+        <div class="verification-main-input-div">
           <p class="verification-main-text">Describe your store</p>
           <p contenteditable="true" id="productDescriptionInput" class="describe-your-item-contentible" placeholder="describe your item" spellcheck="false"></p>
         </div>
@@ -158,13 +165,13 @@
           </div>
       </div>
 
-        <div class="verification-main-input-div">
+        <div id="old-password-div-id" class="verification-main-input-div" style="display: none;">
           <p class="verification-main-text">Old password</p>
           <input id="old-password-id" class="verification-main-input" placeholder="type general setting" type="password" autocomplete="off" maxlength="24">
           <div id="settings-password-error-id" class="register-error"></div>
         </div>
 
-        <div class="verification-main-input-div">
+        <div id="new-password-div-id" class="verification-main-input-div" style="display: none;">
           <p class="verification-main-text">New password</p>
           <input id="new-password-id" class="verification-main-input" placeholder="type general setting" type="password" autocomplete="off" maxlength="24">
         </div>
